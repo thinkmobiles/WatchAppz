@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">WatchAppz</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Instellingen</string>
+    <string name="action_help">Help</string>
+    <string name="action_over_watchappz">Over WatchAppz</string>
+
+
+    <string name="tab_favorieten">Favorieten</string>
+    <string name="tab_recent_gebruikt">Recent gebtuikt</string>
+    <string name="tab_alle_apps">Alle apps</string>
+    <string name="app_used">Gebruikt</string>
+    <string name="app_use_today">vandaag</string>
+    <string name="app_use_total">totaal</string>
+    <string name="app_sorts_gebruikt">Sorteren op meest gebruikt</string>
+    <string name="app_sorts_data">Sorteren op meest data</string>
+    <string name="app_sorts_minste_gebruikt">Sorteren op minste gebruikt</string>
+</resources>

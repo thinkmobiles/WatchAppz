@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tvHelp_FS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_help_grey"
+        android:drawablePadding="20dp"
+        android:text="@string/action_help"
+        android:textColor="@android:color/black"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/black" />
+
+
+    <TextView
+        android:id="@+id/tvOverWatchAppz_FS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_info_grey"
+        android:drawablePadding="20dp"
+        android:text="@string/action_over_watchappz"
+        android:textColor="@android:color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/black" />
+
+    <RadioGroup
+        android:id="@+id/rgSorting_FS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkedButton="@+id/sound">
+
+        <RadioButton
+            android:id="@+id/rbSortingGebruikt_FS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:button="@null"
+            android:drawableLeft="@drawable/ic_stripes"
+            android:drawablePadding="20dp"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:text="@string/app_sorts_gebruikt" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:background="@android:color/black" />
+
+        <RadioButton
+            android:id="@+id/rbSortingData_FS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:button="@null"
+            android:drawableLeft="@drawable/ic_stripes"
+            android:drawablePadding="20dp"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:text="@string/app_sorts_data" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:background="@android:color/black" />
+
+        <RadioButton
+            android:id="@+id/rbSortingMinsteGebruikt_FS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:button="@null"
+            android:drawableLeft="@drawable/ic_stripes"
+            android:drawablePadding="20dp"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:text="@string/app_sorts_minste_gebruikt" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:background="@android:color/black" />
+
+    </RadioGroup>
+
+</LinearLayout>

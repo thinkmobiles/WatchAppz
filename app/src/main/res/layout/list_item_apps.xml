@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    
+    <ImageView
+        android:id="@+id/ivAppIcon_LIA"
+        style="@style/AppIconLIA"
+        android:src="@mipmap/ic_launcher"/>
+    <TextView
+        android:id="@+id/tvAppName_LIA"
+        android:layout_toRightOf="@id/ivAppIcon_LIA"
+        style="@style/AppNameTextViewLIA"
+        android:text="App name"/>
+    <TextView
+        android:id="@+id/tvAppInfo_LIA"
+        android:layout_below="@id/tvAppName_LIA"
+        android:layout_toRightOf="@id/ivAppIcon_LIA"
+        style="@style/AppInfoTextViewLIA"
+        android:text="App info"/>
+
+    <ImageView
+        android:id="@+id/ivAppStar_LIA"
+        style="@style/AppStarIconLIA"
+        android:src="@drawable/ic_star_gold"
+        />
+
+</RelativeLayout>
