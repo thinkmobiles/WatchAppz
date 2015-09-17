@@ -16,4 +16,5 @@ public abstract class DBConstants {
     public static final String KEY_TOTAL_COUNT     = "totalCount";
     public static final String KEY_IS_FAVOURITE    = "isFavourite";
     public static final String KEY_PACKAGE_NAME    = "packageName";
+    public static final String KEY_DATE_USEGE      = "dateUsege";
 }

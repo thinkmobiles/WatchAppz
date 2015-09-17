@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,14 +23,35 @@ import java.util.List;
  * mRogach on 15.09.2015.
  */
 
-public final class AppsListAdapter extends CursorRecyclerViewAdapter<AppsListAdapter.AppViewHolder> {
+public final class AppsListAdapter extends CursorAdapter {
 
     private Context mContext;
     private DBManager dbManager;
 
-    public AppsListAdapter(final Context _context, final Cursor _cursor) {
-        super(_context, _cursor);
-        this.mContext = _context;
+    public AppsListAdapter(Context context, Cursor cursor) {
+        super(context, cursor, 0);
+        mContext = context;
+    }
+
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
+        View view = LayoutInflater.from(context).inflate(R.layout.list_item_apps, viewGroup, false);
+        AppViewHolder appViewHolder = new AppViewHolder();
+        appViewHolder.ivAppIcon = (ImageView) view.findViewById(R.id.ivAppIcon_LIA);
+        appViewHolder.ivAppStar = (ImageView) view.findViewById(R.id.ivAppStar_LIA);
+        appViewHolder.tvAppName = (TextView) view.findViewById(R.id.tvAppName_LIA);
+        appViewHolder.tvAppInfo = (TextView) view.findViewById(R.id.tvAppInfo_LIA);
+        return view;
+    }
+
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+        AppViewHolder appViewHolder = (AppViewHolder) view.getTag();
+        final AppModel appModel = dbManager.getAppFromCursor(cursor);
+        appViewHolder.tvAppName.setText(appModel.getAppName());
+        appViewHolder.tvAppInfo.setText(getAppInfo(appModel));
+        setStarColor(appViewHolder, appModel);
+        setAppIcon(appViewHolder, appModel);
     }
 
     public void setDbManager(final DBManager _dbManager) {
@@ -39,33 +61,11 @@ public final class AppsListAdapter extends CursorRecyclerViewAdapter<AppsListAda
 //        mApps = _apps;
 //    }
 
-    @Override
-    public AppViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_apps, viewGroup, false);
-        return new AppViewHolder(v);
-    }
-
-    @Override
-    public void onBindViewHolder(AppViewHolder appViewHolder, Cursor cursor) {
-        final AppModel appModel = dbManager.getAppFromCursor(cursor);
-        appViewHolder.tvAppName.setText(appModel.getAppName());
-        appViewHolder.tvAppInfo.setText(getAppInfo(appModel));
-        setStarColor(appViewHolder, appModel);
-        setAppIcon(appViewHolder, appModel);
-    }
-
-    public static class AppViewHolder extends RecyclerView.ViewHolder {
+    private class AppViewHolder {
 
         private TextView tvAppName, tvAppInfo;
         private ImageView ivAppIcon, ivAppStar;
 
-        public AppViewHolder(View itemView) {
-            super(itemView);
-            ivAppIcon = (ImageView) itemView.findViewById(R.id.ivAppIcon_LIA);
-            ivAppStar = (ImageView) itemView.findViewById(R.id.ivAppStar_LIA);
-            tvAppName = (TextView) itemView.findViewById(R.id.tvAppName_LIA);
-            tvAppInfo = (TextView) itemView.findViewById(R.id.tvAppInfo_LIA);
-        }
     }
 
     private String getAppInfo(final AppModel _appModel) {

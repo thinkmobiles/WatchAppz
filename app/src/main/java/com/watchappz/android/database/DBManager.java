@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.watchappz.android.system.models.AppModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import static com.watchappz.android.database.DBConstants.*;
 
 /**
@@ -16,7 +18,7 @@ import static com.watchappz.android.database.DBConstants.*;
  * mRogach on 16.09.2015.
  */
 
-public final class DBManager {
+public final class DBManager implements Serializable {
 
     private Context mContext;
     private DBHelper mDBHelper;
@@ -43,6 +45,7 @@ public final class DBManager {
         values.put(KEY_TOTAL_COUNT, _app.getAppUseTotalCount());
         values.put(KEY_IS_FAVOURITE, _app.isFavourite());
         values.put(KEY_PACKAGE_NAME, _app.getAppPackageName());
+        values.put(KEY_DATE_USEGE, _app.getDateUsege());
 
         mDB.insert(TABLE_APPS, null, values);
         mDB.close();
@@ -56,9 +59,9 @@ public final class DBManager {
 
     public AppModel getApp(int id) {
 
-        Cursor cursor = mDB.query(TABLE_APPS, new String[] { KEY_ID,
-                        KEY_NAME, KEY_TODAY_COUNT, KEY_TOTAL_COUNT, KEY_IS_FAVOURITE, KEY_PACKAGE_NAME }, KEY_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+        Cursor cursor = mDB.query(TABLE_APPS, new String[]{KEY_ID,
+                        KEY_NAME, KEY_TODAY_COUNT, KEY_TOTAL_COUNT, KEY_IS_FAVOURITE, KEY_PACKAGE_NAME, KEY_DATE_USEGE}, KEY_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
@@ -70,6 +73,7 @@ public final class DBManager {
             app.setAppUseTotalCount(cursor.getLong(3));
             app.setIsFavourite(cursor.getInt(4));
             app.setAppPackageName(cursor.getString(5));
+            app.setDateUsege(cursor.getInt(6));
         }
         return app;
     }
@@ -80,34 +84,68 @@ public final class DBManager {
         return fillAppModelFromCursor(_cursor);
     }
 
-    public List<AppModel> getAllContacts() {
-        List<AppModel> appList = new ArrayList<>();
-        String selectQuery = "SELECT  * FROM " + TABLE_APPS;
-
-        Cursor cursor = mDB.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                appList.add(fillAppModelFromCursor(cursor));
-            } while (cursor.moveToNext());
-        }
-
-        return appList;
-    }
+//    public List<AppModel> getAllApps() {
+//        List<AppModel> appList = new ArrayList<>();
+//        String selectQuery = "SELECT  * FROM " + TABLE_APPS;
+//
+//        Cursor cursor = mDB.rawQuery(selectQuery, null);
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//                appList.add(fillAppModelFromCursor(cursor));
+//            } while (cursor.moveToNext());
+//        }
+//
+//        return appList;
+//    }
 
     public Cursor getAllData() {
         return mDB.query(TABLE_APPS, null, null, null, null, null, null);
     }
 
+    public Cursor getFavoriteData() {
+        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_IS_FAVOURITE + " = " + 1;
+        Cursor cursor = null;
+        try {
+            cursor = mDB.rawQuery(selectQuery, null);
+        } catch (Exception Exp) {
+            return null;
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+        return cursor;
+    }
+
+    public Cursor getResentlyData() {
+        //todo logic get resently data
+        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_IS_FAVOURITE + " = " + 1;
+        Cursor cursor = null;
+        try {
+            cursor = mDB.rawQuery(selectQuery, null);
+        } catch (Exception Exp) {
+            return null;
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+        return cursor;
+    }
+
+
+
     public AppModel getAppModelIfExistsInDB(final String _fieldValue) {
         String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_PACKAGE_NAME + " = " + _fieldValue;
-        Cursor cursor = mDB.rawQuery(selectQuery, null);
-        if(cursor.getCount() <= 0){
-            cursor.close();
+        Cursor cursor = null;
+        try {
+            cursor = mDB.rawQuery(selectQuery, null);
+        } catch (Exception Exp) {
             return null;
+        } finally {
+            if (cursor != null) cursor.close();
         }
         AppModel appModel = fillAppModelFromCursor(cursor);
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
         return appModel;
     }
 
@@ -119,6 +157,7 @@ public final class DBManager {
         app.setAppUseTotalCount(_cursor.getLong(3));
         app.setIsFavourite(_cursor.getInt(4));
         app.setAppPackageName(_cursor.getString(5));
+        app.setDateUsege(_cursor.getInt(6));
         return app;
     }
 

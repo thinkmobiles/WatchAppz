@@ -24,10 +24,7 @@ public class SettingsFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mainActivity.setTitle(getResources().getString(R.string.action_settings));
-        mainActivity.setSupportActionBar(mainActivity.getToolbar());
-        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mainActivity.getSupportActionBar().setHomeButtonEnabled(true);
-        mainActivity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        mainActivity.getToolbarManager().showBackButton();
     }
 
     @Nullable

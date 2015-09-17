@@ -3,12 +3,11 @@ package com.watchappz.android.system.adapters;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
-import com.watchappz.android.system.fragments.AppsListFragment;
+import com.watchappz.android.system.fragments.AllAppsListFragment;
 
 /**
  * Created by
@@ -32,11 +31,11 @@ public final class AppsListFragmentsPagerAdapter extends FragmentStatePagerAdapt
     public Fragment getItem(final int _position) {
         switch (_position) {
             case 0:
-                return AppsListFragment.newInstance();
+                return AllAppsListFragment.newInstance();
             case 1:
-                return AppsListFragment.newInstance();
+                return AllAppsListFragment.newInstance();
             case 2:
-                return AppsListFragment.newInstance();
+                return AllAppsListFragment.newInstance();
             default:
                 return null;
         }

@@ -13,6 +13,7 @@ public final class AppModel {
     private long mAppUseTotalCount;
     private int isFavourite;
     private String mAppPackageName;
+    private long mDateUsege;
 
     public long getId() {
         return id;
@@ -60,5 +61,13 @@ public final class AppModel {
 
     public void setAppName(final String _appName) {
         this.mAppName = _appName;
+    }
+
+    public long getDateUsege() {
+        return mDateUsege;
+    }
+
+    public void setDateUsege(long mDateUsege) {
+        this.mDateUsege = mDateUsege;
     }
 }

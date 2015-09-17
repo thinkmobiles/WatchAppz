@@ -1,5 +1,7 @@
 package com.watchappz.android.system.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,29 +14,35 @@ import android.widget.Toast;
 
 import com.watchappz.android.R;
 import com.watchappz.android.WatchAppzApplication;
+import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.adapters.AppsListFragmentsPagerAdapter;
 import com.watchappz.android.system.fragments.SettingsFragment;
+import com.watchappz.android.utils.AccessibilityManager;
+import com.watchappz.android.utils.AppInfoService;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
-    private Toolbar mToolbar;
+
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private AppsListFragmentsPagerAdapter mAppsListFragmentsPagerAdapter;
+    private AccessibilityManager accessibilityManager;
+    private DBManager dbManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initToolbar();
         initViewPager();
         initTabLayout();
+        initDBManager();
+        initAccessibilityManager();
     }
 
-    private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 
@@ -52,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.addTab(mTabLayout.newTab().setText(getResources().getString(R.string.tab_recent_gebruikt)));
         mTabLayout.addTab(mTabLayout.newTab().setText(getResources().getString(R.string.tab_alle_apps)));
         mTabLayout.setupWithViewPager(mViewPager);
+    }
+
+    private void initAccessibilityManager() {
+        accessibilityManager = new AccessibilityManager(this);
+        accessibilityManager.startService();
     }
 
     @Override
@@ -77,7 +90,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public Toolbar getToolbar() {
-        return mToolbar;
+    private void initDBManager() {
+        dbManager = new DBManager(this);
+        dbManager.open();
+    }
+
+    public DBManager getDbManager() {
+        return dbManager;
     }
 }

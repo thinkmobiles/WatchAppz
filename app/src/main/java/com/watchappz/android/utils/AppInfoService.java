@@ -2,6 +2,7 @@ package com.watchappz.android.utils;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.view.accessibility.AccessibilityEvent;
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.system.models.AppModel;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -21,14 +23,11 @@ public class AppInfoService extends AccessibilityService {
 
     private DBManager dbManager;
 
-    public void setDbManager(final DBManager _dbManager) {
-        this.dbManager = _dbManager;
-    }
-
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+        dbManager = new DBManager(getApplicationContext());
+        dbManager.open();
         if (!TextUtils.isEmpty(getEventText(accessibilityEvent))) {
-            //todo write to database accessibilityEvent.getPackageName();
             dbManager.addApp(getAppToWriteInDB(accessibilityEvent));
         }
     }
@@ -71,16 +70,19 @@ public class AppInfoService extends AccessibilityService {
     }
 
     private AppModel getAppToWriteInDB(final AccessibilityEvent _accessibilityEvent) {
+        Calendar calendar = Calendar.getInstance();
         AppModel appModel = dbManager.getAppModelIfExistsInDB(_accessibilityEvent.getPackageName().toString());
         if (appModel != null) {
             appModel.setAppUseTodayCount(appModel.getAppUseTodayCount() + 1);
             appModel.setAppUseTotalCount(appModel.getAppUseTotalCount() + 1);
+            appModel.setDateUsege(calendar.getTimeInMillis());
         } else {
             appModel = new AppModel();
             appModel.setAppName(getEventText(_accessibilityEvent));
             appModel.setAppPackageName(_accessibilityEvent.getPackageName().toString());
             appModel.setAppUseTodayCount(appModel.getAppUseTodayCount() + 1);
             appModel.setAppUseTotalCount(appModel.getAppUseTotalCount() + 1);
+            appModel.setDateUsege(calendar.getTimeInMillis());
         }
         return appModel;
     }
