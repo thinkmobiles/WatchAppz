@@ -1,12 +1,8 @@
 package com.watchappz.android.system.activities;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,11 +11,10 @@ import android.widget.Toast;
 import com.watchappz.android.R;
 import com.watchappz.android.WatchAppzApplication;
 import com.watchappz.android.database.DBManager;
-import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.adapters.AppsListFragmentsPagerAdapter;
+import com.watchappz.android.system.fragments.HelpFragment;
 import com.watchappz.android.system.fragments.SettingsFragment;
 import com.watchappz.android.utils.AccessibilityManager;
-import com.watchappz.android.utils.AppInfoService;
 
 public class MainActivity extends BaseActivity {
 
@@ -57,8 +52,8 @@ public class MainActivity extends BaseActivity {
     private void initTabLayout() {
         mTabLayout = (TabLayout) findViewById(R.id.tlSliding_tabs_AM);
         mTabLayout.addTab(mTabLayout.newTab().setText(getResources().getString(R.string.tab_favorieten)));
-        mTabLayout.addTab(mTabLayout.newTab().setText(getResources().getString(R.string.tab_recent_gebruikt)));
-        mTabLayout.addTab(mTabLayout.newTab().setText(getResources().getString(R.string.tab_alle_apps)));
+        mTabLayout.addTab(mTabLayout.newTab().setText(getResources().getString(R.string.tab_recently_used)));
+        mTabLayout.addTab(mTabLayout.newTab().setText(getResources().getString(R.string.tab_all_apps)));
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
@@ -77,16 +72,16 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                mTabLayout.setVisibility(View.INVISIBLE);
-                getSupportFragmentManager().beginTransaction().replace(R.id.flContainer_AM, SettingsFragment.newInstance()).commit();
+                mFragmentNavigator.showFragmentWithAnimation(SettingsFragment.newInstance());
                 break;
             case R.id.action_help:
-                Toast.makeText(this, item.getTitle(), Toast.LENGTH_LONG).show();
+                mFragmentNavigator.showFragmentWithAnimation(HelpFragment.newInstance());
                 break;
             case R.id.action_over_watchappz:
                 Toast.makeText(this, item.getTitle(), Toast.LENGTH_LONG).show();
                 break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

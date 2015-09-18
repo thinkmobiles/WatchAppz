@@ -11,11 +11,11 @@ import java.util.concurrent.TimeUnit;
  * mRogach on 17.09.2015.
  */
 
-public class ResentlyCursorLoader extends CursorLoader {
+public class RecentlyCursorLoader extends CursorLoader {
 
     private DBManager mDbManager;
 
-    public ResentlyCursorLoader(Context _context, DBManager _dbManager) {
+    public RecentlyCursorLoader(Context _context, DBManager _dbManager) {
         super(_context);
         this.mDbManager = _dbManager;
     }

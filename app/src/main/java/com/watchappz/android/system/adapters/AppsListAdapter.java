@@ -57,9 +57,7 @@ public final class AppsListAdapter extends CursorAdapter {
     public void setDbManager(final DBManager _dbManager) {
         this.dbManager = _dbManager;
     }
-    //    public void setData(List<AppModel> _apps) {
-//        mApps = _apps;
-//    }
+
 
     private class AppViewHolder {
 

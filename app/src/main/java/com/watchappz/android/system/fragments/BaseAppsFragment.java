@@ -2,11 +2,11 @@ package com.watchappz.android.system.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.watchappz.android.R;
 import com.watchappz.android.system.adapters.AppsListAdapter;
@@ -18,9 +18,9 @@ import com.watchappz.android.system.adapters.AppsListAdapter;
 public abstract class BaseAppsFragment extends BaseFragment {
 
     protected ListView listView;
+    protected TextView tvEmptyView;
     protected AppsListAdapter appsListAdapter;
     protected View mInflatedView;
-    protected FloatingActionButton fab;
 
 
 
@@ -34,8 +34,7 @@ public abstract class BaseAppsFragment extends BaseFragment {
 
     private void findViews() {
         listView = (ListView) mInflatedView.findViewById(R.id.lvApps_FA);
-//        listView.setEmptyView();
-        fab = (FloatingActionButton) mInflatedView.findViewById(R.id.fabAddApp_FA);
+        tvEmptyView = (TextView) mInflatedView.findViewById(R.id.tvEmptyAppsList_EV);
     }
 
 }

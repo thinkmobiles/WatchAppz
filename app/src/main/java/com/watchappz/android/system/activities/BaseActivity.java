@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.watchappz.android.R;
+import com.watchappz.android.utils.FragmentNavigator;
 import com.watchappz.android.utils.ToolbarManager;
 
 /**
@@ -14,12 +15,14 @@ import com.watchappz.android.utils.ToolbarManager;
 public class BaseActivity extends AppCompatActivity{
 
     protected ToolbarManager mToolbarManager;
+    protected FragmentNavigator mFragmentNavigator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initToolbar();
+        initFragmentNavigator();
     }
 
     private void initToolbar() {
@@ -29,5 +32,10 @@ public class BaseActivity extends AppCompatActivity{
 
     public ToolbarManager getToolbarManager() {
         return mToolbarManager;
+    }
+
+    private void initFragmentNavigator() {
+        mFragmentNavigator = new FragmentNavigator();
+        mFragmentNavigator.register(getSupportFragmentManager(), R.id.flContainer_AM);
     }
 }

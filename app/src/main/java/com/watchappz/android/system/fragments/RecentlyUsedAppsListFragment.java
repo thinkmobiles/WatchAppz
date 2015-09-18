@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-import com.watchappz.android.database.AllAppsCursorLoader;
-import com.watchappz.android.database.ResentlyCursorLoader;
+import com.watchappz.android.R;
+import com.watchappz.android.database.RecentlyCursorLoader;
 import com.watchappz.android.system.adapters.AppsListAdapter;
 
 /**
@@ -25,12 +25,12 @@ public class RecentlyUsedAppsListFragment extends BaseAppsFragment implements Lo
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        tvEmptyView.setText(mainActivity.getResources().getString(R.string.app_resently_used_empty_view));
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new ResentlyCursorLoader(mainActivity, mainActivity.getDbManager());
+        return new RecentlyCursorLoader(mainActivity, mainActivity.getDbManager());
     }
 
     @Override

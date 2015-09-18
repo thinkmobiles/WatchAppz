@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.fragments.AllAppsListFragment;
+import com.watchappz.android.system.fragments.FavoriteAppsListFragment;
+import com.watchappz.android.system.fragments.RecentlyUsedAppsListFragment;
 
 /**
  * Created by
@@ -23,17 +25,17 @@ public final class AppsListFragmentsPagerAdapter extends FragmentStatePagerAdapt
         super(_fm);
         mContext = _context;
         tabTitles = new String[] {mContext.getResources().getString(R.string.tab_favorieten),
-                mContext.getResources().getString(R.string.tab_recent_gebruikt),
-                mContext.getResources().getString(R.string.tab_alle_apps)};
+                mContext.getResources().getString(R.string.tab_recently_used),
+                mContext.getResources().getString(R.string.tab_all_apps)};
     }
 
     @Override
     public Fragment getItem(final int _position) {
         switch (_position) {
             case 0:
-                return AllAppsListFragment.newInstance();
+                return FavoriteAppsListFragment.newInstance();
             case 1:
-                return AllAppsListFragment.newInstance();
+                return RecentlyUsedAppsListFragment.newInstance();
             case 2:
                 return AllAppsListFragment.newInstance();
             default:

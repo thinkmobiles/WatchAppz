@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
+import com.watchappz.android.R;
 import com.watchappz.android.database.AllAppsCursorLoader;
 import com.watchappz.android.database.FavoriteCursorLoader;
 import com.watchappz.android.system.adapters.AppsListAdapter;
@@ -25,7 +26,7 @@ public class FavoriteAppsListFragment extends BaseAppsFragment implements Loader
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        tvEmptyView.setText(mainActivity.getResources().getString(R.string.app_favorites_empty_view));
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
+import com.watchappz.android.R;
 import com.watchappz.android.database.AllAppsCursorLoader;
 import com.watchappz.android.system.adapters.AppsListAdapter;
 
@@ -24,7 +25,7 @@ public class AllAppsListFragment extends BaseAppsFragment implements LoaderManag
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        tvEmptyView.setText(mainActivity.getResources().getString(R.string.app_all_empty_view));
     }
 
     @Override
@@ -36,7 +37,7 @@ public class AllAppsListFragment extends BaseAppsFragment implements LoaderManag
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         appsListAdapter = new AppsListAdapter(mainActivity, cursor);
         listView.setAdapter(appsListAdapter);
-
+        listView.setEmptyView(tvEmptyView);
     }
 
     @Override

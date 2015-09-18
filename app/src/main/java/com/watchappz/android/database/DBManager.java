@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.watchappz.android.system.models.AppModel;
+import com.watchappz.android.utils.DateManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -118,7 +119,7 @@ public final class DBManager implements Serializable {
 
     public Cursor getResentlyData() {
         //todo logic get resently data
-        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_IS_FAVOURITE + " = " + 1;
+        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay() + " AND " + DateManager.currentTime();
         Cursor cursor = null;
         try {
             cursor = mDB.rawQuery(selectQuery, null);
