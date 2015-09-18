@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/fab_color">
+
+    <TextView
+        android:id="@+id/tvAppName_FA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        android:text="@string/app_name"
+        android:textSize="30sp"
+        android:textColor="@android:color/white"/>
+
+
+    <TextView
+        android:id="@+id/tvAppVersion_FA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="@string/app_name"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"/>
+
+    <ImageView
+        android:id="@+id/ivLogo_FA"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/tvAppCopyright_FA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="40dp"
+        android:text="2015 WatchAppz"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:drawableLeft="@mipmap/ic_launcher"/>
+</LinearLayout>

@@ -31,7 +31,7 @@ public class HelpFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mInflatedView = inflater.inflate(R.layout.fragment_help, container, false);
+        mInflatedView = inflater.inflate(R.layout.fragment_help, container, false);
         setHasOptionsMenu(true);
         return mInflatedView;
     }

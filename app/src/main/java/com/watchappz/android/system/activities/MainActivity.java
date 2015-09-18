@@ -12,6 +12,7 @@ import com.watchappz.android.R;
 import com.watchappz.android.WatchAppzApplication;
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.system.adapters.AppsListFragmentsPagerAdapter;
+import com.watchappz.android.system.fragments.AboutWatchAppzFragment;
 import com.watchappz.android.system.fragments.HelpFragment;
 import com.watchappz.android.system.fragments.SettingsFragment;
 import com.watchappz.android.utils.AccessibilityManager;
@@ -78,7 +79,7 @@ public class MainActivity extends BaseActivity {
                 mFragmentNavigator.showFragmentWithAnimation(HelpFragment.newInstance());
                 break;
             case R.id.action_over_watchappz:
-                Toast.makeText(this, item.getTitle(), Toast.LENGTH_LONG).show();
+                mFragmentNavigator.showFragmentWithAnimation(AboutWatchAppzFragment.newInstance());
                 break;
         }
 

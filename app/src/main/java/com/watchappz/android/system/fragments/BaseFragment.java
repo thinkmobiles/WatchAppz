@@ -2,6 +2,7 @@ package com.watchappz.android.system.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.watchappz.android.system.activities.MainActivity;
 
@@ -13,6 +14,7 @@ import com.watchappz.android.system.activities.MainActivity;
 public class BaseFragment extends Fragment {
 
     protected MainActivity mainActivity;
+    protected View mInflatedView;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

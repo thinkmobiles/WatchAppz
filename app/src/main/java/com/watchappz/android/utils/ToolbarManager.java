@@ -3,6 +3,7 @@ package com.watchappz.android.utils;
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.watchappz.android.R;
 
@@ -33,5 +34,9 @@ public final class ToolbarManager {
 
     public Toolbar getToolbar() {
         return mToolbar;
+    }
+
+    public void hideToolbar() {
+        mToolbar.setVisibility(View.GONE);
     }
 }
