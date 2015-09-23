@@ -20,6 +20,8 @@ public class AllAppsCursorLoader extends CursorLoader {
         this.mDbManager = _dbManager;
     }
 
+
+
     @Override
     public Cursor loadInBackground() {
         Cursor cursor = mDbManager.getAllData();

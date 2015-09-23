@@ -52,7 +52,7 @@ public class FragmentNavigator {
         }
 
         if (searchedEntry == null)  {
-            showFragment(_baseFragment);
+            showFragmentWithAnimation(_baseFragment);
         } else {
             mFragmentManager.popBackStackImmediate(searchedEntry.getId(), 0);
         }

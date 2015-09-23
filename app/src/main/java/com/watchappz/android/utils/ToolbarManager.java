@@ -1,6 +1,7 @@
 package com.watchappz.android.utils;
 
 import android.app.Activity;
+import android.opengl.Visibility;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -38,5 +39,13 @@ public final class ToolbarManager {
 
     public void hideToolbar() {
         mToolbar.setVisibility(View.GONE);
+    }
+
+    public void showToolbar() {
+        mToolbar.setVisibility(View.VISIBLE);
+    }
+
+    public boolean isVisibleToolbar() {
+        return mToolbar.isShown();
     }
 }

@@ -24,7 +24,7 @@ public final class AccessibilityManager {
     }
 
     public void startService() {
-        if (!isAccessibilityEnabled(mActivity, AppInfoService.class.getPackage().getName() + "/." + AppInfoService.class.getSimpleName())) {
+        if (!isAccessibilityEnabled(mActivity, "com.watchappz.android/.utils.AppInfoService")) {
             Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
             mActivity.startActivityForResult(intent, Constants.REQUEST_ENABLE);
         }

@@ -39,30 +39,36 @@ public final class DBManager implements Serializable {
     }
 
     public void addApp(final AppModel _app) {
-
+        mDB = mDBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, _app.getAppName());
-        values.put(KEY_TODAY_COUNT, _app.getAppUseTodayCount());
-        values.put(KEY_TOTAL_COUNT, _app.getAppUseTotalCount());
+        values.put(KEY_TODAY_COUNT, _app.getAppUseTodayCount() + 1);
+        values.put(KEY_TOTAL_COUNT, _app.getAppUseTotalCount() + 1);
         values.put(KEY_IS_FAVOURITE, _app.isFavourite());
         values.put(KEY_PACKAGE_NAME, _app.getAppPackageName());
         values.put(KEY_DATE_USEGE, _app.getDateUsege());
 
-        mDB.insert(TABLE_APPS, null, values);
+        AppModel existApp = getAppModelIfExistsInDB(_app.getAppPackageName());
+        if (existApp != null) {
+            mDB.update(TABLE_APPS, values, KEY_ID + " = ?", new String[] {String.valueOf(_app.getId())});
+        } else {
+            mDB.insert(TABLE_APPS, null, values);
+        }
         mDB.close();
     }
 
     public void deleteApp(final AppModel _app) {
+        mDB = mDBHelper.getWritableDatabase();
         mDB.delete(TABLE_APPS, KEY_ID + " =?",
                 new String[]{String.valueOf(_app.getId())});
         mDB.close();
     }
 
-    public AppModel getApp(int id) {
-
+    public AppModel getApp(final String _fieldValue) {
+        mDB = mDBHelper.getWritableDatabase();
         Cursor cursor = mDB.query(TABLE_APPS, new String[]{KEY_ID,
-                        KEY_NAME, KEY_TODAY_COUNT, KEY_TOTAL_COUNT, KEY_IS_FAVOURITE, KEY_PACKAGE_NAME, KEY_DATE_USEGE}, KEY_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
+                        KEY_NAME, KEY_TODAY_COUNT, KEY_TOTAL_COUNT, KEY_IS_FAVOURITE, KEY_PACKAGE_NAME, KEY_DATE_USEGE}, KEY_PACKAGE_NAME + "=?",
+                new String[]{ _fieldValue }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
@@ -85,39 +91,41 @@ public final class DBManager implements Serializable {
         return fillAppModelFromCursor(_cursor);
     }
 
-//    public List<AppModel> getAllApps() {
-//        List<AppModel> appList = new ArrayList<>();
-//        String selectQuery = "SELECT  * FROM " + TABLE_APPS;
-//
-//        Cursor cursor = mDB.rawQuery(selectQuery, null);
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                appList.add(fillAppModelFromCursor(cursor));
-//            } while (cursor.moveToNext());
-//        }
-//
-//        return appList;
-//    }
+    public List<AppModel> getAllApps() {
+        mDB = mDBHelper.getWritableDatabase();
+        List<AppModel> appList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_APPS;
+
+        Cursor cursor = mDB.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                appList.add(fillAppModelFromCursor(cursor));
+            } while (cursor.moveToNext());
+        }
+
+        return appList;
+    }
 
     public Cursor getAllData() {
+        mDB = mDBHelper.getWritableDatabase();
         return mDB.query(TABLE_APPS, null, null, null, null, null, null);
     }
 
     public Cursor getFavoriteData() {
+        mDB = mDBHelper.getWritableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_IS_FAVOURITE + " = " + 1;
         Cursor cursor = null;
         try {
             cursor = mDB.rawQuery(selectQuery, null);
         } catch (Exception Exp) {
             return null;
-        } finally {
-            if (cursor != null) cursor.close();
         }
         return cursor;
     }
 
     public Cursor getResentlyData() {
+        mDB = mDBHelper.getWritableDatabase();
         //todo logic get resently data
         String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay() + " AND " + DateManager.currentTime();
         Cursor cursor = null;
@@ -125,8 +133,6 @@ public final class DBManager implements Serializable {
             cursor = mDB.rawQuery(selectQuery, null);
         } catch (Exception Exp) {
             return null;
-        } finally {
-            if (cursor != null) cursor.close();
         }
         return cursor;
     }
@@ -134,16 +140,18 @@ public final class DBManager implements Serializable {
 
 
     public AppModel getAppModelIfExistsInDB(final String _fieldValue) {
-        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_PACKAGE_NAME + " = " + _fieldValue;
+        AppModel appModel = null;
+        mDB = mDBHelper.getWritableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_PACKAGE_NAME + " =? ";
         Cursor cursor = null;
         try {
-            cursor = mDB.rawQuery(selectQuery, null);
+            cursor = mDB.rawQuery(selectQuery, new String[] { _fieldValue });
         } catch (Exception Exp) {
             return null;
-        } finally {
-            if (cursor != null) cursor.close();
         }
-        AppModel appModel = fillAppModelFromCursor(cursor);
+        if( cursor != null && cursor.moveToFirst() ) {
+            appModel = fillAppModelFromCursor(cursor);
+        }
         if (cursor != null) {
             cursor.close();
         }

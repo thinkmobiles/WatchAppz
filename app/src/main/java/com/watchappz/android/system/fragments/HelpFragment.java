@@ -24,8 +24,7 @@ public class HelpFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mainActivity.setTitle(getResources().getString(R.string.action_help));
-        mainActivity.getToolbarManager().showBackButton();
+        initTollbar();
     }
 
     @Nullable
@@ -41,10 +40,18 @@ public class HelpFragment extends BaseFragment {
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-                Toast.makeText(mainActivity, "Back", Toast.LENGTH_LONG).show();
+                mainActivity.getFragmentNavigator().popBackStack();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void initTollbar() {
+        if (!mainActivity.getToolbarManager().isVisibleToolbar()) {
+            mainActivity.getToolbarManager().showToolbar();
+        }
+        mainActivity.setTitle(getResources().getString(R.string.action_help));
+        mainActivity.getToolbarManager().showBackButton();
     }
 }

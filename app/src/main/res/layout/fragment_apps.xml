@@ -6,9 +6,7 @@
     <ListView
         android:id="@+id/lvApps_FA"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </ListView>
+        android:layout_height="match_parent"/>
 
     <TextView
         android:id="@+id/tvEmptyAppsList_EV"

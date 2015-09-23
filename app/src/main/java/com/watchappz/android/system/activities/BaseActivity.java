@@ -38,4 +38,8 @@ public class BaseActivity extends AppCompatActivity{
         mFragmentNavigator = new FragmentNavigator();
         mFragmentNavigator.register(getSupportFragmentManager(), R.id.flContainer_AM);
     }
+
+    public FragmentNavigator getFragmentNavigator() {
+        return mFragmentNavigator;
+    }
 }

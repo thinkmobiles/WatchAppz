@@ -60,5 +60,9 @@
         <item name="android:layout_marginBottom">@dimen/app_item_text_margin</item>
     </style>
 
+    <style name="ColorRadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="colorControlActivated">@color/fab_color</item>
+        <item name="colorControlNormal">@android:color/darker_gray</item>
+    </style>
 
 </resources>

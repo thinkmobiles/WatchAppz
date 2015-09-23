@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="vertical">
 
 
@@ -18,13 +20,14 @@
             android:drawableLeft="@drawable/ic_help_grey"
             android:drawablePadding="20dp"
             android:text="@string/action_help"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp"
+            android:background="@drawable/settings_textview_slector"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.6dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
             android:background="@android:color/black" />
 
 
@@ -35,12 +38,14 @@
             android:drawableLeft="@drawable/ic_info_grey"
             android:drawablePadding="20dp"
             android:text="@string/action_over_watchappz"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp"
+            android:background="@drawable/settings_textview_slector"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.6dp"
-            android:layout_marginTop="10dp"
             android:background="@android:color/black" />
 
         <RadioGroup
@@ -49,7 +54,7 @@
             android:layout_height="wrap_content"
             android:checkedButton="@+id/sound">
 
-            <RadioButton
+            <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/rbSortingGebruikt_FS"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,14 +63,15 @@
                 android:drawableLeft="@drawable/ic_stripes"
                 android:drawablePadding="20dp"
                 android:drawableRight="@android:drawable/btn_radio"
-                android:text="@string/app_sorts_gebruikt" />
+                android:text="@string/app_sorts_gebruikt"
+                style="@style/ColorRadioButtonStyle"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.6dp"
                 android:background="@android:color/black" />
 
-            <RadioButton
+            <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/rbSortingData_FS"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,14 +80,15 @@
                 android:drawableLeft="@drawable/ic_stripes"
                 android:drawablePadding="20dp"
                 android:drawableRight="@android:drawable/btn_radio"
-                android:text="@string/app_sorts_data" />
+                android:text="@string/app_sorts_data"
+                style="@style/ColorRadioButtonStyle"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.6dp"
                 android:background="@android:color/black" />
 
-            <RadioButton
+            <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/rbSortingMinsteGebruikt_FS"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,7 +97,8 @@
                 android:drawableLeft="@drawable/ic_stripes"
                 android:drawablePadding="20dp"
                 android:drawableRight="@android:drawable/btn_radio"
-                android:text="@string/app_sorts_minste_gebruikt" />
+                android:text="@string/app_sorts_minste_gebruikt"
+                style="@style/ColorRadioButtonStyle"/>
 
             <View
                 android:layout_width="match_parent"

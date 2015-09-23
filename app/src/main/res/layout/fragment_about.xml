@@ -28,11 +28,11 @@
 
     <ImageView
         android:id="@+id/ivLogo_FA"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@drawable/ic_logo"/>
 
     <TextView
         android:id="@+id/tvAppCopyright_FA"
@@ -41,8 +41,8 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center_vertical"
         android:layout_marginTop="40dp"
-        android:text="2015 WatchAppz"
+        android:text=" 2015 WatchAppz"
         android:textSize="18sp"
         android:textColor="@android:color/white"
-        android:drawableLeft="@mipmap/ic_launcher"/>
+        android:drawableLeft="@drawable/ic_autor_rights"/>
 </LinearLayout>

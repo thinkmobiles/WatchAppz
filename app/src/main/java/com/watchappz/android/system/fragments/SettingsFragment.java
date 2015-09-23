@@ -6,15 +6,20 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.watchappz.android.R;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by
  * mRogach on 15.09.2015.
  */
-public class SettingsFragment extends BaseFragment {
+public class SettingsFragment extends BaseFragment implements View.OnClickListener {
+
+    private TextView tvHelp, tvAbout;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -23,8 +28,7 @@ public class SettingsFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mainActivity.setTitle(getResources().getString(R.string.action_settings));
-        mainActivity.getToolbarManager().showBackButton();
+        initTollbar();
     }
 
     @Nullable
@@ -32,18 +36,53 @@ public class SettingsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mInflatedView = inflater.inflate(R.layout.fragment_settings, container, false);
         setHasOptionsMenu(true);
+        findViews();
+        setListeners();
         return mInflatedView;
     }
+
+    private void findViews() {
+        tvHelp = (TextView) mInflatedView.findViewById(R.id.tvHelp_FS);
+        tvAbout = (TextView) mInflatedView.findViewById(R.id.tvOverWatchAppz_FS);
+    }
+
+    private void setListeners() {
+        tvHelp.setOnClickListener(this);
+        tvAbout.setOnClickListener(this);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-                Toast.makeText(mainActivity, "Back", Toast.LENGTH_LONG).show();
+                mainActivity.getFragmentNavigator().popBackStack();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tvHelp_FS:
+                mainActivity.getFragmentNavigator().clearBackStackToFragmentOrShow(HelpFragment.newInstance());
+                break;
+            case R.id.tvOverWatchAppz_FS:
+                mainActivity.getFragmentNavigator().clearBackStackToFragmentOrShow(AboutWatchAppzFragment.newInstance());
+                break;
+
+        }
+    }
+
+    private void initTollbar() {
+        if (!mainActivity.getToolbarManager().isVisibleToolbar()) {
+            mainActivity.getToolbarManager().showToolbar();
+        }
+        mainActivity.getToolbarManager().showBackButton();
+        mainActivity.setTitle(getResources().getString(R.string.action_settings));
+    }
+
 }

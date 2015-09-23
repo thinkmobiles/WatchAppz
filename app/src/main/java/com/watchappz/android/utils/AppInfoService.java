@@ -73,15 +73,15 @@ public class AppInfoService extends AccessibilityService {
         Calendar calendar = Calendar.getInstance();
         AppModel appModel = dbManager.getAppModelIfExistsInDB(_accessibilityEvent.getPackageName().toString());
         if (appModel != null) {
-            appModel.setAppUseTodayCount(appModel.getAppUseTodayCount() + 1);
-            appModel.setAppUseTotalCount(appModel.getAppUseTotalCount() + 1);
+//            appModel.setAppUseTodayCount(appModel.getAppUseTodayCount() + 1);
+//            appModel.setAppUseTotalCount(appModel.getAppUseTotalCount() + 1);
             appModel.setDateUsege(calendar.getTimeInMillis());
         } else {
             appModel = new AppModel();
             appModel.setAppName(getEventText(_accessibilityEvent));
             appModel.setAppPackageName(_accessibilityEvent.getPackageName().toString());
-            appModel.setAppUseTodayCount(appModel.getAppUseTodayCount() + 1);
-            appModel.setAppUseTotalCount(appModel.getAppUseTotalCount() + 1);
+//            appModel.setAppUseTodayCount(appModel.getAppUseTodayCount() + 1);
+//            appModel.setAppUseTotalCount(appModel.getAppUseTotalCount() + 1);
             appModel.setDateUsege(calendar.getTimeInMillis());
         }
         return appModel;

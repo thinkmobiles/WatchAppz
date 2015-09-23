@@ -30,8 +30,8 @@ public class AboutWatchAppzFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mainActivity.getToolbarManager().hideToolbar();
         tvAppVersion.setText(mainActivity.getResources().getString(R.string.app_version) + " " + getAppVersion());
+        mainActivity.getToolbarManager().hideToolbar();
     }
 
     @Nullable

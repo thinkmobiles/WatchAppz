@@ -1,39 +1,35 @@
 package com.watchappz.android.system.activities;
 
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.watchappz.android.R;
-import com.watchappz.android.WatchAppzApplication;
 import com.watchappz.android.database.DBManager;
-import com.watchappz.android.system.adapters.AppsListFragmentsPagerAdapter;
 import com.watchappz.android.system.fragments.AboutWatchAppzFragment;
+import com.watchappz.android.system.fragments.AppViewPagerFragment;
+import com.watchappz.android.system.fragments.BaseAppsFragment;
 import com.watchappz.android.system.fragments.HelpFragment;
 import com.watchappz.android.system.fragments.SettingsFragment;
 import com.watchappz.android.utils.AccessibilityManager;
+import com.watchappz.android.utils.LoadingDialogController;
 
 public class MainActivity extends BaseActivity {
 
 
-    private ViewPager mViewPager;
-    private TabLayout mTabLayout;
-    private AppsListFragmentsPagerAdapter mAppsListFragmentsPagerAdapter;
+
     private AccessibilityManager accessibilityManager;
     private DBManager dbManager;
+    private LoadingDialogController mLoadingDialogController;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initViewPager();
-        initTabLayout();
         initDBManager();
         initAccessibilityManager();
+        initLoadingController();
+        mFragmentNavigator.addFragment(AppViewPagerFragment.newInstance());
     }
 
     @Override
@@ -42,21 +38,6 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private void initViewPager() {
-        mViewPager = (ViewPager) findViewById(R.id.viewpager_AM);
-        mAppsListFragmentsPagerAdapter = new AppsListFragmentsPagerAdapter(getSupportFragmentManager(),
-                WatchAppzApplication.getAppContext());
-        mViewPager.setAdapter(mAppsListFragmentsPagerAdapter);
-        mViewPager.setCurrentItem(0, true);
-    }
-
-    private void initTabLayout() {
-        mTabLayout = (TabLayout) findViewById(R.id.tlSliding_tabs_AM);
-        mTabLayout.addTab(mTabLayout.newTab().setText(getResources().getString(R.string.tab_favorieten)));
-        mTabLayout.addTab(mTabLayout.newTab().setText(getResources().getString(R.string.tab_recently_used)));
-        mTabLayout.addTab(mTabLayout.newTab().setText(getResources().getString(R.string.tab_all_apps)));
-        mTabLayout.setupWithViewPager(mViewPager);
-    }
 
     private void initAccessibilityManager() {
         accessibilityManager = new AccessibilityManager(this);
@@ -73,13 +54,13 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                mFragmentNavigator.showFragmentWithAnimation(SettingsFragment.newInstance());
+                mFragmentNavigator.clearBackStackToFragmentOrShow(SettingsFragment.newInstance());
                 break;
             case R.id.action_help:
-                mFragmentNavigator.showFragmentWithAnimation(HelpFragment.newInstance());
+                mFragmentNavigator.clearBackStackToFragmentOrShow(HelpFragment.newInstance());
                 break;
             case R.id.action_over_watchappz:
-                mFragmentNavigator.showFragmentWithAnimation(AboutWatchAppzFragment.newInstance());
+                mFragmentNavigator.clearBackStackToFragmentOrShow(AboutWatchAppzFragment.newInstance());
                 break;
         }
 
@@ -91,7 +72,16 @@ public class MainActivity extends BaseActivity {
         dbManager.open();
     }
 
+    private void initLoadingController() {
+        mLoadingDialogController = new LoadingDialogController();
+        mLoadingDialogController.register(this);
+    }
+
     public DBManager getDbManager() {
         return dbManager;
+    }
+
+    public LoadingDialogController getLoadingDialogController() {
+        return mLoadingDialogController;
     }
 }
