@@ -23,7 +23,7 @@ import java.util.List;
  * mRogach on 22.09.2015.
  */
 
-public class TestAppAdapter extends BaseAdapter {
+public final class TestAppAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<AppModel> mAppModels;

@@ -86,8 +86,8 @@ public final class DBManager implements Serializable {
     }
 
     public AppModel getAppFromCursor(final Cursor _cursor) {
-        if (_cursor != null)
-            _cursor.moveToFirst();
+//        if (_cursor != null)
+//            _cursor.moveToFirst();
         return fillAppModelFromCursor(_cursor);
     }
 

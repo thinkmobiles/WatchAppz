@@ -20,7 +20,7 @@ public abstract class BaseAppsFragment extends BaseFragment {
 
     protected ListView listView;
     protected TextView tvEmptyView;
-    protected TestAppAdapter appsListAdapter;
+    protected AppsListAdapter appsListAdapter;
 
 
 

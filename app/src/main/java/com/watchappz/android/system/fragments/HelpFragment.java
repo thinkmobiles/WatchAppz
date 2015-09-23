@@ -15,7 +15,7 @@ import com.watchappz.android.R;
  * mRogach on 18.09.2015.
  */
 
-public class HelpFragment extends BaseFragment {
+public final class HelpFragment extends BaseFragment {
 
     public static HelpFragment newInstance() {
         return new HelpFragment();

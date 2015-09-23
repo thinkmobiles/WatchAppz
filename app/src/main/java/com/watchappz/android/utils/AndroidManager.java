@@ -9,7 +9,7 @@ import android.content.pm.PackageManager;
  * mRogach on 23.09.2015.
  */
 
-public class AndroidManager {
+public final class AndroidManager {
 
     private Context mContext;
 

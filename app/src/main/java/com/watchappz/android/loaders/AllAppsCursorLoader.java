@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * mRogach on 17.09.2015.
  */
 
-public class AllAppsCursorLoader extends CursorLoader {
+public final class AllAppsCursorLoader extends CursorLoader {
 
     private DBManager mDbManager;
 

@@ -18,7 +18,7 @@ import java.util.List;
  * mRogach on 16.09.2015.
  */
 
-public class AppInfoService extends AccessibilityService {
+public final class AppInfoService extends AccessibilityService {
 
     private DBManager dbManager;
     private AndroidManager mAndroidManager;

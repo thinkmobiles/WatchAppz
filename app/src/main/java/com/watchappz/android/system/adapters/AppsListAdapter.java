@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,13 @@ public final class AppsListAdapter extends CursorAdapter {
     public AppsListAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
         mContext = context;
+    }
+
+    @Override
+    public AppModel getItem(int position) {
+        Cursor cursor = (Cursor) super.getItem(position);
+        return dbManager.getAppFromCursor(cursor);
+
     }
 
     @Override

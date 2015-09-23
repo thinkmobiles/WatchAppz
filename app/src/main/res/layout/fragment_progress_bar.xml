@@ -12,7 +12,7 @@
         android:layout_height="80dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        wheel:matProg_barColor="#5588FF"
+        wheel:matProg_barColor="@color/fab_color"
         wheel:matProg_progressIndeterminate="true" />
 
 </RelativeLayout>

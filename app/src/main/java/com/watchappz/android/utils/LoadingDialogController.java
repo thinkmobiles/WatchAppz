@@ -10,7 +10,7 @@ import com.watchappz.android.system.fragments.LoadingDialog;
  * mRogach on 22.09.2015.
  */
 
-public class LoadingDialogController {
+public final class LoadingDialogController {
 
     private MainActivity mActivity;
 

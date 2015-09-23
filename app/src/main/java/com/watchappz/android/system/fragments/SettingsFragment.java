@@ -17,7 +17,7 @@ import org.w3c.dom.Text;
  * Created by
  * mRogach on 15.09.2015.
  */
-public class SettingsFragment extends BaseFragment implements View.OnClickListener {
+public final class SettingsFragment extends BaseFragment implements View.OnClickListener {
 
     private TextView tvHelp, tvAbout;
 

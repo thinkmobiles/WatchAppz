@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.watchappz.android.R;
 import com.watchappz.android.loaders.RecentlyCursorLoader;
 import com.watchappz.android.system.adapters.AppsListAdapter;
 import com.watchappz.android.system.adapters.TestAppAdapter;
@@ -19,7 +20,7 @@ import com.watchappz.android.system.models.AppModel;
  * mRogach on 17.09.2015.
  */
 
-public class RecentlyUsedAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
+public final class RecentlyUsedAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
 
 
 
@@ -30,28 +31,25 @@ public class RecentlyUsedAppsListFragment extends BaseAppsFragment implements Lo
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        tvEmptyView.setText(mainActivity.getResources().getString(R.string.app_resently_used_empty_view));
-        Log.v("onActivityCreated", "RecentlyUsedAppsListFragment");
-        appsListAdapter = new TestAppAdapter(mainActivity, mainActivity.getDbManager().getAllApps());
-        listView.setAdapter(appsListAdapter);
         listView.setOnItemClickListener(this);
-//        mainActivity.getSupportLoaderManager().initLoader(2, null, this);
+        mainActivity.getSupportLoaderManager().initLoader(2, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        mainActivity.getLoadingDialogController().showLoadingDialog("recently");
+        mainActivity.getLoadingDialogController().showLoadingDialog("recently");
         return new RecentlyCursorLoader(mainActivity, mainActivity.getDbManager());
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-//        mainActivity.getLoadingDialogController().hideLoadingDialog("recently");
-//        appsListAdapter = new AppsListAdapter(mainActivity, cursor);
-//        appsListAdapter.setDbManager(mainActivity.getDbManager());
-//        appsListAdapter.changeCursor(cursor);
-//        listView.setAdapter(appsListAdapter);
-//        appsListAdapter.notifyDataSetChanged();
+        mainActivity.getLoadingDialogController().hideLoadingDialog("recently");
+        appsListAdapter = new AppsListAdapter(mainActivity, cursor);
+        appsListAdapter.setDbManager(mainActivity.getDbManager());
+        appsListAdapter.changeCursor(cursor);
+        listView.setAdapter(appsListAdapter);
+        tvEmptyView.setText(mainActivity.getResources().getString(R.string.app_resently_used_empty_view));
+        listView.setEmptyView(tvEmptyView);
     }
 
     @Override

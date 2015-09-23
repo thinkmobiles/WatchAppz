@@ -16,7 +16,7 @@ import com.watchappz.android.R;
  * mRogach on 11.09.2015.
  */
 
-public class LoadingDialog extends DialogFragment {
+public final class LoadingDialog extends DialogFragment {
 
     @Nullable
     @Override

@@ -10,7 +10,7 @@ import com.watchappz.android.system.fragments.BaseFragment;
  * mRogach on 18.09.2015.
  */
 
-public class FragmentNavigator {
+public final class FragmentNavigator {
 
 //_____________________ Private variables ____________________//
     private FragmentManager mFragmentManager;

@@ -17,7 +17,7 @@ import com.watchappz.android.R;
  * mRogach on 18.09.2015.
  */
 
-public class AboutWatchAppzFragment extends BaseFragment {
+public final class AboutWatchAppzFragment extends BaseFragment {
 
     private ImageView ivLogo;
     private TextView tvAppVersion;
