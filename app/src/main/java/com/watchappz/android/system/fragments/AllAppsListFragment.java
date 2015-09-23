@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.watchappz.android.database.AllAppsCursorLoader;
+import com.watchappz.android.loaders.AllAppsCursorLoader;
 import com.watchappz.android.system.adapters.AppsListAdapter;
 import com.watchappz.android.system.adapters.TestAppAdapter;
 import com.watchappz.android.system.models.AppModel;
@@ -33,26 +33,26 @@ public class AllAppsListFragment extends BaseAppsFragment implements LoaderManag
 //        tvEmptyView.setText(mainActivity.getResources().getString(R.string.app_all_empty_view));
         Log.v("onActivityCreated", "AllAppsListFragment");
 //        appsListAdapter = new AppsListAdapter(mainActivity, mainActivity.getDbManager().getAllData());
-//        appsListAdapter = new TestAppAdapter(mainActivity, mainActivity.getDbManager().getAllApps());
-//        listView.setAdapter(appsListAdapter);
-//        listView.setOnItemClickListener(this);
-        mainActivity.getSupportLoaderManager().initLoader(3, null, this);
+        appsListAdapter = new TestAppAdapter(mainActivity, mainActivity.getDbManager().getAllApps());
+        listView.setAdapter(appsListAdapter);
+        listView.setOnItemClickListener(this);
+//        mainActivity.getSupportLoaderManager().initLoader(3, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        mainActivity.getLoadingDialogController().showLoadingDialog("all");
+//        mainActivity.getLoadingDialogController().showLoadingDialog("all");
         return new AllAppsCursorLoader(mainActivity, mainActivity.getDbManager());
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        mainActivity.getLoadingDialogController().hideLoadingDialog("all");
-        appsListAdapter = new AppsListAdapter(mainActivity, cursor);
-        appsListAdapter.setDbManager(mainActivity.getDbManager());
-        appsListAdapter.changeCursor(cursor);
-        listView.setAdapter(appsListAdapter);
-        appsListAdapter.notifyDataSetChanged();
+//        mainActivity.getLoadingDialogController().hideLoadingDialog("all");
+//        appsListAdapter = new AppsListAdapter(mainActivity, cursor);
+//        appsListAdapter.setDbManager(mainActivity.getDbManager());
+//        appsListAdapter.changeCursor(cursor);
+//        appsListAdapter.notifyDataSetChanged();
+//        listView.setAdapter(appsListAdapter);
 //        listView.setEmptyView(tvEmptyView);
     }
 
@@ -63,9 +63,9 @@ public class AllAppsListFragment extends BaseAppsFragment implements LoaderManag
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//        AppModel appModel = appsListAdapter.getItem(i);
-//        Intent launchIntent = mainActivity.getPackageManager().getLaunchIntentForPackage(appModel.getAppPackageName());
-//        startActivity(launchIntent);
+        AppModel appModel = appsListAdapter.getItem(i);
+        Intent launchIntent = mainActivity.getPackageManager().getLaunchIntentForPackage(appModel.getAppPackageName());
+        startActivity(launchIntent);
     }
 
 }

@@ -2,7 +2,6 @@ package com.watchappz.android.utils;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
@@ -22,13 +21,12 @@ import java.util.List;
 public class AppInfoService extends AccessibilityService {
 
     private DBManager dbManager;
+    private AndroidManager mAndroidManager;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
-        dbManager = new DBManager(getApplicationContext());
-        dbManager.open();
         if (!TextUtils.isEmpty(getEventText(accessibilityEvent))) {
-            dbManager.addApp(getAppToWriteInDB(accessibilityEvent));
+                dbManager.addApp(getAppToWriteInDB(accessibilityEvent));
         }
     }
 
@@ -48,6 +46,9 @@ public class AppInfoService extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
+        mAndroidManager = new AndroidManager(this);
+        dbManager = new DBManager(getApplicationContext());
+        dbManager.open();
         AccessibilityServiceInfo info = new AccessibilityServiceInfo();
         info.flags = AccessibilityServiceInfo.DEFAULT;
         info.packageNames = getPack();
@@ -63,8 +64,10 @@ public class AppInfoService extends AccessibilityService {
                 .getInstalledApplications(PackageManager.GET_META_DATA);
         String[] appName = new String[packages.size()];
         for (ApplicationInfo packageInfo : packages) {
-            appName[count] = packageInfo.processName;
-            count++;
+            if (!mAndroidManager.isSystemPackage(packageInfo)) {
+                appName[count] = packageInfo.processName;
+                count++;
+            }
         }
         return appName;
     }
@@ -73,15 +76,11 @@ public class AppInfoService extends AccessibilityService {
         Calendar calendar = Calendar.getInstance();
         AppModel appModel = dbManager.getAppModelIfExistsInDB(_accessibilityEvent.getPackageName().toString());
         if (appModel != null) {
-//            appModel.setAppUseTodayCount(appModel.getAppUseTodayCount() + 1);
-//            appModel.setAppUseTotalCount(appModel.getAppUseTotalCount() + 1);
             appModel.setDateUsege(calendar.getTimeInMillis());
         } else {
             appModel = new AppModel();
             appModel.setAppName(getEventText(_accessibilityEvent));
             appModel.setAppPackageName(_accessibilityEvent.getPackageName().toString());
-//            appModel.setAppUseTodayCount(appModel.getAppUseTodayCount() + 1);
-//            appModel.setAppUseTotalCount(appModel.getAppUseTotalCount() + 1);
             appModel.setDateUsege(calendar.getTimeInMillis());
         }
         return appModel;

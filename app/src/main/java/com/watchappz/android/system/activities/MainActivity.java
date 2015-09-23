@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity {
         initDBManager();
         initAccessibilityManager();
         initLoadingController();
-        mFragmentNavigator.addFragment(AppViewPagerFragment.newInstance());
+        mFragmentNavigator.replaceFragment(AppViewPagerFragment.newInstance());
     }
 
     @Override

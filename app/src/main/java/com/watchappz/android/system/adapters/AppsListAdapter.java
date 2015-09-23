@@ -27,8 +27,6 @@ public final class AppsListAdapter extends CursorAdapter {
 
     private Context mContext;
     private DBManager dbManager;
-    private TextView  tvAppName, tvAppInfo;
-    private ImageView ivAppIcon, ivAppStar;
 
     public AppsListAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
@@ -38,22 +36,23 @@ public final class AppsListAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
         View view = LayoutInflater.from(context).inflate(R.layout.list_item_apps, viewGroup, false);
-//        AppViewHolder appViewHolder = new AppViewHolder();
-        ivAppIcon = (ImageView) view.findViewById(R.id.ivAppIcon_LIA);
-        ivAppStar = (ImageView) view.findViewById(R.id.ivAppStar_LIA);
-        tvAppName = (TextView) view.findViewById(R.id.tvAppName_LIA);
-        tvAppInfo = (TextView) view.findViewById(R.id.tvAppInfo_LIA);
+        AppViewHolder appViewHolder = new AppViewHolder();
+        appViewHolder.ivAppIcon = (ImageView) view.findViewById(R.id.ivAppIcon_LIA);
+        appViewHolder.ivAppStar = (ImageView) view.findViewById(R.id.ivAppStar_LIA);
+        appViewHolder.tvAppName = (TextView) view.findViewById(R.id.tvAppName_LIA);
+        appViewHolder.tvAppInfo = (TextView) view.findViewById(R.id.tvAppInfo_LIA);
+        view.setTag(appViewHolder);
         return view;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-//        AppViewHolder appViewHolder = (AppViewHolder) view.getTag();
+        AppViewHolder appViewHolder = (AppViewHolder) view.getTag();
         final AppModel appModel = dbManager.getAppFromCursor(cursor);
-            tvAppName.setText(appModel.getAppName());
-            tvAppInfo.setText(getAppInfo(appModel));
-            setStarColor(appModel);
-            setAppIcon(appModel);
+        appViewHolder.tvAppName.setText(appModel.getAppName());
+        appViewHolder.tvAppInfo.setText(getAppInfo(appModel));
+            setStarColor(appViewHolder, appModel);
+            setAppIcon(appViewHolder, appModel);
     }
 
     public void setDbManager(final DBManager _dbManager) {
@@ -75,19 +74,19 @@ public final class AppsListAdapter extends CursorAdapter {
                 _appModel.getAppUseTodayCount(), _appModel.getAppUseTotalCount());
     }
 
-    private void setStarColor(final AppModel _appModel) {
+    private void setStarColor(final AppViewHolder appViewHolder, final AppModel _appModel) {
         if (_appModel.isFavourite() == 1) {
-            ivAppStar.setImageResource(R.drawable.ic_star_gold);
+            appViewHolder.ivAppStar.setImageResource(R.drawable.ic_star_gold);
         } else {
-            ivAppStar.setImageResource(R.drawable.ic_star_grey);
+            appViewHolder.ivAppStar.setImageResource(R.drawable.ic_star_grey);
         }
     }
 
-    private void setAppIcon(final AppModel _appModel) {
+    private void setAppIcon(final AppViewHolder appViewHolder, final AppModel _appModel) {
         Drawable icon;
         try {
             icon = mContext.getPackageManager().getApplicationIcon(_appModel.getAppPackageName());
-            ivAppIcon.setImageDrawable(icon);
+            appViewHolder.ivAppIcon.setImageDrawable(icon);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
