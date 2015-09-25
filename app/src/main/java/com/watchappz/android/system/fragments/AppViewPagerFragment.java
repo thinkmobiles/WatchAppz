@@ -50,9 +50,10 @@ public class AppViewPagerFragment extends BaseFragment {
 
     private void initViewPager() {
         AppsListFragmentsPagerAdapter mAppsListFragmentsPagerAdapter = new AppsListFragmentsPagerAdapter(
-                getActivity().getSupportFragmentManager(), getActivity());
+                getChildFragmentManager(), getActivity());
         mViewPager.setAdapter(mAppsListFragmentsPagerAdapter);
         mViewPager.setCurrentItem(0, true);
+        mViewPager.setOffscreenPageLimit(3);
     }
 
     private void initTabLayout() {

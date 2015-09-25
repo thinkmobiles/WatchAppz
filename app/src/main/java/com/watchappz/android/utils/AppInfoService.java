@@ -2,10 +2,12 @@ package com.watchappz.android.utils;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.Toast;
 
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.system.models.AppModel;
@@ -22,13 +24,23 @@ public final class AppInfoService extends AccessibilityService {
 
     private DBManager dbManager;
     private AndroidManager mAndroidManager;
+    private DateManager dateManager;
+    private String mPackageName;
+
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         if (!TextUtils.isEmpty(getEventText(accessibilityEvent))) {
-                dbManager.addApp(getAppToWriteInDB(accessibilityEvent));
+            if (!accessibilityEvent.getPackageName().toString().equals(mPackageName)) {
+                mPackageName = accessibilityEvent.getPackageName().toString();
+                if (!mAndroidManager.isAppSystem(mPackageName)) {
+                    dbManager.addApp(getAppToWriteInDB(accessibilityEvent));
+//                    Toast.makeText(this, accessibilityEvent.getPackageName(), Toast.LENGTH_LONG).show();
+                }
+            }
         }
     }
+
 
     @Override
     public void onInterrupt() {
@@ -46,15 +58,8 @@ public final class AppInfoService extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
-        mAndroidManager = new AndroidManager(this);
-        dbManager = new DBManager(getApplicationContext());
-        dbManager.open();
-        AccessibilityServiceInfo info = new AccessibilityServiceInfo();
-        info.flags = AccessibilityServiceInfo.DEFAULT;
-        info.packageNames = getPack();
-        info.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
-        info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
-        setServiceInfo(info);
+        initObjects();
+        setServiceInfo(getAccessibilityServiceInfo());
     }
 
     protected String[] getPack() {
@@ -64,10 +69,10 @@ public final class AppInfoService extends AccessibilityService {
                 .getInstalledApplications(PackageManager.GET_META_DATA);
         String[] appName = new String[packages.size()];
         for (ApplicationInfo packageInfo : packages) {
-            if (!mAndroidManager.isSystemPackage(packageInfo)) {
-                appName[count] = packageInfo.processName;
-                count++;
-            }
+//            if (!mAndroidManager.isSystemPackage(packageInfo)) {
+            appName[count] = packageInfo.processName;
+            count++;
+//            }
         }
         return appName;
     }
@@ -79,11 +84,28 @@ public final class AppInfoService extends AccessibilityService {
             appModel.setDateUsege(calendar.getTimeInMillis());
         } else {
             appModel = new AppModel();
-            appModel.setAppName(getEventText(_accessibilityEvent));
+            appModel.setAppName(mAndroidManager.getAppNameByPackage(_accessibilityEvent.getPackageName().toString()));
             appModel.setAppPackageName(_accessibilityEvent.getPackageName().toString());
             appModel.setDateUsege(calendar.getTimeInMillis());
         }
         return appModel;
+    }
+
+    private void initObjects() {
+        mAndroidManager = new AndroidManager(this);
+        dbManager = new DBManager(getApplicationContext());
+        dbManager.open();
+        dateManager = new DateManager(this);
+        dateManager.startAlarmManager();
+    }
+
+    private AccessibilityServiceInfo getAccessibilityServiceInfo() {
+        AccessibilityServiceInfo info = new AccessibilityServiceInfo();
+        info.flags = AccessibilityServiceInfo.DEFAULT;
+        info.packageNames = getPack();
+        info.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
+        info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
+        return info;
     }
 
 }

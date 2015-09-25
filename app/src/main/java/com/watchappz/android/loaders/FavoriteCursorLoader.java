@@ -24,13 +24,7 @@ public final class FavoriteCursorLoader extends CursorLoader {
 
     @Override
     public Cursor loadInBackground() {
-        Cursor cursor = mDbManager.getFavoriteData();
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return cursor;
+        return mDbManager.getFavoriteData();
     }
 
 }

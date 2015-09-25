@@ -64,6 +64,13 @@ public final class DBManager implements Serializable {
         mDB.close();
     }
 
+    public void deleteAppByPackage(final String _appPackge) {
+        mDB = mDBHelper.getWritableDatabase();
+        mDB.delete(TABLE_APPS, KEY_PACKAGE_NAME + " =?",
+                new String[]{ _appPackge });
+        mDB.close();
+    }
+
     public AppModel getApp(final String _fieldValue) {
         mDB = mDBHelper.getWritableDatabase();
         Cursor cursor = mDB.query(TABLE_APPS, new String[]{KEY_ID,

@@ -26,13 +26,7 @@ public final class AllAppsCursorLoader extends CursorLoader {
 
     @Override
     public Cursor loadInBackground() {
-        Cursor cursor = mDbManager.getAllData();
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return cursor;
+        return mDbManager.getAllData();
     }
 
 }
