@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import org.w3c.dom.Text;
 public final class SettingsFragment extends BaseFragment implements View.OnClickListener {
 
     private TextView tvHelp, tvAbout;
+    private RadioButton rbSortMostUsed, rbSortDataUsed, rbSortLowestUsed;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -42,8 +45,11 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
     }
 
     private void findViews() {
-        tvHelp = (TextView) mInflatedView.findViewById(R.id.tvHelp_FS);
-        tvAbout = (TextView) mInflatedView.findViewById(R.id.tvOverWatchAppz_FS);
+        tvHelp                  = (TextView) mInflatedView.findViewById(R.id.tvHelp_FS);
+        tvAbout                 = (TextView) mInflatedView.findViewById(R.id.tvOverWatchAppz_FS);
+        rbSortMostUsed          = (RadioButton) mInflatedView.findViewById(R.id.rbSortMostUsed_FS);
+        rbSortDataUsed          = (RadioButton) mInflatedView.findViewById(R.id.rbSortingData_FS);
+        rbSortLowestUsed        = (RadioButton) mInflatedView.findViewById(R.id.rbSortingLowestUsege_FS);
     }
 
     private void setListeners() {

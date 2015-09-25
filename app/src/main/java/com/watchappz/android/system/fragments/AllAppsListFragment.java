@@ -45,7 +45,6 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
         appsListAdapter = new AppsListAdapter(mainActivity, cursor);
         appsListAdapter.setDbManager(mainActivity.getDbManager());
         appsListAdapter.changeCursor(cursor);
-        appsListAdapter.notifyDataSetChanged();
         listView.setAdapter(appsListAdapter);
         tvEmptyView.setText(mainActivity.getResources().getString(R.string.app_all_empty_view));
         listView.setEmptyView(tvEmptyView);

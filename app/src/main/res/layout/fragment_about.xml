@@ -44,5 +44,5 @@
         android:text=" 2015 WatchAppz"
         android:textSize="18sp"
         android:textColor="@android:color/white"
-        android:drawableLeft="@drawable/ic_autor_rights"/>
+        android:drawableLeft="@drawable/ic_copyright"/>
 </LinearLayout>

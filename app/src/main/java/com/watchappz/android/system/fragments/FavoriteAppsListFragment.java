@@ -43,8 +43,10 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         appsListAdapter = new AppsListAdapter(mainActivity, cursor);
         appsListAdapter.setDbManager(mainActivity.getDbManager());
+        appsListAdapter.changeCursor(cursor);
         listView.setAdapter(appsListAdapter);
         tvEmptyView.setText(mainActivity.getResources().getString(R.string.app_favorites_empty_view));
+        listView.setEmptyView(tvEmptyView);
         mainActivity.getLoadingDialogController().hideLoadingDialog("favorite");
     }
 

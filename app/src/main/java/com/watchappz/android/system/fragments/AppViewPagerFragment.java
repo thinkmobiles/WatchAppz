@@ -67,6 +67,7 @@ public class AppViewPagerFragment extends BaseFragment {
         if (!mainActivity.getToolbarManager().isVisibleToolbar()) {
             mainActivity.getToolbarManager().showToolbar();
         }
+        mainActivity.getToolbarManager().hideBackButton();
         mainActivity.setTitle(getResources().getString(R.string.app_name));
     }
 }

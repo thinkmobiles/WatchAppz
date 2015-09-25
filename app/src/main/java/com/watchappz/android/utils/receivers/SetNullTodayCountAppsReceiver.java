@@ -3,8 +3,8 @@ package com.watchappz.android.utils.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
+
+import com.watchappz.android.database.DBManager;
 
 /**
  * Created by
@@ -16,8 +16,8 @@ public class SetNullTodayCountAppsReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "Delete today values", Toast.LENGTH_LONG).show();
-        Log.v("SetNullTodayCountAppsReceiver", "Delete");
-
+        DBManager dbManager = new DBManager(context);
+        dbManager.open();
+        dbManager.updateTodayCount();
     }
 }

@@ -48,4 +48,10 @@ public final class ToolbarManager {
     public boolean isVisibleToolbar() {
         return mToolbar.isShown();
     }
+
+    public void hideBackButton() {
+        mActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mActivity.getSupportActionBar().setHomeButtonEnabled(false);
+        mActivity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+    }
 }

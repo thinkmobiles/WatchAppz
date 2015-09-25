@@ -55,10 +55,11 @@
             android:checkedButton="@+id/sound">
 
             <android.support.v7.widget.AppCompatRadioButton
-                android:id="@+id/rbSortingGebruikt_FS"
+                android:id="@+id/rbSortMostUsed_FS"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:checked="true"
                 android:button="@null"
                 android:drawableLeft="@drawable/ic_stripes"
                 android:drawablePadding="20dp"
@@ -89,7 +90,7 @@
                 android:background="@android:color/black" />
 
             <android.support.v7.widget.AppCompatRadioButton
-                android:id="@+id/rbSortingMinsteGebruikt_FS"
+                android:id="@+id/rbSortingLowestUsege_FS"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

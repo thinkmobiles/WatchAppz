@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.utils.DateManager;
@@ -40,6 +41,9 @@ public final class DBManager implements Serializable {
 
     public void addApp(final AppModel _app) {
         mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return;
+        }
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, _app.getAppName());
         values.put(KEY_TODAY_COUNT, _app.getAppUseTodayCount() + 1);
@@ -59,6 +63,9 @@ public final class DBManager implements Serializable {
 
     public void deleteApp(final AppModel _app) {
         mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return;
+        }
         mDB.delete(TABLE_APPS, KEY_ID + " =?",
                 new String[]{String.valueOf(_app.getId())});
         mDB.close();
@@ -66,13 +73,37 @@ public final class DBManager implements Serializable {
 
     public void deleteAppByPackage(final String _appPackge) {
         mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return;
+        }
         mDB.delete(TABLE_APPS, KEY_PACKAGE_NAME + " =?",
                 new String[]{ _appPackge });
         mDB.close();
     }
 
+    public void updateTodayCount() {
+        mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return;
+        }
+        Cursor cursor = getAllData();
+        Log.v("SetNullTodayCountAppsReceiver", "cursor");
+        ContentValues values = new ContentValues();
+        values.put(KEY_TODAY_COUNT, 0);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                mDB.update(TABLE_APPS, values, KEY_ID + " =?", new String[]{String.valueOf(cursor.getLong(0))});
+                Log.v("SetNullTodayCountAppsReceiver", String.valueOf(cursor.getLong(0)));
+            }
+        }
+        mDB.close();
+    }
+
     public AppModel getApp(final String _fieldValue) {
         mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return null;
+        }
         Cursor cursor = mDB.query(TABLE_APPS, new String[]{KEY_ID,
                         KEY_NAME, KEY_TODAY_COUNT, KEY_TOTAL_COUNT, KEY_IS_FAVOURITE, KEY_PACKAGE_NAME, KEY_DATE_USEGE}, KEY_PACKAGE_NAME + "=?",
                 new String[]{ _fieldValue }, null, null, null, null);
@@ -93,13 +124,14 @@ public final class DBManager implements Serializable {
     }
 
     public AppModel getAppFromCursor(final Cursor _cursor) {
-//        if (_cursor != null)
-//            _cursor.moveToFirst();
         return fillAppModelFromCursor(_cursor);
     }
 
     public List<AppModel> getAllApps() {
         mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return null;
+        }
         List<AppModel> appList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_APPS;
 
@@ -116,12 +148,18 @@ public final class DBManager implements Serializable {
 
     public Cursor getAllData() {
         mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return null;
+        }
         return mDB.query(TABLE_APPS, null, null, null, null, null, null);
     }
 
     public Cursor getFavoriteData() {
         mDB = mDBHelper.getWritableDatabase();
-        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_IS_FAVOURITE + " = " + 1;
+        if (mDB == null) {
+            return null;
+        }
+        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_TODAY_COUNT + " > " + 10;
         Cursor cursor = null;
         try {
             cursor = mDB.rawQuery(selectQuery, null);
@@ -133,8 +171,12 @@ public final class DBManager implements Serializable {
 
     public Cursor getResentlyData() {
         mDB = mDBHelper.getWritableDatabase();
-        //todo logic get resently data
-        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay() + " AND " + DateManager.currentTime();
+        if (mDB == null) {
+            return null;
+        }
+        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE "
+                + KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay()
+                + " AND " + DateManager.currentTime();
         Cursor cursor = null;
         try {
             cursor = mDB.rawQuery(selectQuery, null);
@@ -149,6 +191,9 @@ public final class DBManager implements Serializable {
     public AppModel getAppModelIfExistsInDB(final String _fieldValue) {
         AppModel appModel = null;
         mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return null;
+        }
         String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_PACKAGE_NAME + " =? ";
         Cursor cursor = null;
         try {

@@ -83,7 +83,7 @@ public final class AppsListAdapter extends CursorAdapter {
     }
 
     private void setStarColor(final AppViewHolder appViewHolder, final AppModel _appModel) {
-        if (_appModel.isFavourite() == 1) {
+        if (_appModel.getAppUseTodayCount() > 10) {
             appViewHolder.ivAppStar.setImageResource(R.drawable.ic_star_gold);
         } else {
             appViewHolder.ivAppStar.setImageResource(R.drawable.ic_star_grey);
