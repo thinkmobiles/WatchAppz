@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.watchappz.android.R;
 import com.watchappz.android.system.adapters.AppsListAdapter;
-import com.watchappz.android.system.adapters.TestAppAdapter;
 
 /**
  * Created by

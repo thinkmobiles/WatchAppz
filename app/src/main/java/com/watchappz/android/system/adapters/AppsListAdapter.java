@@ -13,6 +13,8 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.squareup.picasso.Picasso;
 import com.watchappz.android.R;
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.system.models.AppModel;
@@ -59,14 +61,20 @@ public final class AppsListAdapter extends CursorAdapter {
         final AppModel appModel = dbManager.getAppFromCursor(cursor);
         appViewHolder.tvAppName.setText(appModel.getAppName());
         appViewHolder.tvAppInfo.setText(getAppInfo(appModel));
-            setStarColor(appViewHolder, appModel);
-            setAppIcon(appViewHolder, appModel);
+        setStarColor(appViewHolder, appModel);
+        setAppIcon(appViewHolder, appModel);
+
+        appViewHolder.ivAppStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(appModel.getAppPackageName());
+            }
+        });
     }
 
     public void setDbManager(final DBManager _dbManager) {
         this.dbManager = _dbManager;
     }
-
 
     private static class AppViewHolder {
 
@@ -95,10 +103,43 @@ public final class AppsListAdapter extends CursorAdapter {
         try {
             icon = mContext.getPackageManager().getApplicationIcon(_appModel.getAppPackageName());
             appViewHolder.ivAppIcon.setImageDrawable(icon);
+//            Picasso.with(mContext)
+//                    .load(icon)
+//                    .into(appViewHolder.ivAppIcon);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
     }
 
+    private void showDialog(final String _packageName) {
+        final AppModel appModel = dbManager.getApp(_packageName);
+        new MaterialDialog.Builder(mContext)
+                .backgroundColorRes(android.R.color.white)
+                .title(mContext.getResources().getString(R.string.tab_favorieten))
+                .titleColorRes(android.R.color.black)
+                .content(mContext.getResources().getString(R.string.app_favorite_add) + " / "
+                        + mContext.getResources().getString(R.string.app_favorite_remove))
+                .contentColorRes(android.R.color.black)
+                .positiveText(mContext.getResources().getString(R.string.app_favorite_add))
+                .negativeText(mContext.getResources().getString(R.string.app_favorite_remove))
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        super.onPositive(dialog);
+                        if (appModel != null && appModel.isFavourite() == 0) {
+                            dbManager.addToFavorite(_packageName);
+                        }
+                    }
+
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                        super.onNegative(dialog);
+                        if (appModel != null && appModel.isFavourite() == 1) {
+                            dbManager.removeFromFavorite(_packageName);
+                        }
+                    }
+                })
+                .show();
+    }
 
 }

@@ -22,7 +22,8 @@ public final class DBHelper extends SQLiteOpenHelper {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_APPS + "( "
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NAME + " TEXT,"
                 + KEY_TODAY_COUNT + " INTEGER," + KEY_TOTAL_COUNT + " INTEGER," +
-                KEY_IS_FAVOURITE + " INTEGER," + KEY_PACKAGE_NAME + " TEXT," + KEY_DATE_USEGE + " INTEGER" + " )";
+                KEY_IS_FAVOURITE + " INTEGER," + KEY_PACKAGE_NAME + " TEXT," + KEY_DATE_USEGE + " INTEGER, "  +
+                KEY_IS_ABLE_TO_FAVORITE + " INTEGER" + " )";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
 

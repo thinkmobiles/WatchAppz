@@ -30,7 +30,12 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         listView.setOnItemClickListener(this);
-        mainActivity.getSupportLoaderManager().initLoader(3, null, this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivity.getSupportLoaderManager().restartLoader(3, null, this);
     }
 
     @Override
@@ -45,6 +50,7 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
         appsListAdapter = new AppsListAdapter(mainActivity, cursor);
         appsListAdapter.setDbManager(mainActivity.getDbManager());
         appsListAdapter.changeCursor(cursor);
+        appsListAdapter.notifyDataSetChanged();
         listView.setAdapter(appsListAdapter);
         tvEmptyView.setText(mainActivity.getResources().getString(R.string.app_all_empty_view));
         listView.setEmptyView(tvEmptyView);
@@ -59,7 +65,9 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         AppModel appModel = appsListAdapter.getItem(i);
         Intent launchIntent = mainActivity.getPackageManager().getLaunchIntentForPackage(appModel.getAppPackageName());
-        startActivity(launchIntent);
+        if (launchIntent != null) {
+            startActivity(launchIntent);
+        }
     }
 
 }

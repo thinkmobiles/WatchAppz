@@ -19,6 +19,8 @@
     <string name="app_resently_used_empty_view">No Resently used Apps</string>
     <string name="app_all_empty_view">No Apps</string>
     <string name="app_version">Version</string>
+    <string name="app_favorite_remove">Remove</string>
+    <string name="app_favorite_add">Add</string>
 
     <string name="help_info">Some text, Some text, Some text, Some text, Some text, Some text, Some text,
     Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text,

@@ -25,4 +25,6 @@ dependencies {
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.pnikosis:materialish-progress:1.5'
+    compile 'com.afollestad:material-dialogs:0.7.6.0'
+    compile 'com.squareup.picasso:picasso:2.4.0'
 }

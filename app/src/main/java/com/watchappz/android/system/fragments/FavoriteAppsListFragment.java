@@ -29,8 +29,13 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mainActivity.getSupportLoaderManager().initLoader(1, null, this);
         listView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivity.getSupportLoaderManager().restartLoader(1, null, this);
     }
 
     @Override
@@ -44,6 +49,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         appsListAdapter = new AppsListAdapter(mainActivity, cursor);
         appsListAdapter.setDbManager(mainActivity.getDbManager());
         appsListAdapter.changeCursor(cursor);
+        appsListAdapter.notifyDataSetChanged();
         listView.setAdapter(appsListAdapter);
         tvEmptyView.setText(mainActivity.getResources().getString(R.string.app_favorites_empty_view));
         listView.setEmptyView(tvEmptyView);
@@ -59,6 +65,8 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         AppModel appModel = appsListAdapter.getItem(i);
         Intent launchIntent = mainActivity.getPackageManager().getLaunchIntentForPackage(appModel.getAppPackageName());
-        startActivity(launchIntent);
+        if (launchIntent != null) {
+            startActivity(launchIntent);
+        }
     }
 }

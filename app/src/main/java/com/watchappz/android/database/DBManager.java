@@ -46,11 +46,12 @@ public final class DBManager implements Serializable {
         }
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, _app.getAppName());
-        values.put(KEY_TODAY_COUNT, _app.getAppUseTodayCount() + 1);
-        values.put(KEY_TOTAL_COUNT, _app.getAppUseTotalCount() + 1);
+        values.put(KEY_TODAY_COUNT, _app.getAppUseTodayCount());
+        values.put(KEY_TOTAL_COUNT, _app.getAppUseTotalCount());
         values.put(KEY_IS_FAVOURITE, _app.isFavourite());
         values.put(KEY_PACKAGE_NAME, _app.getAppPackageName());
         values.put(KEY_DATE_USEGE, _app.getDateUsege());
+        values.put(KEY_IS_ABLE_TO_FAVORITE, _app.getIsAbleToFavorite());
 
         AppModel existApp = getAppModelIfExistsInDB(_app.getAppPackageName());
         if (existApp != null) {
@@ -81,6 +82,34 @@ public final class DBManager implements Serializable {
         mDB.close();
     }
 
+    public void addToFavorite(final String _packageName) {
+        mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return;
+        }
+        Cursor cursor = getAllData();
+        ContentValues values = new ContentValues();
+        values.put(KEY_IS_FAVOURITE, 1);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                if (cursor.getLong(3) >= 10) {
+                    mDB.update(TABLE_APPS, values, KEY_PACKAGE_NAME + " = ?", new String[]{_packageName});
+                }
+            }
+        }
+        mDB.close();
+    }
+
+    public void removeFromFavorite(final String _packageName) {
+        mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return;
+        }
+        ContentValues values = new ContentValues();
+        values.put(KEY_IS_FAVOURITE, 0);
+        mDB.update(TABLE_APPS, values, KEY_PACKAGE_NAME + " = ?", new String[] {_packageName});
+    }
+
     public void updateTodayCount() {
         mDB = mDBHelper.getWritableDatabase();
         if (mDB == null) {
@@ -105,7 +134,8 @@ public final class DBManager implements Serializable {
             return null;
         }
         Cursor cursor = mDB.query(TABLE_APPS, new String[]{KEY_ID,
-                        KEY_NAME, KEY_TODAY_COUNT, KEY_TOTAL_COUNT, KEY_IS_FAVOURITE, KEY_PACKAGE_NAME, KEY_DATE_USEGE}, KEY_PACKAGE_NAME + "=?",
+                        KEY_NAME, KEY_TODAY_COUNT, KEY_TOTAL_COUNT, KEY_IS_FAVOURITE, KEY_PACKAGE_NAME,
+                        KEY_DATE_USEGE, KEY_IS_ABLE_TO_FAVORITE}, KEY_PACKAGE_NAME + "=?",
                 new String[]{ _fieldValue }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -119,6 +149,7 @@ public final class DBManager implements Serializable {
             app.setIsFavourite(cursor.getInt(4));
             app.setAppPackageName(cursor.getString(5));
             app.setDateUsege(cursor.getInt(6));
+            app.setIsAbleToFavorite(cursor.getInt(7));
         }
         return app;
     }
@@ -219,6 +250,7 @@ public final class DBManager implements Serializable {
         app.setIsFavourite(_cursor.getInt(4));
         app.setAppPackageName(_cursor.getString(5));
         app.setDateUsege(_cursor.getInt(6));
+        app.setIsAbleToFavorite(_cursor.getInt(7));
         return app;
     }
 
