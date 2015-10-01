@@ -28,4 +28,6 @@
     Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text,
     Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text,
     Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, </string>
+    <string name="menu_search">Search</string>
+    <string name="search_hint">Search...</string>
 </resources>

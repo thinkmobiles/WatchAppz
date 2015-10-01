@@ -92,16 +92,17 @@ public final class AppInfoService extends AccessibilityService {
             appModel.setDateUsege(calendar.getTimeInMillis());
             appModel.setAppUseTodayCount(appModel.getAppUseTodayCount() + 1);
             appModel.setAppUseTotalCount(appModel.getAppUseTotalCount() + 1);
-            if (appModel.getIsAbleToFavorite() == 1 && appModel.getAppUseTotalCount() >= 10) {
-                appModel.setIsFavourite(1);
-            }
+            appModel.setFavoriteCount(appModel.getFavoriteCount() + 1);
+//            if (appModel.getIsAbleToFavorite() == 1 || appModel.getAppUseTotalCount() >= 10 && ) {
+//                appModel.setIsFavourite(1);
+//            }
         } else {
             appModel = new AppModel();
             appModel.setAppName(mAndroidManager.getAppNameByPackage(_accessibilityEvent.getPackageName().toString()));
             appModel.setAppPackageName(_accessibilityEvent.getPackageName().toString());
             appModel.setDateUsege(calendar.getTimeInMillis());
             appModel.setIsFavourite(0);
-            appModel.setIsAbleToFavorite(1);
+            appModel.setIsAbleToFavorite(0);
         }
         return appModel;
     }
@@ -111,7 +112,7 @@ public final class AppInfoService extends AccessibilityService {
         appModel.setAppName(mAndroidManager.getAppNameByPackage(_packageName));
         appModel.setAppPackageName(_packageName);
         appModel.setIsFavourite(0);
-        appModel.setIsAbleToFavorite(1);
+        appModel.setIsAbleToFavorite(0);
         return appModel;
     }
 

@@ -12,4 +12,5 @@ public abstract class Constants {
 
     public static final String SYSTEM_PACKAGE     = "system";
     public static final String LAUNCHER_PACKAGE   = "launcher";
+    public static final String QUERY              = "query";
 }

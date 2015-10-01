@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import com.watchappz.android.R;
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.system.models.AppModel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -30,10 +33,12 @@ public final class AppsListAdapter extends CursorAdapter {
 
     private Context mContext;
     private DBManager dbManager;
-
-    public AppsListAdapter(Context context, Cursor cursor) {
+    private HashMap<String, Drawable> iconsMap;
+    public AppsListAdapter(Context context, Cursor cursor, final DBManager _dbManager) {
         super(context, cursor, 0);
         mContext = context;
+        this.dbManager = _dbManager;
+        iconsMap = loadIcons(cursor);
     }
 
     @Override
@@ -72,8 +77,9 @@ public final class AppsListAdapter extends CursorAdapter {
         });
     }
 
-    public void setDbManager(final DBManager _dbManager) {
-        this.dbManager = _dbManager;
+    @Override
+    public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
+        return super.runQueryOnBackgroundThread(constraint);
     }
 
     private static class AppViewHolder {
@@ -91,7 +97,7 @@ public final class AppsListAdapter extends CursorAdapter {
     }
 
     private void setStarColor(final AppViewHolder appViewHolder, final AppModel _appModel) {
-        if (_appModel.getAppUseTodayCount() > 10) {
+        if (_appModel.isFavourite() == 1) {
             appViewHolder.ivAppStar.setImageResource(R.drawable.ic_star_gold);
         } else {
             appViewHolder.ivAppStar.setImageResource(R.drawable.ic_star_grey);
@@ -99,15 +105,8 @@ public final class AppsListAdapter extends CursorAdapter {
     }
 
     private void setAppIcon(final AppViewHolder appViewHolder, final AppModel _appModel) {
-        Drawable icon;
-        try {
-            icon = mContext.getPackageManager().getApplicationIcon(_appModel.getAppPackageName());
-            appViewHolder.ivAppIcon.setImageDrawable(icon);
-//            Picasso.with(mContext)
-//                    .load(icon)
-//                    .into(appViewHolder.ivAppIcon);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+        if (iconsMap.containsKey(_appModel.getAppPackageName())) {
+            appViewHolder.ivAppIcon.setImageDrawable(iconsMap.get(_appModel.getAppPackageName()));
         }
     }
 
@@ -127,7 +126,7 @@ public final class AppsListAdapter extends CursorAdapter {
                     public void onPositive(MaterialDialog dialog) {
                         super.onPositive(dialog);
                         if (appModel != null && appModel.isFavourite() == 0) {
-                            dbManager.addToFavorite(_packageName);
+                            dbManager.addToFavoriteByTap(_packageName);
                         }
                     }
 
@@ -140,6 +139,22 @@ public final class AppsListAdapter extends CursorAdapter {
                     }
                 })
                 .show();
+    }
+
+    private HashMap<String, Drawable> loadIcons(final Cursor _cursor) {
+        HashMap<String, Drawable> iconsMap = new HashMap<>();
+        if (_cursor != null) {
+            _cursor.moveToFirst();
+            while (!_cursor.isAfterLast()) {
+                try {
+                    iconsMap.put(_cursor.getString(5), mContext.getPackageManager().getApplicationIcon(_cursor.getString(5)));
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                _cursor.moveToNext();
+            }
+        }
+        return iconsMap;
     }
 
 }

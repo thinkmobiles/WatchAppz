@@ -60,10 +60,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:checked="true"
-                android:button="@null"
                 android:drawableLeft="@drawable/ic_stripes"
                 android:drawablePadding="20dp"
-                android:drawableRight="@android:drawable/btn_radio"
                 android:text="@string/app_sorts_gebruikt"
                 style="@style/ColorRadioButtonStyle"/>
 

@@ -1,6 +1,7 @@
 package com.watchappz.android.utils;
 
 import android.database.Cursor;
+import android.util.Log;
 
 import com.watchappz.android.database.DBManager;
 
@@ -28,11 +29,18 @@ public final class FavoriteCountManager {
 
         Map<String, Float> allAppsUsegeValues = new HashMap<>();
         if (_cursor != null) {
-            while (_cursor.moveToNext()) {
+            _cursor.moveToFirst();
+            while (!_cursor.isAfterLast()) {
                 allAppsUsegeValues.put(_cursor.getString(5), getUsegeValueInPersent(_cursor, _cursor.getLong(3)));
+//                Log.v("Apps", _cursor.getString(5));
+                _cursor.moveToNext();
             }
         }
+        if (allAppsUsegeValues.isEmpty()) {
+            return;
+        }
         List<Map.Entry<String, Float>> list = sortAppsUsegeValues(allAppsUsegeValues);
+        Log.v("Apps", String.valueOf(allAppsUsegeValues.size()));
         Map.Entry<String, Float> maxEntry = list.get(0);
         mDbManager.addToFavorite(maxEntry.getKey());
         list.remove(0);
@@ -61,8 +69,9 @@ public final class FavoriteCountManager {
     }
 
     private float getUsegeValueInPersent(final Cursor _cursor, final long _totalCount) {
-        if (_totalCount != 0) {
-            return _totalCount / getTotalCountFromAllApps(_cursor) * 100;
+        long totalCountFromAllApps = getTotalCountFromAllApps(_cursor);
+        if (_totalCount != 0 && totalCountFromAllApps != 0) {
+            return _totalCount / totalCountFromAllApps * 100;
         }
         return 0;
     }

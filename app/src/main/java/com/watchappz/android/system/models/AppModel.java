@@ -15,6 +15,7 @@ public final class AppModel {
     private String mAppPackageName;
     private long mDateUsege;
     private int isAbleToFavorite;
+    private long mFavoriteCount;
 
     public long getId() {
         return id;
@@ -78,5 +79,13 @@ public final class AppModel {
 
     public void setIsAbleToFavorite(int isAbleToFavorite) {
         this.isAbleToFavorite = isAbleToFavorite;
+    }
+
+    public long getFavoriteCount() {
+        return mFavoriteCount;
+    }
+
+    public void setFavoriteCount(long mFavoriteCount) {
+        this.mFavoriteCount = mFavoriteCount;
     }
 }
