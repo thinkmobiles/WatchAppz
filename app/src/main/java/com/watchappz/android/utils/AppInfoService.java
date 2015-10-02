@@ -15,6 +15,7 @@ import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.models.AppModel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -113,6 +114,7 @@ public final class AppInfoService extends AccessibilityService {
         appModel.setAppPackageName(_packageName);
         appModel.setIsFavourite(0);
         appModel.setIsAbleToFavorite(0);
+        appModel.setAppSize(getAppSize(_packageName));
         return appModel;
     }
 
@@ -142,6 +144,19 @@ public final class AppInfoService extends AccessibilityService {
                     dbManager.addApp(appModel);
                 }
         }
+    }
+
+    private long getAppSize(final String _packageName) {
+        ApplicationInfo applicationInfo;
+        long size = 0;
+        try {
+            applicationInfo = getPackageManager().getApplicationInfo(_packageName, 0);
+            File file = new File(applicationInfo.publicSourceDir);
+            size = file.length();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return size;
     }
 
 }

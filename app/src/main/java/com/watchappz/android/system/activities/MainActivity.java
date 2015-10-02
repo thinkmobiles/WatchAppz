@@ -13,6 +13,7 @@ import com.watchappz.android.R;
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.INewTextListener;
+import com.watchappz.android.interfaces.ISendSortTypeListener;
 import com.watchappz.android.system.fragments.AboutWatchAppzFragment;
 import com.watchappz.android.system.fragments.AppViewPagerFragment;
 import com.watchappz.android.system.fragments.HelpFragment;
@@ -21,7 +22,7 @@ import com.watchappz.android.utils.AccessibilityManager;
 import com.watchappz.android.utils.FavoriteCountManager;
 import com.watchappz.android.utils.LoadingDialogController;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements ISendSortTypeListener {
 
 
     private AccessibilityManager accessibilityManager;
@@ -33,6 +34,7 @@ public class MainActivity extends BaseActivity {
     private INewTextListener iNewTextAllAppsListener;
     private INewTextListener iNewTextFavoriteListener;
     private INewTextListener iNewTextRecentlyListener;
+    private int sortType;
 
     public final void setINewTextListener(final INewTextListener _iNewTextListener) {
         iNewTextAllAppsListener = _iNewTextListener;
@@ -77,7 +79,7 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                mFragmentNavigator.clearBackStackToFragmentOrShow(SettingsFragment.newInstance());
+                mFragmentNavigator.clearBackStackToFragmentOrShow(SettingsFragment.newInstance(this));
                 break;
             case R.id.action_help:
                 mFragmentNavigator.clearBackStackToFragmentOrShow(HelpFragment.newInstance());
@@ -168,5 +170,14 @@ public class MainActivity extends BaseActivity {
 
     public SearchView getSearchView() {
         return mSearchView;
+    }
+
+    @Override
+    public void getSortType(int _type) {
+        sortType = _type;
+    }
+
+    public int getSortType() {
+        return sortType;
     }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,13 +17,13 @@
             android:id="@+id/tvHelp_FS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/settings_textview_slector"
             android:drawableLeft="@drawable/ic_help_grey"
             android:drawablePadding="20dp"
-            android:text="@string/action_help"
-            android:textColor="@android:color/black"
             android:paddingBottom="13dp"
             android:paddingTop="13dp"
-            android:background="@drawable/settings_textview_slector"/>
+            android:text="@string/action_help"
+            android:textColor="@android:color/black" />
 
         <View
             android:layout_width="match_parent"
@@ -35,76 +35,120 @@
             android:id="@+id/tvOverWatchAppz_FS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/settings_textview_slector"
             android:drawableLeft="@drawable/ic_info_grey"
             android:drawablePadding="20dp"
-            android:text="@string/action_over_watchappz"
-            android:textColor="@android:color/black"
             android:paddingBottom="13dp"
             android:paddingTop="13dp"
-            android:background="@drawable/settings_textview_slector"/>
+            android:text="@string/action_over_watchappz"
+            android:textColor="@android:color/black" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.6dp"
             android:background="@android:color/black" />
 
-        <RadioGroup
-            android:id="@+id/rgSorting_FS"
+        <LinearLayout
+            android:id="@+id/llMost_FS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checkedButton="@+id/sound">
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
 
-            <android.support.v7.widget.AppCompatRadioButton
-                android:id="@+id/rbSortMostUsed_FS"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvMost_FS"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:checked="true"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@drawable/settings_textview_slector"
                 android:drawableLeft="@drawable/ic_stripes"
                 android:drawablePadding="20dp"
                 android:text="@string/app_sorts_gebruikt"
-                style="@style/ColorRadioButtonStyle"/>
+                android:textColor="@android:color/black" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:background="@android:color/black" />
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/rbSortMostUsed_FS"
+                style="@style/ColorRadioButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="0"
+                android:checked="true" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:background="@android:color/black" />
+
+        <LinearLayout
+            android:id="@+id/llData_FS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/tvData_FS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@drawable/settings_textview_slector"
+                android:drawableLeft="@drawable/ic_stripes"
+                android:drawablePadding="20dp"
+                android:text="@string/app_sorts_data"
+                android:textColor="@android:color/black" />
 
             <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/rbSortingData_FS"
-                android:layout_width="match_parent"
+                style="@style/ColorRadioButtonStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:button="@null"
+                android:layout_weight="0" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:background="@android:color/black" />
+
+        <LinearLayout
+            android:id="@+id/llLowest_FS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/tvLowest_FS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@drawable/settings_textview_slector"
                 android:drawableLeft="@drawable/ic_stripes"
                 android:drawablePadding="20dp"
-                android:drawableRight="@android:drawable/btn_radio"
-                android:text="@string/app_sorts_data"
-                style="@style/ColorRadioButtonStyle"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:background="@android:color/black" />
+                android:text="@string/app_sorts_minste_gebruikt"
+                android:textColor="@android:color/black" />
 
             <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/rbSortingLowestUsege_FS"
-                android:layout_width="match_parent"
+                style="@style/ColorRadioButtonStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:button="@null"
-                android:drawableLeft="@drawable/ic_stripes"
-                android:drawablePadding="20dp"
-                android:drawableRight="@android:drawable/btn_radio"
-                android:text="@string/app_sorts_minste_gebruikt"
-                style="@style/ColorRadioButtonStyle"/>
+                android:layout_weight="0" />
+        </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.6dp"
-                android:background="@android:color/black" />
-
-        </RadioGroup>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:background="@android:color/black" />
     </LinearLayout>
 </LinearLayout>

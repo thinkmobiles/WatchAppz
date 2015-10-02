@@ -38,12 +38,13 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         super.onActivityCreated(savedInstanceState);
         listView.setOnItemClickListener(this);
         mainActivity.setINewTextFavoriteListener(this);
+        mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
         mainActivity.getSupportLoaderManager().restartLoader(1, null, this);
     }
 
@@ -57,7 +58,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         mainActivity.getLoadingDialogController().showLoadingDialog("favorite");
-        return new FavoriteCursorLoader(mainActivity, mainActivity.getDbManager());
+        return new FavoriteCursorLoader(mainActivity, mainActivity.getDbManager(), mainActivity.getSortType());
     }
 
     @Override
@@ -70,7 +71,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        appsListAdapter.changeCursor(null);
     }
 
     @Override

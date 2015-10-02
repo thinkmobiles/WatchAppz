@@ -54,6 +54,7 @@ public final class DBManager implements Serializable {
         values.put(KEY_DATE_USEGE, _app.getDateUsege());
         values.put(KEY_IS_ABLE_TO_FAVORITE, _app.getIsAbleToFavorite());
         values.put(KEY_FAVORITE_COUNT, _app.getFavoriteCount());
+        values.put(KEY_APP_SIZE, _app.getAppSize());
 
         AppModel existApp = getAppModelIfExistsInDB(_app.getAppPackageName());
         if (existApp != null) {
@@ -160,7 +161,7 @@ public final class DBManager implements Serializable {
         }
         Cursor cursor = mDB.query(TABLE_APPS, new String[]{KEY_ID,
                         KEY_NAME, KEY_TODAY_COUNT, KEY_TOTAL_COUNT, KEY_IS_FAVOURITE, KEY_PACKAGE_NAME,
-                        KEY_DATE_USEGE, KEY_IS_ABLE_TO_FAVORITE, KEY_FAVORITE_COUNT}, KEY_PACKAGE_NAME + "=?",
+                        KEY_DATE_USEGE, KEY_IS_ABLE_TO_FAVORITE, KEY_FAVORITE_COUNT, KEY_APP_SIZE}, KEY_PACKAGE_NAME + "=?",
                 new String[]{_fieldValue}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -176,6 +177,7 @@ public final class DBManager implements Serializable {
             app.setDateUsege(cursor.getInt(6));
             app.setIsAbleToFavorite(cursor.getInt(7));
             app.setFavoriteCount(cursor.getLong(8));
+            app.setAppSize(cursor.getLong(9));
         }
         return app;
     }
@@ -208,38 +210,75 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        return mDB.query(TABLE_APPS, null, null, null, null, null, null);
+        return mDB.query(TABLE_APPS, null, null, null, null, null, KEY_TOTAL_COUNT + " DESC");
     }
 
-    public Cursor getFavoriteData() {
+    public Cursor getAllData(final int _sortType) {
         mDB = mDBHelper.getWritableDatabase();
         if (mDB == null) {
             return null;
         }
-        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_IS_FAVOURITE + " == " + 1
-                + " OR " + KEY_IS_ABLE_TO_FAVORITE + " == " + 1;
-        Cursor cursor = null;
-        try {
-            cursor = mDB.rawQuery(selectQuery, null);
-        } catch (Exception Exp) {
-            return null;
+        Cursor cursor;
+        switch (_sortType) {
+            case 1:
+                cursor = mDB.query(TABLE_APPS, null, null, null, null, null, KEY_TOTAL_COUNT + " DESC");
+                break;
+            case 2:
+                cursor = mDB.query(TABLE_APPS, null, null, null, null, null, KEY_APP_SIZE + " DESC");
+                break;
+            case 3:
+                cursor = mDB.query(TABLE_APPS, null, null, null, null, null, KEY_TOTAL_COUNT + " ASC");
+                break;
+            default:
+                cursor = mDB.query(TABLE_APPS, null, null, null, null, null, KEY_TOTAL_COUNT + " DESC");
         }
         return cursor;
     }
 
-    public Cursor getResentlyData() {
+    public Cursor getFavoriteData(final int _sortType) {
         mDB = mDBHelper.getWritableDatabase();
         if (mDB == null) {
             return null;
         }
-        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE "
-                + KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay()
-                + " AND " + DateManager.currentTime();
-        Cursor cursor = null;
-        try {
-            cursor = mDB.rawQuery(selectQuery, null);
-        } catch (Exception Exp) {
+        String selectQuery = KEY_IS_FAVOURITE + " == " + 1
+                + " OR " + KEY_IS_ABLE_TO_FAVORITE + " == " + 1;
+        Cursor cursor;
+        switch (_sortType) {
+            case 1:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+                break;
+            case 2:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
+                break;
+            case 3:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " ASC");
+                break;
+            default:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+        }
+        return cursor;
+    }
+
+    public Cursor getResentlyData(final int _sortType) {
+        mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
             return null;
+        }
+        String selectQuery = KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay()
+                + " AND " + DateManager.currentTime();
+        Cursor cursor;
+        switch (_sortType) {
+            case 1:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+                break;
+            case 2:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
+                break;
+            case 3:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " ASC");
+                break;
+            default:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
         }
         return cursor;
     }
@@ -278,6 +317,7 @@ public final class DBManager implements Serializable {
         app.setDateUsege(_cursor.getInt(6));
         app.setIsAbleToFavorite(_cursor.getInt(7));
         app.setFavoriteCount(_cursor.getLong(8));
+        app.setAppSize(_cursor.getLong(9));
         return app;
     }
 

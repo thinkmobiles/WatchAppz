@@ -16,6 +16,7 @@ public final class AppModel {
     private long mDateUsege;
     private int isAbleToFavorite;
     private long mFavoriteCount;
+    private long mAppSize;
 
     public long getId() {
         return id;
@@ -87,5 +88,13 @@ public final class AppModel {
 
     public void setFavoriteCount(long mFavoriteCount) {
         this.mFavoriteCount = mFavoriteCount;
+    }
+
+    public long getAppSize() {
+        return mAppSize;
+    }
+
+    public void setAppSize(long mAppSize) {
+        this.mAppSize = mAppSize;
     }
 }

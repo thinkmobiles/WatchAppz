@@ -38,12 +38,13 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
         super.onActivityCreated(savedInstanceState);
         listView.setOnItemClickListener(this);
         mainActivity.setINewTextRecentlyListener(this);
+        mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
         mainActivity.getSupportLoaderManager().restartLoader(2, null, this);
     }
 
@@ -57,7 +58,7 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         mainActivity.getLoadingDialogController().showLoadingDialog("recently");
-        return new RecentlyCursorLoader(mainActivity, mainActivity.getDbManager());
+        return new RecentlyCursorLoader(mainActivity, mainActivity.getDbManager(), mainActivity.getSortType());
     }
 
     @Override
@@ -70,7 +71,7 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        appsListAdapter.changeCursor(null);
     }
 
     @Override

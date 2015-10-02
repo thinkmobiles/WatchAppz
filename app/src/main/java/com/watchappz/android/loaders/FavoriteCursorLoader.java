@@ -16,15 +16,17 @@ import java.util.concurrent.TimeUnit;
 public final class FavoriteCursorLoader extends CursorLoader {
 
     private DBManager mDbManager;
+    private int mSortType;
 
-    public FavoriteCursorLoader(Context _context, DBManager _dbManager) {
+    public FavoriteCursorLoader(Context _context, DBManager _dbManager, int _sortType) {
         super(_context);
         this.mDbManager = _dbManager;
+        mSortType = _sortType;
     }
 
     @Override
     public Cursor loadInBackground() {
-        return mDbManager.getFavoriteData();
+        return mDbManager.getFavoriteData(mSortType);
     }
 
 }

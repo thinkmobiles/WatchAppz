@@ -37,12 +37,13 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
         super.onActivityCreated(savedInstanceState);
         listView.setOnItemClickListener(this);
         mainActivity.setINewTextListener(this);
+        mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
         mainActivity.getSupportLoaderManager().restartLoader(3, null, this);
         Log.v("AllApps", "onResume");
     }
@@ -65,7 +66,7 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.v("lifecicle", "onCreateLoader");
         mainActivity.getLoadingDialogController().showLoadingDialog("all");
-        return new AllAppsCursorLoader(mainActivity, mainActivity.getDbManager());
+        return new AllAppsCursorLoader(mainActivity, mainActivity.getDbManager(), mainActivity.getSortType());
     }
 
     @Override
@@ -79,7 +80,7 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        appsListAdapter.changeCursor(null);
     }
 
     @Override

@@ -19,4 +19,5 @@ public abstract class DBConstants {
     public static final String KEY_DATE_USEGE                  = "dateUsege";
     public static final String KEY_IS_ABLE_TO_FAVORITE         = "isAbale";
     public static final String KEY_FAVORITE_COUNT              = "favoriteCount";
+    public static final String KEY_APP_SIZE                    = "appSize";
 }
