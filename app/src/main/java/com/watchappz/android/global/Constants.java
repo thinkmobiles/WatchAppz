@@ -13,6 +13,7 @@ public abstract class Constants {
     public static final String SYSTEM_PACKAGE     = "system";
     public static final String LAUNCHER_PACKAGE   = "launcher";
     public static final String QUERY              = "query";
+    public static final String DELETE_APP         = "delete_pp";
 
     public static final int SORT_TYPE_MOST        = 1;
     public static final int SORT_TYPE_DATA        = 2;

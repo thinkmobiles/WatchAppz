@@ -2,7 +2,11 @@ package com.watchappz.android.system.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,11 +53,16 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
         this.iSendSortTypeListener = _iSendSortTypeListener;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mInflatedView = inflater.inflate(R.layout.fragment_settings, container, false);
-        setHasOptionsMenu(true);
         findViews();
         setListeners();
         getISendSortTypeListener((ISendSortTypeListener) getArguments().getSerializable("listener"));
@@ -76,6 +85,11 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
         rbSortLowestUsed.setOnCheckedChangeListener(this);
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_search).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

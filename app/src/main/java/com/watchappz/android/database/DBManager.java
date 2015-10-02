@@ -240,21 +240,21 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = KEY_IS_FAVOURITE + " == " + 1
-                + " OR " + KEY_IS_ABLE_TO_FAVORITE + " == " + 1;
+        String selectQuery = KEY_PACKAGE_NAME + " NOT LIKE ?" + " AND ( " + KEY_IS_FAVOURITE + " == " + 1
+                + " OR " + KEY_IS_ABLE_TO_FAVORITE + " == " + 1 + " )";
         Cursor cursor;
         switch (_sortType) {
             case 1:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_TOTAL_COUNT + " DESC");
                 break;
             case 2:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_APP_SIZE + " DESC");
                 break;
             case 3:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " ASC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_TOTAL_COUNT + " ASC");
                 break;
             default:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_TOTAL_COUNT + " DESC");
         }
         return cursor;
     }
@@ -264,21 +264,21 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay()
+        String selectQuery = KEY_PACKAGE_NAME + " NOT LIKE ?" + " AND " + KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay()
                 + " AND " + DateManager.currentTime();
         Cursor cursor;
         switch (_sortType) {
             case 1:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_TOTAL_COUNT + " DESC");
                 break;
             case 2:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_APP_SIZE + " DESC");
                 break;
             case 3:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " ASC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_TOTAL_COUNT + " ASC");
                 break;
             default:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_TOTAL_COUNT + " DESC");
         }
         return cursor;
     }
@@ -353,5 +353,7 @@ public final class DBManager implements Serializable {
         cursor = mDB.rawQuery(selectQuery, new String[]{"%" + inputText + "%"});
         return cursor;
     }
+
+
 
 }
