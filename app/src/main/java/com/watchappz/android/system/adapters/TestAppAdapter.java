@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -61,7 +63,7 @@ public final class TestAppAdapter extends BaseAdapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.list_item_apps, viewGroup, false);
             appViewHolder = new AppViewHolder();
             appViewHolder.ivAppIcon = (ImageView) view.findViewById(R.id.ivAppIcon_LIA);
-            appViewHolder.ivAppStar = (ImageView) view.findViewById(R.id.ivAppStar_LIA);
+            appViewHolder.btnAppStar = (Button) view.findViewById(R.id.btnAppStar_LIA);
             appViewHolder.tvAppName = (TextView) view.findViewById(R.id.tvAppName_LIA);
             appViewHolder.tvAppInfo = (TextView) view.findViewById(R.id.tvAppInfo_LIA);
             view.setTag(appViewHolder);
@@ -77,12 +79,11 @@ public final class TestAppAdapter extends BaseAdapter {
     }
 
 
-
     private class AppViewHolder {
 
         private TextView tvAppName, tvAppInfo;
-        private ImageView ivAppIcon, ivAppStar;
-
+        private ImageView ivAppIcon;
+        private Button btnAppStar;
     }
 
     private String getAppInfo(final AppModel _appModel) {
@@ -94,7 +95,7 @@ public final class TestAppAdapter extends BaseAdapter {
 
     private void setStarColor(final AppViewHolder _appViewHolder, final AppModel _appModel) {
 //        if (_appModel.isFavourite() == 1) {
-            _appViewHolder.ivAppStar.setImageResource(R.drawable.ic_star_gold);
+        _appViewHolder.btnAppStar.setBackground(mContext.getResources().getDrawable(R.drawable.ic_star_gold, mContext.getTheme()));
 //        } else {
 //            _appViewHolder.ivAppStar.setImageResource(R.drawable.ic_star_grey);
 //        }

@@ -9,16 +9,17 @@
         style="@style/AppIconLIA"
         android:src="@mipmap/ic_launcher"/>
 
-    <ImageView
-        android:id="@+id/ivAppStar_LIA"
+    <Button
+        android:id="@+id/btnAppStar_LIA"
         style="@style/AppStarIconLIA"
-        android:src="@drawable/ic_star_gold"
+        android:background="@drawable/ic_star_grey"
+        android:focusable="false"
         />
 
     <TextView
         android:id="@+id/tvAppName_LIA"
         android:layout_toRightOf="@id/ivAppIcon_LIA"
-        android:layout_toLeftOf="@id/ivAppStar_LIA"
+        android:layout_toLeftOf="@id/btnAppStar_LIA"
         style="@style/AppNameTextViewLIA"
         android:text="App name"/>
     <TextView

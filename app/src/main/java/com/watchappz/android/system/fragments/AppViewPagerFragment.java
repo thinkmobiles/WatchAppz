@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class AppViewPagerFragment extends BaseFragment {
         initViewPager();
         initTabLayout();
         initTollbar();
+        Log.v("ViewPager", "onActivityCreated");
     }
 
     @Nullable
@@ -40,12 +42,14 @@ public class AppViewPagerFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mInflatedView = inflater.inflate(R.layout.fragment_view_pager, container, false);
         findViews();
+        Log.v("ViewPager", "onCreateView");
         return mInflatedView;
     }
 
     private void findViews() {
         mViewPager = (ViewPager) mInflatedView.findViewById(R.id.viewpager_AM);
         mTabLayout = (TabLayout) mInflatedView.findViewById(R.id.tlSliding_tabs_AM);
+        mViewPager.setOffscreenPageLimit(3);
     }
 
     private void initViewPager() {
@@ -53,7 +57,6 @@ public class AppViewPagerFragment extends BaseFragment {
                 getChildFragmentManager(), getActivity());
         mViewPager.setAdapter(mAppsListFragmentsPagerAdapter);
         mViewPager.setCurrentItem(0, true);
-        mViewPager.setOffscreenPageLimit(3);
     }
 
     private void initTabLayout() {

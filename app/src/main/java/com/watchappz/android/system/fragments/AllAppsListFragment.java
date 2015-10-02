@@ -37,7 +37,6 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
         super.onActivityCreated(savedInstanceState);
         listView.setOnItemClickListener(this);
         mainActivity.setINewTextListener(this);
-//        setFilterQueryProvider();
     }
 
     @Override
@@ -65,14 +64,14 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.v("lifecicle", "onCreateLoader");
-//        mainActivity.getLoadingDialogController().showLoadingDialog("all");
+        mainActivity.getLoadingDialogController().showLoadingDialog("all");
         return new AllAppsCursorLoader(mainActivity, mainActivity.getDbManager());
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.v("lifecicle", "onLoadFinished");
-//        mainActivity.getLoadingDialogController().hideLoadingDialog("all");
+        mainActivity.getLoadingDialogController().hideLoadingDialog("all");
         initAdapter(cursor);
         setFilterQueryProvider();
         setEmptyView(R.string.app_all_empty_view);
@@ -110,7 +109,6 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
                 e.printStackTrace();
             }
             initAdapter(cursor);
-//            setFilterQueryProvider();
         }
     };
 

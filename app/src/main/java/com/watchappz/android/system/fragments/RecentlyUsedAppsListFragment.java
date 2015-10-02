@@ -38,7 +38,6 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
         super.onActivityCreated(savedInstanceState);
         listView.setOnItemClickListener(this);
         mainActivity.setINewTextRecentlyListener(this);
-//        setFilterQueryProvider();
     }
 
     @Override
@@ -57,13 +56,13 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        mainActivity.getLoadingDialogController().showLoadingDialog("recently");
+        mainActivity.getLoadingDialogController().showLoadingDialog("recently");
         return new RecentlyCursorLoader(mainActivity, mainActivity.getDbManager());
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-//        mainActivity.getLoadingDialogController().hideLoadingDialog("recently");
+        mainActivity.getLoadingDialogController().hideLoadingDialog("recently");
         initAdapter(cursor);
         setFilterQueryProvider();
         setEmptyView(R.string.app_resently_used_empty_view);
@@ -88,7 +87,6 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
         public void onReceive(Context context, Intent intent) {
             mainActivity.getLoadingDialogController().hideLoadingDialog("recently");
             mainActivity.getSupportLoaderManager().destroyLoader(2);
-//            setFilterQueryProvider();
             Cursor cursor = null;
             String query = intent.getStringExtra(Constants.QUERY);
             try {

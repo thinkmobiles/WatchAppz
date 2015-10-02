@@ -38,8 +38,6 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         super.onActivityCreated(savedInstanceState);
         listView.setOnItemClickListener(this);
         mainActivity.setINewTextFavoriteListener(this);
-//        mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
-//        setFilterQueryProvider();
     }
 
     @Override
@@ -58,13 +56,13 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        mainActivity.getLoadingDialogController().showLoadingDialog("favorite");
+        mainActivity.getLoadingDialogController().showLoadingDialog("favorite");
         return new FavoriteCursorLoader(mainActivity, mainActivity.getDbManager());
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-//        mainActivity.getLoadingDialogController().hideLoadingDialog("favorite");
+        mainActivity.getLoadingDialogController().hideLoadingDialog("favorite");
         initAdapter(cursor);
         setFilterQueryProvider();
         setEmptyView(R.string.app_favorites_empty_view);
@@ -89,7 +87,6 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         public void onReceive(Context context, Intent intent) {
             mainActivity.getLoadingDialogController().hideLoadingDialog("favorite");
             mainActivity.getSupportLoaderManager().destroyLoader(1);
-//            setFilterQueryProvider();
             Cursor cursor = null;
             String query = intent.getStringExtra(Constants.QUERY);
             try {
