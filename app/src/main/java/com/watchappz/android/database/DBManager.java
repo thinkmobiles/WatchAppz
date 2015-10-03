@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.utils.DateManager;
 
@@ -142,13 +143,11 @@ public final class DBManager implements Serializable {
             return;
         }
         Cursor cursor = getAllData();
-        Log.v("SetNullTodayCountAppsReceiver", "cursor");
         ContentValues values = new ContentValues();
         values.put(KEY_TODAY_COUNT, 0);
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 mDB.update(TABLE_APPS, values, KEY_ID + " =?", new String[]{String.valueOf(cursor.getLong(0))});
-                Log.v("SetNullTodayCountAppsReceiver", String.valueOf(cursor.getLong(0)));
             }
         }
         mDB.close();
@@ -159,10 +158,7 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        Cursor cursor = mDB.query(TABLE_APPS, new String[]{KEY_ID,
-                        KEY_NAME, KEY_TODAY_COUNT, KEY_TOTAL_COUNT, KEY_IS_FAVOURITE, KEY_PACKAGE_NAME,
-                        KEY_DATE_USEGE, KEY_IS_ABLE_TO_FAVORITE, KEY_FAVORITE_COUNT, KEY_APP_SIZE}, KEY_PACKAGE_NAME + "=?",
-                new String[]{_fieldValue}, null, null, null, null);
+        Cursor cursor = mDB.query(TABLE_APPS, null, KEY_PACKAGE_NAME + "=?", new String[]{_fieldValue}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
@@ -242,21 +238,7 @@ public final class DBManager implements Serializable {
         }
         String selectQuery = KEY_PACKAGE_NAME + " NOT LIKE ?" + " AND ( " + KEY_IS_FAVOURITE + " == " + 1
                 + " OR " + KEY_IS_ABLE_TO_FAVORITE + " == " + 1 + " )";
-        Cursor cursor;
-        switch (_sortType) {
-            case 1:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_TOTAL_COUNT + " DESC");
-                break;
-            case 2:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_APP_SIZE + " DESC");
-                break;
-            case 3:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_TOTAL_COUNT + " ASC");
-                break;
-            default:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_TOTAL_COUNT + " DESC");
-        }
-        return cursor;
+        return getCursorBySortType(selectQuery, Constants.WATCH_APPZ_PAKAGE, _sortType);
     }
 
     public Cursor getResentlyData(final int _sortType) {
@@ -266,21 +248,7 @@ public final class DBManager implements Serializable {
         }
         String selectQuery = KEY_PACKAGE_NAME + " NOT LIKE ?" + " AND " + KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay()
                 + " AND " + DateManager.currentTime();
-        Cursor cursor;
-        switch (_sortType) {
-            case 1:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_TOTAL_COUNT + " DESC");
-                break;
-            case 2:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_APP_SIZE + " DESC");
-                break;
-            case 3:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_TOTAL_COUNT + " ASC");
-                break;
-            default:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"com.watchappz.android"}, null, null, KEY_TOTAL_COUNT + " DESC");
-        }
-        return cursor;
+        return getCursorBySortType(selectQuery, Constants.WATCH_APPZ_PAKAGE, _sortType);
     }
 
 
@@ -321,39 +289,50 @@ public final class DBManager implements Serializable {
         return app;
     }
 
-    public Cursor searchFavoriteByInputText(String inputText) throws SQLException {
-        Cursor cursor;
+    public Cursor searchFavoriteByInputText(String inputText, final int _sortType) throws SQLException {
         mDB = mDBHelper.getWritableDatabase();
         if (mDB == null) {
             return null;
         }
-        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_NAME + " LIKE ?" + " AND " + KEY_IS_FAVOURITE + " == " + 1;
-        cursor = mDB.rawQuery(selectQuery, new String[]{"%" + inputText + "%"});
-        return cursor;
+        String selectQuery = KEY_PACKAGE_NAME + " NOT LIKE 'com.watchappz.android'" + " AND ( "
+                + KEY_NAME + " LIKE ?" + " AND " + KEY_IS_FAVOURITE + " == " + 1 + " )";
+        return getCursorBySortType(selectQuery, inputText, _sortType);
     }
 
-    public Cursor searchRecentlyByInputText(String inputText) throws SQLException {
-        Cursor cursor;
+    public Cursor searchRecentlyByInputText(String inputText, final int _sortType) throws SQLException {
         mDB = mDBHelper.getWritableDatabase();
         if (mDB == null) {
             return null;
         }
-        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_NAME + " LIKE ?" + " AND " + KEY_TODAY_COUNT + " > " + 0;
-        cursor = mDB.rawQuery(selectQuery, new String[]{"%" + inputText + "%"});
-        return cursor;
+        String selectQuery = KEY_PACKAGE_NAME + " NOT LIKE 'com.watchappz.android'" + " AND ( "
+                + KEY_NAME + " LIKE ?" + " AND " + KEY_TODAY_COUNT + " > " + 0 + " )";
+        return getCursorBySortType(selectQuery, inputText, _sortType);
     }
 
-    public Cursor searchAllByInputText(String inputText) throws SQLException {
-        Cursor cursor;
+    public Cursor searchAllByInputText(String inputText, final int _sortType) throws SQLException {
         mDB = mDBHelper.getWritableDatabase();
         if (mDB == null) {
             return null;
         }
-        String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_NAME + " LIKE ?";
-        cursor = mDB.rawQuery(selectQuery, new String[]{"%" + inputText + "%"});
-        return cursor;
+        String selectQuery = KEY_NAME + " LIKE ?";
+        return getCursorBySortType(selectQuery, inputText, _sortType);
     }
 
-
-
+    private Cursor getCursorBySortType(final String selectQuery, final String inputText, final int _sortType) {
+        Cursor cursor;
+        switch (_sortType) {
+            case 1:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
+                break;
+            case 2:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_APP_SIZE + " DESC");
+                break;
+            case 3:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " ASC");
+                break;
+            default:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
+        }
+        return cursor;
+    }
 }

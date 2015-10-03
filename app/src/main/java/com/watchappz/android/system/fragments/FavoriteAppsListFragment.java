@@ -94,7 +94,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
                 if (query.isEmpty()) {
                     mainActivity.getSupportLoaderManager().restartLoader(1, null, FavoriteAppsListFragment.this);
                 } else {
-                    cursor = mainActivity.getDbManager().searchAllByInputText(query);
+                    cursor = mainActivity.getDbManager().searchAllByInputText(query, mainActivity.getSortType());
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -108,7 +108,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
             @Override
             public Cursor runQuery(CharSequence constraint) {
                 try {
-                    return mainActivity.getDbManager().searchFavoriteByInputText(constraint.toString());
+                    return mainActivity.getDbManager().searchFavoriteByInputText(constraint.toString(), mainActivity.getSortType());
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

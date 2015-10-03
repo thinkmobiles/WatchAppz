@@ -94,7 +94,7 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
                 if (query.isEmpty()) {
                     mainActivity.getSupportLoaderManager().restartLoader(2, null, RecentlyUsedAppsListFragment.this);
                 } else {
-                    cursor = mainActivity.getDbManager().searchRecentlyByInputText(query);
+                    cursor = mainActivity.getDbManager().searchRecentlyByInputText(query, mainActivity.getSortType());
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -108,7 +108,7 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
             @Override
             public Cursor runQuery(CharSequence constraint) {
                 try {
-                    return mainActivity.getDbManager().searchRecentlyByInputText(constraint.toString());
+                    return mainActivity.getDbManager().searchRecentlyByInputText(constraint.toString(), mainActivity.getSortType());
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

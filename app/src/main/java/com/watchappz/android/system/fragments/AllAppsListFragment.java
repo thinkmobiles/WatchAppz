@@ -104,7 +104,7 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
                 if (query.isEmpty()) {
                     mainActivity.getSupportLoaderManager().restartLoader(3, null, AllAppsListFragment.this);
                 } else {
-                    cursor = mainActivity.getDbManager().searchAllByInputText(query);
+                    cursor = mainActivity.getDbManager().searchAllByInputText(query, mainActivity.getSortType());
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -118,7 +118,7 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
             @Override
             public Cursor runQuery(CharSequence constraint) {
                 try {
-                    return mainActivity.getDbManager().searchAllByInputText(constraint.toString());
+                    return mainActivity.getDbManager().searchAllByInputText(constraint.toString(), mainActivity.getSortType());
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
