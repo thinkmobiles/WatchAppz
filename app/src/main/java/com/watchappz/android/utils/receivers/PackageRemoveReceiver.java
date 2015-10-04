@@ -17,12 +17,11 @@ public final class PackageRemoveReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        DBManager mDbManager = new DBManager(context);
-        mDbManager.open();
-        Log.v("uninstalled", intent.getDataString());
-        if (intent.getDataString() != null && !intent.getDataString().equals("package:com.watchappz.android")) {
-            Log.v("uninstalled", intent.getDataString().split(":")[1]);
-            mDbManager.deleteAppByPackage(intent.getDataString().split(":")[1]);
-        }
+//        DBManager mDbManager = new DBManager(context);
+//        mDbManager.open();
+//        if (intent.getDataString() != null && !intent.getDataString().equals("package:com.watchappz.android")) {
+//            Log.v("AppPackage", "removed: " + intent.getDataString().split(":")[1]);
+//            mDbManager.deleteAppByPackage(intent.getDataString().split(":")[1]);
+//        }
     }
 }

@@ -2,6 +2,9 @@ package com.watchappz.android.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -214,19 +217,20 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
+        String selectQuery = getQueryForAllAppsIfPackageRemoved(getPackageRemoved());
         Cursor cursor;
         switch (_sortType) {
             case 1:
-                cursor = mDB.query(TABLE_APPS, null, null, null, null, null, KEY_TOTAL_COUNT + " DESC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
                 break;
             case 2:
-                cursor = mDB.query(TABLE_APPS, null, null, null, null, null, KEY_APP_SIZE + " DESC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
                 break;
             case 3:
-                cursor = mDB.query(TABLE_APPS, null, null, null, null, null, KEY_TOTAL_COUNT + " ASC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " ASC");
                 break;
             default:
-                cursor = mDB.query(TABLE_APPS, null, null, null, null, null, KEY_TOTAL_COUNT + " DESC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
         }
         return cursor;
     }
@@ -236,7 +240,7 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = KEY_PACKAGE_NAME + " NOT LIKE ?" + " AND ( " + KEY_IS_FAVOURITE + " == " + 1
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_PACKAGE_NAME + " NOT LIKE ?" + " AND ( " + KEY_IS_FAVOURITE + " == " + 1
                 + " OR " + KEY_IS_ABLE_TO_FAVORITE + " == " + 1 + " )";
         return getCursorBySortType(selectQuery, Constants.WATCH_APPZ_PAKAGE, _sortType);
     }
@@ -246,8 +250,8 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = KEY_PACKAGE_NAME + " NOT LIKE ?" + " AND " + KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay()
-                + " AND " + DateManager.currentTime();
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_PACKAGE_NAME + " NOT LIKE ?" + " AND (" + KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay()
+                + " AND " + DateManager.currentTime() + " )";
         return getCursorBySortType(selectQuery, Constants.WATCH_APPZ_PAKAGE, _sortType);
     }
 
@@ -294,7 +298,7 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = KEY_PACKAGE_NAME + " NOT LIKE 'com.watchappz.android'" + " AND ( "
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_PACKAGE_NAME + " NOT LIKE 'com.watchappz.android'" + " AND ( "
                 + KEY_NAME + " LIKE ?" + " AND " + KEY_IS_FAVOURITE + " == " + 1 + " )";
         return getCursorBySortType(selectQuery, inputText, _sortType);
     }
@@ -304,7 +308,7 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = KEY_PACKAGE_NAME + " NOT LIKE 'com.watchappz.android'" + " AND ( "
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_PACKAGE_NAME + " NOT LIKE 'com.watchappz.android'" + " AND ( "
                 + KEY_NAME + " LIKE ?" + " AND " + KEY_TODAY_COUNT + " > " + 0 + " )";
         return getCursorBySortType(selectQuery, inputText, _sortType);
     }
@@ -314,7 +318,7 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = KEY_NAME + " LIKE ?";
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_NAME + " LIKE ?";
         return getCursorBySortType(selectQuery, inputText, _sortType);
     }
 
@@ -334,5 +338,74 @@ public final class DBManager implements Serializable {
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
         }
         return cursor;
+    }
+
+    private String getQueryIfPackageRemoved(final ArrayList<String> _removedPackges) {
+        String query = "";
+        if (!_removedPackges.isEmpty()) {
+            for (String packageName : _removedPackges) {
+                query += KEY_PACKAGE_NAME + " NOT LIKE '" + packageName + "' AND ";
+            }
+            return  query;
+        } else
+            return "";
+    }
+
+    private String getQueryForAllAppsIfPackageRemoved(final ArrayList<String> _removedPackges) {
+        String query = "";
+        if (!_removedPackges.isEmpty()) {
+            for (String packageName : _removedPackges) {
+                if (_removedPackges.size() > 1 && !packageName.equals(_removedPackges.get(_removedPackges.size() - 1))) {
+                    query += KEY_PACKAGE_NAME + " NOT LIKE '" + packageName + "' AND ";
+                } else {
+                    query += KEY_PACKAGE_NAME + " NOT LIKE '" + packageName + "'";
+                }
+            }
+            return query;
+        } else
+            return "";
+    }
+
+    private ArrayList<String> getPackageRemoved() {
+        ArrayList<String> installed = new ArrayList<>(getPackages());
+        ArrayList<String> packagesInDB = new ArrayList<>(getAllAppsPackagesFromDB());
+        for (String packageName : installed) {
+            if (!packagesInDB.isEmpty() && packagesInDB.contains(packageName)) {
+                packagesInDB.remove(packageName);
+            }
+        }
+        return packagesInDB;
+    }
+
+    private ArrayList<String> getPackages() {
+        final PackageManager pm = mContext.getPackageManager();
+        List<ApplicationInfo> packages = pm
+                .getInstalledApplications(PackageManager.GET_META_DATA);
+        ArrayList<String> appName = new ArrayList<>();
+        for (ApplicationInfo packageInfo : packages) {
+            Intent launchIntent = mContext.getPackageManager().getLaunchIntentForPackage(packageInfo.processName);
+            if (launchIntent != null && !packageInfo.processName.contains(Constants.SYSTEM_PACKAGE) &&
+                    !packageInfo.processName.contains(Constants.LAUNCHER_PACKAGE)) {
+                appName.add(packageInfo.processName);
+            }
+        }
+        return appName;
+    }
+
+    private ArrayList<String> getAllAppsPackagesFromDB() {
+        mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return null;
+        }
+        String selectQuery = "SELECT  * FROM " + TABLE_APPS;
+        Cursor cursor = mDB.rawQuery(selectQuery, null);
+        ArrayList<String> appList = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                appList.add(cursor.getString(5));
+            } while (cursor.moveToNext());
+        }
+
+        return appList;
     }
 }

@@ -1,9 +1,7 @@
 package com.watchappz.android.system.fragments;
 
 import android.app.SearchManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -22,13 +20,11 @@ import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.adapters.AppsListAdapter;
 
-import java.sql.SQLException;
-
 /**
  * Created by
  * mRogach on 17.09.2015.
  */
-public abstract class BaseAppsFragment extends BaseFragment {
+public class BaseAppsFragment extends BaseFragment {
 
     protected ListView listView;
     protected TextView tvEmptyView;
@@ -36,7 +32,6 @@ public abstract class BaseAppsFragment extends BaseFragment {
     protected IntentFilter mSearchFilter = new IntentFilter(Constants.QUERY);
     protected SearchManager searchManager;
     protected SearchView mSearchView;
-    protected BroadcastReceiver mSearchBroadcastReceiver;
 
     @Nullable
     @Override
