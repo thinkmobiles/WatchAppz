@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.watchappz.android.R;
@@ -28,8 +29,10 @@ public class BaseAppsFragment extends BaseFragment {
 
     protected ListView listView;
     protected TextView tvEmptyView;
+    protected RelativeLayout rlAppsContainer;
     protected AppsListAdapter appsListAdapter;
     protected IntentFilter mSearchFilter = new IntentFilter(Constants.QUERY);
+    protected IntentFilter mFavoriteFilter = new IntentFilter(Constants.FAVORITE_CLICK);
     protected SearchManager searchManager;
     protected SearchView mSearchView;
 
@@ -44,6 +47,7 @@ public class BaseAppsFragment extends BaseFragment {
     private void findViews() {
         listView = (ListView) mInflatedView.findViewById(R.id.lvApps_FA);
         tvEmptyView = (TextView) mInflatedView.findViewById(R.id.tvEmptyAppsList_EV);
+        rlAppsContainer = (RelativeLayout) mInflatedView.findViewById(R.id.rlAppsContainer_FA);
     }
 
     @Override

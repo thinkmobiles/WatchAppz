@@ -3,6 +3,8 @@ package com.watchappz.android;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.FacebookSdk;
+
 /**
  * Created by
  * mRogach on 15.09.2015.

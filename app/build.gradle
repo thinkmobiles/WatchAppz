@@ -27,4 +27,6 @@ dependencies {
     compile 'com.pnikosis:materialish-progress:1.5'
     compile 'com.afollestad:material-dialogs:0.7.6.0'
     compile 'com.squareup.picasso:picasso:2.4.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.6.0'
+    compile 'com.getbase:floatingactionbutton:1.10.0'
 }

@@ -1,62 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.watchappz.android" >
+    package="com.watchappz.android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="com.watchappz.android.WatchAppzApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/WatchAppzTheme" >
+        android:theme="@style/WatchAppzTheme">
         <activity
             android:name=".system.activities.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.intent.action.SEARCH" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <meta-data android:name="android.app.searchable"
+            <meta-data
+                android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
 
+        <activity android:name=".system.activities.AboutWatchAppzActivity"
+            android:label="@string/app_name" />
 
-    <service
-        android:name=".utils.AppInfoService"
-        android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-        android:label="@string/app_name"
-        android:enabled="true"
-        android:exported="false">
-        <intent-filter>
-            <action android:name="android.accessibilityservice.AccessibilityService" />
-        </intent-filter>
-        <meta-data
-            android:name="android.accessibilityservice"
-            android:resource="@xml/accessibility_services" />
-    </service>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
 
-        <receiver android:name=".utils.receivers.PackageRemoveReceiver">
-                <intent-filter>
-                    <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
-                    <action android:name="android.intent.action.PACKAGE_REMOVED" />
-                    <data android:scheme="package"/>
-                </intent-filter>
-        </receiver>
-
-        <receiver android:name=".utils.receivers.PackageInstallReceiver">
+        <service
+            android:name=".utils.AppInfoService"
+            android:enabled="true"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <data android:scheme="package"/>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
-        </receiver>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_services" />
+        </service>
 
-        <receiver android:name=".utils.receivers.SetNullTodayCountAppsReceiver"/>
+        <receiver android:name=".utils.receivers.SetNullTodayCountAppsReceiver" />
 
-        <provider android:name=".database.AppsContentProvider"
-            android:authorities="com.watchappz.android.provider">
-        </provider>
+        <provider
+            android:name=".database.AppsContentProvider"
+            android:authorities="com.watchappz.android.provider"/>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1537942619829861"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />
 
     </application>
 

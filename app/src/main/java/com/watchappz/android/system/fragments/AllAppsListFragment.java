@@ -38,6 +38,7 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
         listView.setOnItemClickListener(this);
         mainActivity.setINewTextListener(this);
         mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
+        mainActivity.registerReceiver(clickFavoriteReceiver, mFavoriteFilter);
 
     }
 
@@ -60,6 +61,7 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
         super.onDestroy();
         Log.v("lifecicle", "onDestroy");
         mainActivity.unregisterReceiver(mSearchBroadcastReceiver);
+        mainActivity.unregisterReceiver(clickFavoriteReceiver);
     }
 
     @Override
@@ -110,6 +112,13 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
                 e.printStackTrace();
             }
             initAdapter(cursor);
+        }
+    };
+
+    BroadcastReceiver clickFavoriteReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mainActivity.getSupportLoaderManager().restartLoader(3, null, AllAppsListFragment.this);
         }
     };
 

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.io.Serializable;
+
 import static com.watchappz.android.database.DBConstants.*;
 
 /**
@@ -11,7 +13,7 @@ import static com.watchappz.android.database.DBConstants.*;
  * mRogach on 16.09.2015.
  */
 
-public final class DBHelper extends SQLiteOpenHelper {
+public final class DBHelper extends SQLiteOpenHelper implements Serializable {
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -40,7 +40,7 @@ public final class AppInfoService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         if (!TextUtils.isEmpty(getEventText(accessibilityEvent))) {
-            if (!accessibilityEvent.getPackageName().toString().equals(mPackageName)) {
+            if (accessibilityEvent.getPackageName()!= null && !accessibilityEvent.getPackageName().toString().equals(mPackageName)) {
                 mPackageName = accessibilityEvent.getPackageName().toString();
                     dbManager.addApp(getAppToWriteInDB(accessibilityEvent));
 //                    Toast.makeText(this, accessibilityEvent.getPackageName(), Toast.LENGTH_LONG).show();

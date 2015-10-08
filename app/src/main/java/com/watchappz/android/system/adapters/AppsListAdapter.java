@@ -1,6 +1,7 @@
 package com.watchappz.android.system.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.watchappz.android.R;
 import com.watchappz.android.database.DBManager;
+import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.models.AppModel;
 import java.util.HashMap;
 
@@ -119,6 +121,7 @@ public final class AppsListAdapter extends CursorAdapter {
                         if (appModel != null && appModel.isFavourite() == 0) {
                             dbManager.addToFavoriteByTap(_packageName);
                             setDrawable(v, R.id.btnAppStar_LIA, R.drawable.ic_star_gold);
+                            sendSearchBroadcastFavorute();
                         }
                     }
 
@@ -128,6 +131,7 @@ public final class AppsListAdapter extends CursorAdapter {
                         if (appModel != null && appModel.isFavourite() == 1) {
                             dbManager.removeFromFavorite(_packageName);
                             setDrawable(v, R.id.btnAppStar_LIA, R.drawable.ic_star_grey);
+                            sendSearchBroadcastFavorute();
                         }
                     }
                 })
@@ -157,6 +161,11 @@ public final class AppsListAdapter extends CursorAdapter {
         } else {
             _view.findViewById(_idView).setBackground(mContext.getResources().getDrawable(_idDrawable));
         }
+    }
+
+    private void sendSearchBroadcastFavorute() {
+        Intent broadcastIntent = new Intent(Constants.FAVORITE_CLICK);
+        mContext.sendBroadcast(broadcastIntent);
     }
 
 }

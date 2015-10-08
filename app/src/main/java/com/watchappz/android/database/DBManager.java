@@ -377,6 +377,17 @@ public final class DBManager implements Serializable {
         return packagesInDB;
     }
 
+    private ArrayList<String> getPackageInstalled() {
+        ArrayList<String> installed = new ArrayList<>(getPackages());
+        ArrayList<String> packagesInDB = new ArrayList<>(getAllAppsPackagesFromDB());
+        for (String packageName : packagesInDB) {
+            if (!packagesInDB.isEmpty() && installed.contains(packageName)) {
+                packagesInDB.remove(packageName);
+            }
+        }
+        return packagesInDB;
+    }
+
     private ArrayList<String> getPackages() {
         final PackageManager pm = mContext.getPackageManager();
         List<ApplicationInfo> packages = pm

@@ -4,21 +4,33 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FilterQueryProvider;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
+import com.watchappz.android.global.Variables;
 import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.loaders.FavoriteCursorLoader;
 import com.watchappz.android.system.models.AppModel;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
+import java.util.Random;
 
 /**
  * Created by
@@ -39,6 +51,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         listView.setOnItemClickListener(this);
         mainActivity.setINewTextFavoriteListener(this);
         mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
+        mainActivity.registerReceiver(clickFavoriteReceiver, mFavoriteFilter);
 
     }
 
@@ -53,6 +66,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         super.onDestroy();
         Log.v("lifecicle", "onDestroy");
         mainActivity.unregisterReceiver(mSearchBroadcastReceiver);
+        mainActivity.unregisterReceiver(clickFavoriteReceiver);
     }
 
     @Override
@@ -67,6 +81,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         initAdapter(cursor);
         setFilterQueryProvider();
         setEmptyView(R.string.app_favorites_empty_view);
+        Variables.bitmap = loadBitmapFromView(rlAppsContainer);
     }
 
     @Override
@@ -82,6 +97,13 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
             startActivity(launchIntent);
         }
     }
+
+    BroadcastReceiver clickFavoriteReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mainActivity.getSupportLoaderManager().restartLoader(1, null, FavoriteAppsListFragment.this);
+        }
+    };
 
     BroadcastReceiver mSearchBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -120,5 +142,20 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     @Override
     public void onNewText(String _newText) {
         appsListAdapter.getFilter().filter(_newText);
+    }
+
+    public Bitmap loadBitmapFromView(View v) {
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        v.measure(View.MeasureSpec.makeMeasureSpec(dm.widthPixels, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(dm.heightPixels, View.MeasureSpec.EXACTLY));
+        v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+        v.setBackgroundColor(mainActivity.getResources().getColor(android.R.color.white));
+        ((RelativeLayout) v).setGravity(Gravity.CENTER);
+        Bitmap returnedBitmap = Bitmap.createBitmap(v.getMeasuredWidth(),
+                v.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(returnedBitmap);
+        v.draw(c);
+
+        return returnedBitmap;
     }
 }

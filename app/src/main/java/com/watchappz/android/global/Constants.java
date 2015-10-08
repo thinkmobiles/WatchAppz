@@ -14,6 +14,8 @@ public abstract class Constants {
     public static final String LAUNCHER_PACKAGE   = "launcher";
     public static final String QUERY              = "query";
     public static final String WATCH_APPZ_PAKAGE  = "com.watchappz.android";
+    public static final String FAVORITE_CLICK     = "favorite_click";
+
 
     public static final int SORT_TYPE_MOST        = 1;
     public static final int SORT_TYPE_DATA        = 2;

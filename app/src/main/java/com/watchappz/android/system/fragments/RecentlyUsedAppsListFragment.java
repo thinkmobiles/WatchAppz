@@ -39,6 +39,7 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
         listView.setOnItemClickListener(this);
         mainActivity.setINewTextRecentlyListener(this);
         mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
+        mainActivity.registerReceiver(clickFavoriteReceiver, mFavoriteFilter);
 
     }
 
@@ -53,6 +54,7 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
         super.onDestroy();
         Log.v("lifecicle", "onDestroy");
         mainActivity.unregisterReceiver(mSearchBroadcastReceiver);
+        mainActivity.unregisterReceiver(clickFavoriteReceiver);
     }
 
     @Override
@@ -100,6 +102,13 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
                 e.printStackTrace();
             }
             initAdapter(cursor);
+        }
+    };
+
+    BroadcastReceiver clickFavoriteReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mainActivity.getSupportLoaderManager().restartLoader(2, null, RecentlyUsedAppsListFragment.this);
         }
     };
 
