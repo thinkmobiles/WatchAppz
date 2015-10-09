@@ -99,12 +99,46 @@ public final class DBManager implements Serializable {
         values.put(KEY_IS_FAVOURITE, 1);
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                if (cursor.getString(5).equals(_packageName) && cursor.getLong(8) >= 10) {
+                if (cursor.getString(5).equals(_packageName)) {
                     mDB.update(TABLE_APPS, values, KEY_PACKAGE_NAME + " = ?", new String[]{_packageName});
                 }
             }
         }
         mDB.close();
+    }
+
+    public boolean setToFavotiteIfMaxValueMoreThenTen(final String _packageName) {
+        mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return false;
+        }
+        Cursor cursor = getAllData();
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                if (cursor.getString(5).equals(_packageName) && cursor.getLong(3) > 10) {
+                    return true;
+                }
+            }
+        }
+        mDB.close();
+        return false;
+    }
+
+    public boolean isAbleToFavorite(final String _packageName) {
+        mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return false;
+        }
+        Cursor cursor = getAllData();
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                if (cursor.getString(5).equals(_packageName) && cursor.getInt(7) == 1) {
+                    return true;
+                }
+            }
+        }
+        mDB.close();
+        return false;
     }
 
 
@@ -136,6 +170,17 @@ public final class DBManager implements Serializable {
         values.put(KEY_IS_FAVOURITE, 0);
         values.put(KEY_FAVORITE_COUNT, 0);
         values.put(KEY_IS_ABLE_TO_FAVORITE, 0);
+        mDB.update(TABLE_APPS, values, KEY_PACKAGE_NAME + " = ?", new String[]{_packageName});
+        mDB.close();
+    }
+
+    public void removeFavoriteIfLessPersent(final String _packageName) {
+        mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return;
+        }
+        ContentValues values = new ContentValues();
+        values.put(KEY_IS_FAVOURITE, 0);
         mDB.update(TABLE_APPS, values, KEY_PACKAGE_NAME + " = ?", new String[]{_packageName});
         mDB.close();
     }
@@ -396,7 +441,7 @@ public final class DBManager implements Serializable {
         for (ApplicationInfo packageInfo : packages) {
             Intent launchIntent = mContext.getPackageManager().getLaunchIntentForPackage(packageInfo.processName);
             if (launchIntent != null && !packageInfo.processName.contains(Constants.SYSTEM_PACKAGE) &&
-                    !packageInfo.processName.contains(Constants.LAUNCHER_PACKAGE)) {
+                    !packageInfo.processName.contains(Constants.LAUNCHER_PACKAGE) && !packageInfo.processName.contains(Constants.WATCH_APPZ_PAKAGE)) {
                 appName.add(packageInfo.processName);
             }
         }

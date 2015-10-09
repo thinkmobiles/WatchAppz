@@ -4,7 +4,9 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.watchappz.android.database.DBManager;
+import com.watchappz.android.system.models.AppModel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -28,25 +30,26 @@ public final class FavoriteCountManager {
     public void setFavorite(final Cursor _cursor) {
 
         Map<String, Float> allAppsUsegeValues = new HashMap<>();
-        if (_cursor != null) {
-            _cursor.moveToFirst();
-            while (!_cursor.isAfterLast()) {
-                allAppsUsegeValues.put(_cursor.getString(5), getUsegeValueInPersent(_cursor, _cursor.getLong(3)));
-//                Log.v("Apps", _cursor.getString(5));
-                _cursor.moveToNext();
+            Log.v("Apps", String.valueOf(_cursor.getCount()));
+        ArrayList<AppModel> apps = (ArrayList<AppModel>) mDbManager.getAllApps();
+            for (AppModel appModel : apps) {
+                allAppsUsegeValues.put(appModel.getAppPackageName(), getUsegeValueInPersent(apps, appModel.getAppUseTotalCount()));
             }
-        }
         if (allAppsUsegeValues.isEmpty()) {
             return;
         }
         List<Map.Entry<String, Float>> list = sortAppsUsegeValues(allAppsUsegeValues);
         Log.v("Apps", String.valueOf(allAppsUsegeValues.size()));
         Map.Entry<String, Float> maxEntry = list.get(0);
-        mDbManager.addToFavorite(maxEntry.getKey());
-        list.remove(0);
-        for (Map.Entry<String, Float> entry : list) {
-            if (isMoreThenEightyPersent(maxEntry, entry)) {
-                mDbManager.addToFavorite(entry.getKey());
+        if (mDbManager.setToFavotiteIfMaxValueMoreThenTen(maxEntry.getKey())) {
+            mDbManager.addToFavorite(maxEntry.getKey());
+            list.remove(0);
+            for (Map.Entry<String, Float> entry : list) {
+                if (isMoreThenEightyPersent(maxEntry, entry)) {
+                    mDbManager.addToFavorite(entry.getKey());
+                } else if (!mDbManager.isAbleToFavorite(entry.getKey())) {
+                    mDbManager.removeFavoriteIfLessPersent(entry.getKey());
+                }
             }
         }
     }
@@ -58,20 +61,18 @@ public final class FavoriteCountManager {
         return false;
     }
 
-    private long getTotalCountFromAllApps(final Cursor _cursor) {
+    private long getTotalCountFromAllApps(final ArrayList<AppModel> _list) {
         long totalCountAllAppsUsed = 0;
-        if (_cursor != null) {
-            while (_cursor.moveToNext()) {
-                totalCountAllAppsUsed += _cursor.getLong(3);
-            }
+        for (AppModel appModel : _list) {
+            totalCountAllAppsUsed += appModel.getAppUseTotalCount();
         }
         return totalCountAllAppsUsed;
     }
 
-    private float getUsegeValueInPersent(final Cursor _cursor, final long _totalCount) {
-        long totalCountFromAllApps = getTotalCountFromAllApps(_cursor);
+    private float getUsegeValueInPersent(final ArrayList<AppModel> _list, final long _totalCount) {
+        long totalCountFromAllApps = getTotalCountFromAllApps(_list);
         if (_totalCount != 0 && totalCountFromAllApps != 0) {
-            return _totalCount / totalCountFromAllApps * 100;
+            return (float)_totalCount / (float)totalCountFromAllApps * 100;
         }
         return 0;
     }

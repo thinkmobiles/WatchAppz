@@ -41,8 +41,10 @@ public final class AppInfoService extends AccessibilityService {
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         if (!TextUtils.isEmpty(getEventText(accessibilityEvent))) {
             if (accessibilityEvent.getPackageName()!= null && !accessibilityEvent.getPackageName().toString().equals(mPackageName)) {
-                mPackageName = accessibilityEvent.getPackageName().toString();
+                if (!accessibilityEvent.getPackageName().toString().equals(Constants.WATCH_APPZ_PAKAGE)) {
+                    mPackageName = accessibilityEvent.getPackageName().toString();
                     dbManager.addApp(getAppToWriteInDB(accessibilityEvent));
+                }
 //                    Toast.makeText(this, accessibilityEvent.getPackageName(), Toast.LENGTH_LONG).show();
             }
         }
@@ -78,7 +80,7 @@ public final class AppInfoService extends AccessibilityService {
         for (ApplicationInfo packageInfo : packages) {
             Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageInfo.processName);
             if (launchIntent != null && !packageInfo.processName.contains(Constants.SYSTEM_PACKAGE) &&
-                    !packageInfo.processName.contains(Constants.LAUNCHER_PACKAGE)) {
+                    !packageInfo.processName.contains(Constants.LAUNCHER_PACKAGE) && !packageInfo.processName.contains(Constants.WATCH_APPZ_PAKAGE)) {
             appName[count] = packageInfo.processName;
             count++;
             }

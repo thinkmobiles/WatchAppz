@@ -17,6 +17,7 @@ public final class AppModel {
     private int isAbleToFavorite;
     private long mFavoriteCount;
     private long mAppSize;
+    private int mAppDeleted;
 
     public long getId() {
         return id;
@@ -96,5 +97,13 @@ public final class AppModel {
 
     public void setAppSize(long mAppSize) {
         this.mAppSize = mAppSize;
+    }
+
+    public int getAppDeleted() {
+        return mAppDeleted;
+    }
+
+    public void setAppDeleted(int mAppDeleted) {
+        this.mAppDeleted = mAppDeleted;
     }
 }
