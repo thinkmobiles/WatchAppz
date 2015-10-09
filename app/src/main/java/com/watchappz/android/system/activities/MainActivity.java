@@ -1,46 +1,18 @@
 package com.watchappz.android.system.activities;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.facebook.share.ShareApi;
-import com.facebook.share.model.SharePhoto;
-import com.facebook.share.model.SharePhotoContent;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import android.support.v7.widget.SearchView;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookDialog;
-import com.facebook.FacebookException;
-import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.widget.ShareButton;
-import com.facebook.share.widget.ShareDialog;
 import com.watchappz.android.R;
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
@@ -54,12 +26,6 @@ import com.watchappz.android.utils.AccessibilityManager;
 import com.watchappz.android.utils.FacebookShareManager;
 import com.watchappz.android.utils.FavoriteCountManager;
 import com.watchappz.android.utils.LoadingDialogController;
-
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 public class MainActivity extends BaseActivity implements ISendSortTypeListener {
 
@@ -75,8 +41,6 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
     private int sortType;
     private FacebookShareManager facebookShareManager;
     private FloatingActionButton facebook;
-    private CallbackManager callbackManager;
-    private LoginManager loginManager;
 
     public final void setINewTextListener(final INewTextListener _iNewTextListener) {
         iNewTextAllAppsListener = _iNewTextListener;
@@ -93,22 +57,15 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(this);
         initDBManager();
         initAccessibilityManager();
         initLoadingController();
         initFloatingButton();
-        callbackManager = CallbackManager.Factory.create();
         initFacebook();
         mFragmentNavigator.replaceFragment(AppViewPagerFragment.newInstance());
         facebookButtonClick();
     }
-
-    @Override
-         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
 
     @Override
     protected void onResume() {
@@ -248,7 +205,6 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
     }
 
     private void initFacebook() {
-        FacebookSdk.sdkInitialize(getApplicationContext());
         facebookShareManager = new FacebookShareManager(this);
     }
 
@@ -256,29 +212,12 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
         facebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginManager = LoginManager.getInstance();
-                loginManager.logInWithPublishPermissions(MainActivity.this, Arrays.asList("publish_actions"));
-                loginManager.registerCallback(callbackManager, facebookCallback);
+                facebookShareManager.shareToFacebook();
             }
         });
     }
-    private FacebookCallback<LoginResult> facebookCallback = new FacebookCallback<LoginResult>() {
-        @Override
-        public void onSuccess(LoginResult loginResult) {
-            facebookShareManager.shareToFacebook();
-            Toast.makeText(MainActivity.this, "onSuccess", Toast.LENGTH_SHORT).show();
-        }
 
-        @Override
-        public void onCancel() {
-            Toast.makeText(MainActivity.this, "onCancel", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onError(FacebookException e) {
-            Toast.makeText(MainActivity.this, "onError", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-
+    public void setFloatingMenuVisibility(final boolean _visible) {
+        faMenu.setVisibility(_visible ? View.VISIBLE : View.GONE);
+    }
 }

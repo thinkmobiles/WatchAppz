@@ -52,7 +52,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         mainActivity.setINewTextFavoriteListener(this);
         mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
         mainActivity.registerReceiver(clickFavoriteReceiver, mFavoriteFilter);
-
+        mainActivity.setFloatingMenuVisibility(true);
     }
 
     @Override

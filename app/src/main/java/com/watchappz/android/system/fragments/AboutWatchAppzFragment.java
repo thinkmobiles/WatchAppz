@@ -32,6 +32,7 @@ public final class AboutWatchAppzFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         tvAppVersion.setText(mainActivity.getResources().getString(R.string.app_version) + " " + getAppVersion());
         mainActivity.getToolbarManager().hideToolbar();
+        mainActivity.setFloatingMenuVisibility(false);
     }
 
     @Nullable

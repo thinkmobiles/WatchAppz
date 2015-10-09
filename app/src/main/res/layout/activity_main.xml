@@ -40,7 +40,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        android:layout_gravity="right|bottom">
+        android:layout_gravity="right|bottom"
+        android:visibility="gone">
 
 </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

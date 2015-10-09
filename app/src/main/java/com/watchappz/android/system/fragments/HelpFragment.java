@@ -27,6 +27,7 @@ public final class HelpFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initTollbar();
+        mainActivity.setFloatingMenuVisibility(false);
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.share.ShareApi;
 import com.facebook.share.Sharer;
@@ -36,9 +37,14 @@ import java.util.List;
 public final class FacebookShareManager {
 
     private MainActivity mainActivity;
+    private ShareDialog shareDialog;
+    private CallbackManager callbackManager;
 
     public FacebookShareManager(final Activity _activity) {
         mainActivity = (MainActivity) _activity;
+        shareDialog = new ShareDialog(mainActivity);
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog.registerCallback(callbackManager, facebookCallback);
     }
 
     public void shareToFacebook() {
@@ -51,13 +57,11 @@ public final class FacebookShareManager {
                 .addPhoto(photo5)
                 .build();
 
-        ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                .setContentTitle("Hello Facebook")
-                .setContentDescription(
-                        "The 'Hello Facebook' sample  showcases simple Facebook integration")
-                .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
-                .build();
-        ShareApi.share(linkContent, facebookCallback);
+        if (ShareDialog.canShow(SharePhotoContent.class)) {
+            shareDialog.show(content);
+        } else {
+            Toast.makeText(mainActivity, "Cant share", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

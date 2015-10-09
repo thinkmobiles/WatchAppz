@@ -49,6 +49,7 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
         super.onActivityCreated(savedInstanceState);
         initTollbar();
         setCheckedRadioButton(mainActivity.getSortType());
+        mainActivity.setFloatingMenuVisibility(false);
     }
 
     public void getISendSortTypeListener(final ISendSortTypeListener _iSendSortTypeListener) {

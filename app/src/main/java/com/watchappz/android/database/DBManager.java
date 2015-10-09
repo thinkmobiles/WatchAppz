@@ -7,7 +7,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.models.AppModel;
@@ -263,21 +262,7 @@ public final class DBManager implements Serializable {
             return null;
         }
         String selectQuery = getQueryForAllAppsIfPackageRemoved(getPackageRemoved());
-        Cursor cursor;
-        switch (_sortType) {
-            case 1:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
-                break;
-            case 2:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
-                break;
-            case 3:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " ASC");
-                break;
-            default:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
-        }
-        return cursor;
+        return getCursorBySortType(selectQuery, _sortType);
     }
 
     public Cursor getFavoriteData(final int _sortType) {
@@ -285,9 +270,9 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_PACKAGE_NAME + " NOT LIKE ?" + " AND ( " + KEY_IS_FAVOURITE + " == " + 1
-                + " OR " + KEY_IS_ABLE_TO_FAVORITE + " == " + 1 + " )";
-        return getCursorBySortType(selectQuery, Constants.WATCH_APPZ_PAKAGE, _sortType);
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_IS_FAVOURITE + " == " + 1
+                + " OR " + KEY_IS_ABLE_TO_FAVORITE + " == " + 1;
+        return getCursorBySortType(selectQuery, _sortType);
     }
 
     public Cursor getResentlyData(final int _sortType) {
@@ -295,9 +280,9 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_PACKAGE_NAME + " NOT LIKE ?" + " AND (" + KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay()
-                + " AND " + DateManager.currentTime() + " )";
-        return getCursorBySortType(selectQuery, Constants.WATCH_APPZ_PAKAGE, _sortType);
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay()
+                + " AND " + DateManager.currentTime();
+        return getCursorBySortType(selectQuery, _sortType);
     }
 
 
@@ -343,8 +328,7 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_PACKAGE_NAME + " NOT LIKE 'com.watchappz.android'" + " AND ( "
-                + KEY_NAME + " LIKE ?" + " AND " + KEY_IS_FAVOURITE + " == " + 1 + " )";
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_NAME + " LIKE ?" + " AND " + KEY_IS_FAVOURITE + " == " + 1;
         return getCursorBySortType(selectQuery, inputText, _sortType);
     }
 
@@ -353,8 +337,7 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_PACKAGE_NAME + " NOT LIKE 'com.watchappz.android'" + " AND ( "
-                + KEY_NAME + " LIKE ?" + " AND " + KEY_TODAY_COUNT + " > " + 0 + " )";
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_NAME + " LIKE ?" + " AND " + KEY_TODAY_COUNT + " > " + 0;
         return getCursorBySortType(selectQuery, inputText, _sortType);
     }
 
@@ -381,6 +364,24 @@ public final class DBManager implements Serializable {
                 break;
             default:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
+        }
+        return cursor;
+    }
+
+    private Cursor getCursorBySortType(final String selectQuery,  final int _sortType) {
+        Cursor cursor;
+        switch (_sortType) {
+            case 1:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+                break;
+            case 2:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
+                break;
+            case 3:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " ASC");
+                break;
+            default:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
         }
         return cursor;
     }

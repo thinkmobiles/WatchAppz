@@ -35,6 +35,33 @@ public class AppViewPagerFragment extends BaseFragment {
         initTabLayout();
         initTollbar();
         Log.v("ViewPager", "onActivityCreated");
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        mainActivity.setFloatingMenuVisibility(true);
+                        break;
+                    case 1:
+                        mainActivity.setFloatingMenuVisibility(false);
+                        break;
+                    case 2:
+                        mainActivity.setFloatingMenuVisibility(false);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Nullable
