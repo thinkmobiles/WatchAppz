@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
@@ -76,12 +77,13 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(Loader<Cursor> loader, final Cursor cursor) {
         mainActivity.getLoadingDialogController().hideLoadingDialog("favorite");
         initAdapter(cursor);
         setFilterQueryProvider();
         setEmptyView(R.string.app_favorites_empty_view);
         Variables.bitmap = loadBitmapFromView(rlAppsContainer);
+        shareToFacebook(cursor);
     }
 
     @Override
@@ -157,5 +159,18 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         v.draw(c);
 
         return returnedBitmap;
+    }
+
+    private void shareToFacebook(final Cursor _cursor) {
+        mainActivity.getFacebook().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (_cursor.getCount() >= 5) {
+                    mainActivity.getFacebookShareManager().shareToFacebook();
+                } else {
+                    Toast.makeText(mainActivity, "Not enough favorite apps to share", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }

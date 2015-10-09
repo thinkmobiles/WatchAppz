@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
     private INewTextListener iNewTextRecentlyListener;
     private int sortType;
     private FacebookShareManager facebookShareManager;
-    private FloatingActionButton facebook;
+    protected FloatingActionButton facebook;
 
     public final void setINewTextListener(final INewTextListener _iNewTextListener) {
         iNewTextAllAppsListener = _iNewTextListener;
@@ -52,6 +52,10 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
 
     public final void setINewTextRecentlyListener(final INewTextListener _iNewTextListener) {
         iNewTextRecentlyListener = _iNewTextListener;
+    }
+
+    public FloatingActionButton getFacebook() {
+        return facebook;
     }
 
     @Override
@@ -219,5 +223,9 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
 
     public void setFloatingMenuVisibility(final boolean _visible) {
         faMenu.setVisibility(_visible ? View.VISIBLE : View.GONE);
+    }
+
+    public FacebookShareManager getFacebookShareManager() {
+        return facebookShareManager;
     }
 }
