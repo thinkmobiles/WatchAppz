@@ -18,6 +18,8 @@ import com.watchappz.android.R;
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.models.AppModel;
+import com.watchappz.android.utils.image_loader.ImageLoader;
+
 import java.util.HashMap;
 
 /**
@@ -30,12 +32,14 @@ public final class AppsListAdapter extends CursorAdapter {
     private Context mContext;
     private DBManager dbManager;
     private HashMap<String, Drawable> iconsMap;
+    private ImageLoader imageLoader;
 
     public AppsListAdapter(Context context, Cursor cursor, final DBManager _dbManager) {
         super(context, cursor, 0);
         mContext = context;
         this.dbManager = _dbManager;
-        iconsMap = loadIcons(cursor);
+//        iconsMap = loadIcons(cursor);
+        imageLoader = new ImageLoader(context);
     }
 
     @Override
@@ -98,9 +102,10 @@ public final class AppsListAdapter extends CursorAdapter {
     }
 
     private void setAppIcon(final AppViewHolder appViewHolder, final AppModel _appModel) {
-        if (iconsMap.containsKey(_appModel.getAppPackageName())) {
-            appViewHolder.ivAppIcon.setImageDrawable(iconsMap.get(_appModel.getAppPackageName()));
-        }
+//        if (iconsMap.containsKey(_appModel.getAppPackageName())) {
+//            appViewHolder.ivAppIcon.setImageDrawable(iconsMap.get(_appModel.getAppPackageName()));
+//        }
+        imageLoader.displayImage(_appModel.getAppPackageName(), appViewHolder.ivAppIcon);
     }
 
     private void showDialog(final View v, final String _packageName) {
