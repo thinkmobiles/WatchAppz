@@ -8,18 +8,22 @@ import android.content.pm.PackageManager;
 import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
 
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.models.AppModel;
+import com.watchappz.android.system.models.MessageEvent;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 import static com.watchappz.android.database.DBConstants.KEY_TODAY_COUNT;
 import static com.watchappz.android.database.DBConstants.KEY_TOTAL_COUNT;
@@ -53,7 +57,7 @@ public final class AppInfoService extends AccessibilityService {
 
     @Override
     public void onInterrupt() {
-
+        EventBus.getDefault().unregister(this);
     }
 
     private String getEventText(AccessibilityEvent accessibilityEvent) {
@@ -121,6 +125,7 @@ public final class AppInfoService extends AccessibilityService {
     }
 
     private void initObjects() {
+        EventBus.getDefault().register(this);
         mAndroidManager = new AndroidManager(this);
         dbManager = new DBManager(getApplicationContext());
         dbManager.open();
@@ -159,6 +164,11 @@ public final class AppInfoService extends AccessibilityService {
             e.printStackTrace();
         }
         return size;
+    }
+
+    public void onEvent(MessageEvent event) {
+        setServiceInfo(getAccessibilityServiceInfo());
+        Log.v("setServiceInfo", "reload pps");
     }
 
 }

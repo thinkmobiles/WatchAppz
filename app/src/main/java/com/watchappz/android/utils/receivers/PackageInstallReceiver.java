@@ -4,8 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.watchappz.android.global.Constants;
+import com.watchappz.android.system.models.MessageEvent;
 import com.watchappz.android.utils.AppInfoService;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by
@@ -17,6 +22,7 @@ public class PackageInstallReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.v("AppPackage", "installed: " + intent.getDataString());
-//        context.startService(new Intent(context, AppInfoService.class));
+        EventBus.getDefault().post(new MessageEvent());
+        Log.v("setServiceInfo", "onReceive");
     }
 }
