@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.models.AppModel;
+import com.watchappz.android.system.models.CursorLoaderRestartEvent;
 import com.watchappz.android.system.models.MessageEvent;
 
 import java.io.File;
@@ -48,6 +49,7 @@ public final class AppInfoService extends AccessibilityService {
                 if (!accessibilityEvent.getPackageName().toString().equals(Constants.WATCH_APPZ_PAKAGE)) {
                     mPackageName = accessibilityEvent.getPackageName().toString();
                     dbManager.addApp(getAppToWriteInDB(accessibilityEvent));
+                    EventBus.getDefault().post(new CursorLoaderRestartEvent());
                 }
 //                    Toast.makeText(this, accessibilityEvent.getPackageName(), Toast.LENGTH_LONG).show();
             }

@@ -17,8 +17,11 @@ import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.loaders.RecentlyCursorLoader;
 import com.watchappz.android.system.models.AppModel;
+import com.watchappz.android.system.models.CursorLoaderRestartEvent;
 
 import java.sql.SQLException;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by
@@ -40,13 +43,15 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
         mainActivity.setINewTextRecentlyListener(this);
         mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
         mainActivity.registerReceiver(clickFavoriteReceiver, mFavoriteFilter);
-
+        mainActivity.getSupportLoaderManager().initLoader(2, null, this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mainActivity.getSupportLoaderManager().restartLoader(2, null, this);
+        if (isNewAccessibilityEvent) {
+            mainActivity.getSupportLoaderManager().restartLoader(2, null, this);
+        }
     }
 
     @Override
@@ -129,5 +134,9 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
     @Override
     public void onNewText(String _newText) {
         appsListAdapter.getFilter().filter(_newText);
+    }
+
+    public void onEvent(CursorLoaderRestartEvent event) {
+        isNewAccessibilityEvent = true;
     }
 }

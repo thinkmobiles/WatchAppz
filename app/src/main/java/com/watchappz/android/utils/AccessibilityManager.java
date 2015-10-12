@@ -8,6 +8,7 @@ import android.view.accessibility.AccessibilityEvent;
 
 import com.watchappz.android.global.Constants;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  * mRogach on 17.09.2015.
  */
 
-public final class AccessibilityManager {
+public final class AccessibilityManager implements Serializable {
 
     private Activity mActivity;
 

@@ -21,6 +21,8 @@ import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.adapters.AppsListAdapter;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by
  * mRogach on 17.09.2015.
@@ -35,6 +37,13 @@ public class BaseAppsFragment extends BaseFragment {
     protected IntentFilter mFavoriteFilter = new IntentFilter(Constants.FAVORITE_CLICK);
     protected SearchManager searchManager;
     protected SearchView mSearchView;
+    protected boolean isNewAccessibilityEvent = false;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
 
     @Nullable
     @Override

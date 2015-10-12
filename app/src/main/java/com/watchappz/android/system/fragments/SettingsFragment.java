@@ -36,24 +36,17 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
     private RadioButton rbSortMostUsed, rbSortDataUsed, rbSortLowestUsed;
     private ISendSortTypeListener iSendSortTypeListener;
 
-    public static SettingsFragment newInstance(ISendSortTypeListener iSendSortTypeListener) {
-        SettingsFragment settingsFragment = new SettingsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("listener", iSendSortTypeListener);
-        settingsFragment.setArguments(bundle);
-        return settingsFragment;
+    public static SettingsFragment newInstance() {
+        return new SettingsFragment();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        iSendSortTypeListener = (ISendSortTypeListener) getActivity();
         initTollbar();
         setCheckedRadioButton(mainActivity.getSortType());
         mainActivity.setFloatingMenuVisibility(false);
-    }
-
-    public void getISendSortTypeListener(final ISendSortTypeListener _iSendSortTypeListener) {
-        this.iSendSortTypeListener = _iSendSortTypeListener;
     }
 
     @Override
@@ -68,7 +61,6 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
         mInflatedView = inflater.inflate(R.layout.fragment_settings, container, false);
         findViews();
         setListeners();
-        getISendSortTypeListener((ISendSortTypeListener) getArguments().getSerializable("listener"));
         return mInflatedView;
     }
 
@@ -113,10 +105,10 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
                 mainActivity.getFragmentNavigator().clearBackStackToFragmentOrShow(HelpFragment.newInstance());
                 break;
             case R.id.tvOverWatchAppz_FS:
-                mainActivity.getFragmentNavigator().clearBackStackToFragmentOrShow(AboutWatchAppzFragment.newInstance());
-//                Intent intent = new Intent(mainActivity, AboutWatchAppzActivity.class);
-//                startActivity(intent);
-//                mainActivity.overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+//                mainActivity.getFragmentNavigator().clearBackStackToFragmentOrShow(AboutWatchAppzFragment.newInstance());
+                Intent intent = new Intent(mainActivity, AboutWatchAppzActivity.class);
+                startActivity(intent);
+                mainActivity.overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 break;
 
         }

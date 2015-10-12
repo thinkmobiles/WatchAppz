@@ -1,12 +1,11 @@
 package com.watchappz.android.interfaces;
 
-import java.io.Serializable;
 
 /**
  * Created by
  * mRogach on 02.10.2015.
  */
 
-public interface ISendSortTypeListener extends Serializable {
+public interface ISendSortTypeListener {
     void getSortType(final int _type);
 }

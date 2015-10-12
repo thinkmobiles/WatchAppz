@@ -93,16 +93,16 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                mFragmentNavigator.clearBackStackToFragmentOrShow(SettingsFragment.newInstance(this));
+                mFragmentNavigator.clearBackStackToFragmentOrShow(SettingsFragment.newInstance());
                 break;
             case R.id.action_help:
                 mFragmentNavigator.clearBackStackToFragmentOrShow(HelpFragment.newInstance());
                 break;
             case R.id.action_over_watchappz:
-                mFragmentNavigator.clearBackStackToFragmentOrShow(AboutWatchAppzFragment.newInstance());
-//                Intent intent = new Intent(this, AboutWatchAppzActivity.class);
-//                startActivity(intent);
-//                overridePendingTransition(R.anim.trans_left_out, R.anim.trans_left_in);
+//                mFragmentNavigator.clearBackStackToFragmentOrShow(AboutWatchAppzFragment.newInstance());
+                Intent intent = new Intent(this, AboutWatchAppzActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                 break;
         }
 

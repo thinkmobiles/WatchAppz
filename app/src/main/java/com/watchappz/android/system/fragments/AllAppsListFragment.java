@@ -17,8 +17,11 @@ import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.loaders.AllAppsCursorLoader;
 import com.watchappz.android.system.models.AppModel;
+import com.watchappz.android.system.models.CursorLoaderRestartEvent;
 
 import java.sql.SQLException;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by
@@ -39,13 +42,15 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
         mainActivity.setINewTextListener(this);
         mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
         mainActivity.registerReceiver(clickFavoriteReceiver, mFavoriteFilter);
-
+        mainActivity.getSupportLoaderManager().initLoader(3, null, this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mainActivity.getSupportLoaderManager().restartLoader(3, null, this);
+        if (isNewAccessibilityEvent) {
+            mainActivity.getSupportLoaderManager().restartLoader(3, null, this);
+        }
         Log.v("AllApps", "onResume");
     }
 
@@ -53,7 +58,7 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
     public void onPause() {
         super.onPause();
         Log.v("AllApps", "onPause");
-        mainActivity.getSupportLoaderManager().destroyLoader(3);
+//        mainActivity.getSupportLoaderManager().destroyLoader(3);
     }
 
     @Override
@@ -139,5 +144,9 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
     @Override
     public void onNewText(String _newText) {
         appsListAdapter.getFilter().filter(_newText);
+    }
+
+    public void onEvent(CursorLoaderRestartEvent event) {
+        isNewAccessibilityEvent = true;
     }
 }
