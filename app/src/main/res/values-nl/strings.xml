@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">WatchAppz</string>
+
+    <string name="action_settings">Instellingen</string>
+    <string name="action_help">Helpen</string>
+    <string name="action_over_watchappz">Over WatchAppz</string>
+
+
+    <string name="tab_favorieten">Favorieten</string>
+    <string name="tab_recently_used">Recent gebruikt</string>
+    <string name="tab_all_apps">Alle apps</string>
+    <string name="app_used">Gebruikt</string>
+    <string name="app_use_today">vandaag</string>
+    <string name="app_use_total">totaal</string>
+    <string name="app_sorts_gebruikt">Sorteren op meest gebruikt</string>
+    <string name="app_sorts_data">Sorteren op meeste data</string>
+    <string name="app_sorts_minste_gebruikt">Sorteren op minste gebruikt</string>
+    <string name="app_favorites_empty_view">Geen Favorieten Apps</string>
+    <string name="app_resently_used_empty_view">Geen Recent Apps</string>
+    <string name="app_all_empty_view">Geen Apps</string>
+    <string name="app_version">Versie</string>
+    <string name="app_favorite_remove">Verwijderen</string>
+    <string name="app_favorite_add">Toevoegen</string>
+
+    <string name="help_info">Some text, Some text, Some text, Some text, Some text, Some text, Some text,
+    Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text,
+    Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text,
+    Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text,
+    Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text,
+    Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, </string>
+    <string name="menu_search">Zoeken</string>
+    <string name="search_hint">Zoeken...</string>
+
+    <string name="facebook_app_id">1537942619829861</string>
+    <string name="facebook_empty_favorite_apps">Niet genoeg favoriete apps te delen</string>
+
+</resources>

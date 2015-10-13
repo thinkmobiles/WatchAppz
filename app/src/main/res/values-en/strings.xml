@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">WatchAppz</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_help">Help</string>
+    <string name="action_over_watchappz">About WatchAppz</string>
+
+
+    <string name="tab_favorieten">Favorite</string>
+    <string name="tab_recently_used">Recently used</string>
+    <string name="tab_all_apps">All apps</string>
+    <string name="app_used">Used</string>
+    <string name="app_use_today">today</string>
+    <string name="app_use_total">total</string>
+    <string name="app_sorts_gebruikt">Sort apps on most used</string>
+    <string name="app_sorts_data">Sort apps on data usage</string>
+    <string name="app_sorts_minste_gebruikt">Sort apps on lowest use</string>
+    <string name="app_favorites_empty_view">No Favorite Apps</string>
+    <string name="app_resently_used_empty_view">No Resently used Apps</string>
+    <string name="app_all_empty_view">No Apps</string>
+    <string name="app_version">Version</string>
+    <string name="app_favorite_remove">Remove</string>
+    <string name="app_favorite_add">Add</string>
+
+    <string name="help_info">Some text, Some text, Some text, Some text, Some text, Some text, Some text,
+    Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text,
+    Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text,
+    Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text,
+    Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text,
+    Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, </string>
+    <string name="menu_search">Search</string>
+    <string name="search_hint">Search...</string>
+
+    <string name="facebook_app_id">1537942619829861</string>
+    <string name="facebook_empty_favorite_apps">Not enough favorite apps to share</string>
+
+</resources>

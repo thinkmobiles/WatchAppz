@@ -13,6 +13,9 @@ import android.widget.TextView;
 import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.ISendSortTypeListener;
+import com.watchappz.android.system.models.CursorLoaderRestartEvent;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by
@@ -127,6 +130,7 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
                     iSendSortTypeListener.getSortType(Constants.SORT_TYPE_LOWEST);
                     break;
             }
+            EventBus.getDefault().post(new CursorLoaderRestartEvent());
         }
     }
 
