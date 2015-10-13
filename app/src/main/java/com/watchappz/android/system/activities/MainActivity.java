@@ -228,4 +228,10 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
     public FacebookShareManager getFacebookShareManager() {
         return facebookShareManager;
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
 }

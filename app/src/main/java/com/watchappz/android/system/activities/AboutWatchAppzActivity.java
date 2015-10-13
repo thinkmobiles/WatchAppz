@@ -43,4 +43,11 @@ public class AboutWatchAppzActivity extends AppCompatActivity {
         }
         return version;
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+    }
 }
