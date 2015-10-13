@@ -32,7 +32,7 @@
         android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:src="@drawable/ic_logo"/>
+        android:src="@drawable/ic_logo" />
 
     <TextView
         android:id="@+id/tvAppCopyright_FA"
@@ -41,7 +41,6 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center_vertical"
         android:layout_marginTop="40dp"
-        android:text=" 2015 WatchAppz"
         android:textSize="18sp"
         android:textColor="@android:color/white"
         android:drawableLeft="@drawable/ic_copyright"/>

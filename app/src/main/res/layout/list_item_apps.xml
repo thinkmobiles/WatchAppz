@@ -20,13 +20,11 @@
         android:id="@+id/tvAppName_LIA"
         android:layout_toRightOf="@id/ivAppIcon_LIA"
         android:layout_toLeftOf="@id/btnAppStar_LIA"
-        style="@style/AppNameTextViewLIA"
-        android:text="App name"/>
+        style="@style/AppNameTextViewLIA"/>
     <TextView
         android:id="@+id/tvAppInfo_LIA"
         android:layout_below="@id/tvAppName_LIA"
         android:layout_toRightOf="@id/ivAppIcon_LIA"
-        style="@style/AppInfoTextViewLIA"
-        android:text="App info"/>
+        style="@style/AppInfoTextViewLIA"/>
 
 </RelativeLayout>
