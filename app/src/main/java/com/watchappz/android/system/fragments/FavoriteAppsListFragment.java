@@ -7,17 +7,13 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FilterQueryProvider;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -28,14 +24,8 @@ import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.loaders.FavoriteCursorLoader;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.system.models.CursorLoaderRestartEvent;
-import com.watchappz.android.system.models.MessageEvent;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.sql.SQLException;
-import java.util.Random;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by
@@ -43,7 +33,6 @@ import de.greenrobot.event.EventBus;
  */
 
 public final class FavoriteAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, INewTextListener {
-
 
 
     public static FavoriteAppsListFragment newInstance() {
@@ -72,20 +61,19 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.v("lifecicle", "onDestroy");
         mainActivity.unregisterReceiver(mSearchBroadcastReceiver);
         mainActivity.unregisterReceiver(clickFavoriteReceiver);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        mainActivity.getLoadingDialogController().showLoadingDialog("favorite");
+        mainActivity.getLoadingDialogController().showLoadingDialog(Constants.FAVORITE_RECEIVER);
         return new FavoriteCursorLoader(mainActivity, mainActivity.getDbManager(), mainActivity.getSortType());
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, final Cursor cursor) {
-        mainActivity.getLoadingDialogController().hideLoadingDialog("favorite");
+        mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.FAVORITE_RECEIVER);
         initAdapter(cursor);
         setFilterQueryProvider();
         setEmptyView(R.string.app_favorites_empty_view);
@@ -107,17 +95,17 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         }
     }
 
-    BroadcastReceiver clickFavoriteReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver clickFavoriteReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             mainActivity.getSupportLoaderManager().restartLoader(1, null, FavoriteAppsListFragment.this);
         }
     };
 
-    BroadcastReceiver mSearchBroadcastReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mSearchBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            mainActivity.getLoadingDialogController().hideLoadingDialog("favorite");
+            mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.FAVORITE_RECEIVER);
             mainActivity.getSupportLoaderManager().destroyLoader(1);
             Cursor cursor = null;
             String query = intent.getStringExtra(Constants.QUERY);
@@ -134,7 +122,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         }
     };
 
-    private void setFilterQueryProvider()  {
+    private void setFilterQueryProvider() {
         appsListAdapter.setFilterQueryProvider(new FilterQueryProvider() {
             @Override
             public Cursor runQuery(CharSequence constraint) {
@@ -175,7 +163,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
                 if (_cursor.getCount() >= 5) {
                     mainActivity.getFacebookShareManager().shareToFacebook();
                 } else {
-                    Toast.makeText(mainActivity, "Not enough favorite apps to share", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mainActivity, mainActivity.getResources().getString(R.string.facebook_empty_favorite_apps), Toast.LENGTH_LONG).show();
                 }
             }
         });

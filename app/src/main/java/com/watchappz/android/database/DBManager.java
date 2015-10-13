@@ -293,7 +293,7 @@ public final class DBManager implements Serializable {
             return null;
         }
         String selectQuery = "SELECT  * FROM " + TABLE_APPS + " WHERE " + KEY_PACKAGE_NAME + " =? ";
-        Cursor cursor = null;
+        Cursor cursor;
         try {
             cursor = mDB.rawQuery(selectQuery, new String[]{_fieldValue});
         } catch (Exception Exp) {
@@ -417,17 +417,6 @@ public final class DBManager implements Serializable {
         ArrayList<String> packagesInDB = new ArrayList<>(getAllAppsPackagesFromDB());
         for (String packageName : installed) {
             if (!packagesInDB.isEmpty() && packagesInDB.contains(packageName)) {
-                packagesInDB.remove(packageName);
-            }
-        }
-        return packagesInDB;
-    }
-
-    private ArrayList<String> getPackageInstalled() {
-        ArrayList<String> installed = new ArrayList<>(getPackages());
-        ArrayList<String> packagesInDB = new ArrayList<>(getAllAppsPackagesFromDB());
-        for (String packageName : packagesInDB) {
-            if (!packagesInDB.isEmpty() && installed.contains(packageName)) {
                 packagesInDB.remove(packageName);
             }
         }

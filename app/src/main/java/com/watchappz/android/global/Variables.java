@@ -9,7 +9,5 @@ import android.graphics.drawable.BitmapDrawable;
  */
 
 public abstract class Variables {
-
-    public static boolean isFavoriteChanged      = false;
     public static Bitmap bitmap      = null;
 }

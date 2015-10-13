@@ -3,6 +3,7 @@ package com.watchappz.android.system.activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.facebook.FacebookSdk;
@@ -18,7 +19,6 @@ import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.interfaces.ISendSortTypeListener;
-import com.watchappz.android.system.fragments.AboutWatchAppzFragment;
 import com.watchappz.android.system.fragments.AppViewPagerFragment;
 import com.watchappz.android.system.fragments.HelpFragment;
 import com.watchappz.android.system.fragments.SettingsFragment;
@@ -29,11 +29,8 @@ import com.watchappz.android.utils.LoadingDialogController;
 
 public class MainActivity extends BaseActivity implements ISendSortTypeListener {
 
-    private AccessibilityManager accessibilityManager;
     private DBManager dbManager;
-    private FavoriteCountManager mFavoriteCountManager;
     private LoadingDialogController mLoadingDialogController;
-    private SearchManager searchManager;
     protected SearchView mSearchView;
     private INewTextListener iNewTextAllAppsListener;
     private INewTextListener iNewTextFavoriteListener;
@@ -79,7 +76,7 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
 
 
     private void initAccessibilityManager() {
-        accessibilityManager = new AccessibilityManager(this);
+        AccessibilityManager accessibilityManager = new AccessibilityManager(this);
         accessibilityManager.startService();
     }
 
@@ -99,10 +96,7 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
                 mFragmentNavigator.clearBackStackToFragmentOrShow(HelpFragment.newInstance());
                 break;
             case R.id.action_over_watchappz:
-//                mFragmentNavigator.clearBackStackToFragmentOrShow(AboutWatchAppzFragment.newInstance());
-                Intent intent = new Intent(this, AboutWatchAppzActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+                startAboutActivity();
                 break;
         }
 
@@ -115,7 +109,7 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
     }
 
     private void initFavoriteManager() {
-        mFavoriteCountManager = new FavoriteCountManager(dbManager);
+        FavoriteCountManager mFavoriteCountManager = new FavoriteCountManager(dbManager);
         mFavoriteCountManager.setFavorite(dbManager.getAllData());
     }
 
@@ -137,7 +131,7 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
         menuInflater.inflate(R.menu.menu_main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
 
-        searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         mSearchView = (SearchView) searchItem.getActionView();
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         mSearchView.setActivated(true);
@@ -185,10 +179,6 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
         sendBroadcast(broadcastIntent);
     }
 
-    public SearchView getSearchView() {
-        return mSearchView;
-    }
-
     @Override
     public void getSortType(int _type) {
         sortType = _type;
@@ -200,10 +190,14 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
 
     private void initFloatingButton() {
         facebook = new FloatingActionButton(getBaseContext());
+        Drawable icon;
         if (android.os.Build.VERSION.SDK_INT >= 21) {
-            facebook.setIconDrawable(getResources().getDrawable(R.drawable.ic_fb_icon, this.getTheme()));
+            icon = getResources().getDrawable(R.drawable.ic_fb_icon, this.getTheme());
         } else {
-            facebook.setIconDrawable(getResources().getDrawable(R.drawable.ic_fb_icon));
+            icon = getResources().getDrawable(R.drawable.ic_fb_icon);
+        }
+        if (icon != null) {
+            facebook.setIconDrawable(icon);
         }
         faMenu.addButton(facebook);
     }
@@ -233,5 +227,12 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
     public void onBackPressed() {
         super.onBackPressed();
 
+    }
+
+
+    public void startAboutActivity() {
+        Intent intent = new Intent(this, AboutWatchAppzActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
     }
 }

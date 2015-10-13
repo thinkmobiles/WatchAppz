@@ -3,9 +3,6 @@ package com.watchappz.android.system.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
-
-import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.watchappz.android.R;
 import com.watchappz.android.utils.FragmentNavigator;

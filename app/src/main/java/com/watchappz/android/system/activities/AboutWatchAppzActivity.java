@@ -4,7 +4,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.watchappz.android.R;
@@ -16,7 +15,6 @@ import com.watchappz.android.R;
 
 public class AboutWatchAppzActivity extends AppCompatActivity {
 
-    private ImageView ivLogo;
     private TextView tvAppVersion;
 
     @Override
@@ -24,11 +22,10 @@ public class AboutWatchAppzActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_about);
         findViews();
-        tvAppVersion.setText(getResources().getString(R.string.app_version) + " " + getAppVersion());
+        tvAppVersion.setText(String.format("%s %s", getResources().getString(R.string.app_version), getAppVersion()));
     }
 
     private void findViews() {
-        ivLogo = (ImageView) findViewById(R.id.ivLogo_FA);
         tvAppVersion = (TextView) findViewById(R.id.tvAppVersion_FA);
     }
 

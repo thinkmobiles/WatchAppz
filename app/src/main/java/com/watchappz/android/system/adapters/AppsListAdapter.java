@@ -2,9 +2,7 @@ package com.watchappz.android.system.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +18,6 @@ import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.utils.image_loader.ImageLoader;
 
-import java.util.HashMap;
-
 /**
  * Created by
  * mRogach on 15.09.2015.
@@ -31,14 +27,12 @@ public final class AppsListAdapter extends CursorAdapter {
 
     private Context mContext;
     private DBManager dbManager;
-    private HashMap<String, Drawable> iconsMap;
     private ImageLoader imageLoader;
 
     public AppsListAdapter(Context context, Cursor cursor, final DBManager _dbManager) {
         super(context, cursor, 0);
         mContext = context;
         this.dbManager = _dbManager;
-//        iconsMap = loadIcons(cursor);
         imageLoader = new ImageLoader(context);
     }
 
@@ -102,9 +96,6 @@ public final class AppsListAdapter extends CursorAdapter {
     }
 
     private void setAppIcon(final AppViewHolder appViewHolder, final AppModel _appModel) {
-//        if (iconsMap.containsKey(_appModel.getAppPackageName())) {
-//            appViewHolder.ivAppIcon.setImageDrawable(iconsMap.get(_appModel.getAppPackageName()));
-//        }
         imageLoader.displayImage(_appModel.getAppPackageName(), appViewHolder.ivAppIcon);
     }
 
@@ -141,22 +132,6 @@ public final class AppsListAdapter extends CursorAdapter {
                     }
                 })
                 .show();
-    }
-
-    private HashMap<String, Drawable> loadIcons(final Cursor _cursor) {
-        HashMap<String, Drawable> iconsMap = new HashMap<>();
-        if (_cursor != null) {
-            _cursor.moveToFirst();
-            while (!_cursor.isAfterLast()) {
-                try {
-                    iconsMap.put(_cursor.getString(5), mContext.getPackageManager().getApplicationIcon(_cursor.getString(5)));
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-                _cursor.moveToNext();
-            }
-        }
-        return iconsMap;
     }
 
     private void setDrawable(final View _view, final int _idView, final int _idDrawable) {

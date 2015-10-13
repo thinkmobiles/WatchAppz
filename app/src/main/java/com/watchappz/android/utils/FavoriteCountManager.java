@@ -32,9 +32,11 @@ public final class FavoriteCountManager {
         Map<String, Float> allAppsUsegeValues = new HashMap<>();
             Log.v("Apps", String.valueOf(_cursor.getCount()));
         ArrayList<AppModel> apps = (ArrayList<AppModel>) mDbManager.getAllApps();
+        if (apps != null) {
             for (AppModel appModel : apps) {
                 allAppsUsegeValues.put(appModel.getAppPackageName(), getUsegeValueInPersent(apps, appModel.getAppUseTotalCount()));
             }
+        }
         if (allAppsUsegeValues.isEmpty()) {
             return;
         }
@@ -55,10 +57,7 @@ public final class FavoriteCountManager {
     }
 
     private boolean isMoreThenEightyPersent(final Map.Entry<String, Float> _maxEntry, final Map.Entry<String, Float> _entry) {
-        if ((_entry.getValue() / _maxEntry.getValue() * 100) >= 80) {
-            return true;
-        }
-        return false;
+        return (_entry.getValue() / _maxEntry.getValue() * 100) >= 80;
     }
 
     private long getTotalCountFromAllApps(final ArrayList<AppModel> _list) {

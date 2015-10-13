@@ -5,5 +5,5 @@ package com.watchappz.android.system.models;
  * mRogach on 12.10.2015.
  */
 
-public class CursorLoaderRestartEvent {
+public final class CursorLoaderRestartEvent {
 }

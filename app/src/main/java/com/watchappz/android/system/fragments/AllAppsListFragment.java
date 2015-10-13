@@ -51,35 +51,24 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
         if (isNewAccessibilityEvent) {
             mainActivity.getSupportLoaderManager().restartLoader(3, null, this);
         }
-        Log.v("AllApps", "onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.v("AllApps", "onPause");
-//        mainActivity.getSupportLoaderManager().destroyLoader(3);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.v("lifecicle", "onDestroy");
         mainActivity.unregisterReceiver(mSearchBroadcastReceiver);
         mainActivity.unregisterReceiver(clickFavoriteReceiver);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.v("lifecicle", "onCreateLoader");
-        mainActivity.getLoadingDialogController().showLoadingDialog("all");
+        mainActivity.getLoadingDialogController().showLoadingDialog(Constants.All_APPS_RECEIVER);
         return new AllAppsCursorLoader(mainActivity, mainActivity.getDbManager(), mainActivity.getSortType());
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Log.v("lifecicle", "onLoadFinished");
-        mainActivity.getLoadingDialogController().hideLoadingDialog("all");
+        mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.All_APPS_RECEIVER);
         initAdapter(cursor);
         setFilterQueryProvider();
         setEmptyView(R.string.app_all_empty_view);
@@ -99,12 +88,11 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
         }
     }
 
-    BroadcastReceiver mSearchBroadcastReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mSearchBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            mainActivity.getLoadingDialogController().hideLoadingDialog("all");
+            mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.All_APPS_RECEIVER);
             mainActivity.getSupportLoaderManager().destroyLoader(3);
-            Log.v("lifecicle", "onReceive");
             Cursor cursor = null;
             String query = intent.getStringExtra(Constants.QUERY);
             try {
@@ -120,7 +108,7 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
         }
     };
 
-    BroadcastReceiver clickFavoriteReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver clickFavoriteReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             mainActivity.getSupportLoaderManager().restartLoader(3, null, AllAppsListFragment.this);

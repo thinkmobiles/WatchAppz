@@ -5,12 +5,9 @@ import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.os.Parcelable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
-import android.widget.Toast;
 
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
@@ -19,15 +16,10 @@ import com.watchappz.android.system.models.CursorLoaderRestartEvent;
 import com.watchappz.android.system.models.MessageEvent;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-
-import static com.watchappz.android.database.DBConstants.KEY_TODAY_COUNT;
-import static com.watchappz.android.database.DBConstants.KEY_TOTAL_COUNT;
 
 /**
  * Created by
@@ -38,7 +30,6 @@ public final class AppInfoService extends AccessibilityService {
 
     private DBManager dbManager;
     private AndroidManager mAndroidManager;
-    private DateManager dateManager;
     private String mPackageName;
 
 
@@ -131,7 +122,7 @@ public final class AppInfoService extends AccessibilityService {
         mAndroidManager = new AndroidManager(this);
         dbManager = new DBManager(getApplicationContext());
         dbManager.open();
-        dateManager = new DateManager(this);
+        DateManager dateManager = new DateManager(this);
         dateManager.startAlarmManager();
     }
 

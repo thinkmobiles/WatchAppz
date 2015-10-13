@@ -34,7 +34,6 @@ public class AppViewPagerFragment extends BaseFragment {
         initViewPager();
         initTabLayout();
         initTollbar();
-        Log.v("ViewPager", "onActivityCreated");
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -69,7 +68,6 @@ public class AppViewPagerFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mInflatedView = inflater.inflate(R.layout.fragment_view_pager, container, false);
         findViews();
-        Log.v("ViewPager", "onCreateView");
         return mInflatedView;
     }
 

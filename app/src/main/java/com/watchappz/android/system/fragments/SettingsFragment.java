@@ -1,30 +1,18 @@
 package com.watchappz.android.system.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.ISendSortTypeListener;
-import com.watchappz.android.system.activities.AboutWatchAppzActivity;
-
-import org.w3c.dom.Text;
-
-import java.io.Serializable;
 
 /**
  * Created by
@@ -105,10 +93,7 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
                 mainActivity.getFragmentNavigator().clearBackStackToFragmentOrShow(HelpFragment.newInstance());
                 break;
             case R.id.tvOverWatchAppz_FS:
-//                mainActivity.getFragmentNavigator().clearBackStackToFragmentOrShow(AboutWatchAppzFragment.newInstance());
-                Intent intent = new Intent(mainActivity, AboutWatchAppzActivity.class);
-                startActivity(intent);
-                mainActivity.overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+                mainActivity.startAboutActivity();
                 break;
 
         }

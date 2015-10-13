@@ -12,9 +12,7 @@ import com.watchappz.android.R;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -152,9 +150,7 @@ public final class ImageLoader {
     boolean imageViewReused(PhotoToLoad photoToLoad) {
 
         String tag = imageViews.get(photoToLoad.imageView);
-        if (tag == null || !tag.equals(photoToLoad.packageName))
-            return true;
-        return false;
+        return tag == null || !tag.equals(photoToLoad.packageName);
     }
 
     class BitmapDisplayer implements Runnable {

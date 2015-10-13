@@ -21,15 +21,12 @@ import com.watchappz.android.system.models.CursorLoaderRestartEvent;
 
 import java.sql.SQLException;
 
-import de.greenrobot.event.EventBus;
-
 /**
  * Created by
  * mRogach on 17.09.2015.
  */
 
 public final class RecentlyUsedAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, INewTextListener {
-
 
 
     public static RecentlyUsedAppsListFragment newInstance() {
@@ -57,20 +54,19 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.v("lifecicle", "onDestroy");
         mainActivity.unregisterReceiver(mSearchBroadcastReceiver);
         mainActivity.unregisterReceiver(clickFavoriteReceiver);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        mainActivity.getLoadingDialogController().showLoadingDialog("recently");
+        mainActivity.getLoadingDialogController().showLoadingDialog(Constants.RECENTLY_RECEIVER);
         return new RecentlyCursorLoader(mainActivity, mainActivity.getDbManager(), mainActivity.getSortType());
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        mainActivity.getLoadingDialogController().hideLoadingDialog("recently");
+        mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.RECENTLY_RECEIVER);
         initAdapter(cursor);
         setFilterQueryProvider();
         setEmptyView(R.string.app_resently_used_empty_view);
@@ -90,10 +86,10 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
         }
     }
 
-    BroadcastReceiver mSearchBroadcastReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mSearchBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            mainActivity.getLoadingDialogController().hideLoadingDialog("recently");
+            mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.RECENTLY_RECEIVER);
             mainActivity.getSupportLoaderManager().destroyLoader(2);
             Cursor cursor = null;
             String query = intent.getStringExtra(Constants.QUERY);
@@ -110,14 +106,14 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
         }
     };
 
-    BroadcastReceiver clickFavoriteReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver clickFavoriteReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             mainActivity.getSupportLoaderManager().restartLoader(2, null, RecentlyUsedAppsListFragment.this);
         }
     };
 
-    private void setFilterQueryProvider()  {
+    private void setFilterQueryProvider() {
         appsListAdapter.setFilterQueryProvider(new FilterQueryProvider() {
             @Override
             public Cursor runQuery(CharSequence constraint) {

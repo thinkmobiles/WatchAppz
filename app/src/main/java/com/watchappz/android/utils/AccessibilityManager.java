@@ -25,7 +25,7 @@ public final class AccessibilityManager implements Serializable {
     }
 
     public void startService() {
-        if (!isAccessibilityEnabled(mActivity, "com.watchappz.android/.utils.AppInfoService")) {
+        if (!isAccessibilityEnabled(mActivity, Constants.APP_INFO_SERVICE)) {
             Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
             mActivity.startActivityForResult(intent, Constants.REQUEST_ENABLE);
         }
