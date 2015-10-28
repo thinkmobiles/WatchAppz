@@ -64,9 +64,10 @@
             android:name="com.facebook.FacebookContentProvider"
             android:exported="true" />
 
-        <receiver android:name=".utils.receivers.PackageInstallReceiver">
+        <receiver android:name="com.watchappz.android.utils.receivers.PackageInstallReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <category android:name="com.tmobile.intent.category.THEME_PACKAGE_INSTALL_STATE_CHANGE" />
                 <data android:scheme="package"/>
             </intent-filter>
         </receiver>
