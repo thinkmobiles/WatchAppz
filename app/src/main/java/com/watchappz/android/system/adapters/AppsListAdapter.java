@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -48,7 +49,7 @@ public final class AppsListAdapter extends CursorAdapter {
         View view = LayoutInflater.from(context).inflate(R.layout.list_item_apps, viewGroup, false);
         AppViewHolder appViewHolder = new AppViewHolder();
         appViewHolder.ivAppIcon = (ImageView) view.findViewById(R.id.ivAppIcon_LIA);
-        appViewHolder.btnAppStar = (Button) view.findViewById(R.id.btnAppStar_LIA);
+        appViewHolder.btnAppStar = (ImageView) view.findViewById(R.id.btnAppStar_LIA);
         appViewHolder.tvAppName = (TextView) view.findViewById(R.id.tvAppName_LIA);
         appViewHolder.tvAppInfo = (TextView) view.findViewById(R.id.tvAppInfo_LIA);
         view.setTag(appViewHolder);
@@ -57,7 +58,7 @@ public final class AppsListAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        AppViewHolder appViewHolder = (AppViewHolder) view.getTag();
+        final AppViewHolder appViewHolder = (AppViewHolder) view.getTag();
         final AppModel appModel = dbManager.getAppFromCursor(cursor);
         appViewHolder.tvAppName.setText(appModel.getAppName());
         appViewHolder.tvAppInfo.setText(getAppInfo(appModel));
@@ -67,7 +68,7 @@ public final class AppsListAdapter extends CursorAdapter {
         appViewHolder.btnAppStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(v, appModel.getAppPackageName());
+                showDialog(appViewHolder.btnAppStar, appModel.getAppPackageName());
             }
         });
     }
@@ -76,7 +77,7 @@ public final class AppsListAdapter extends CursorAdapter {
 
         private TextView tvAppName, tvAppInfo;
         private ImageView ivAppIcon;
-        private Button btnAppStar;
+        private ImageView btnAppStar;
 
     }
 
@@ -89,9 +90,9 @@ public final class AppsListAdapter extends CursorAdapter {
 
     private void setStarColor(final AppViewHolder appViewHolder, final AppModel _appModel) {
         if (_appModel.isFavourite() == 1) {
-            setDrawable(appViewHolder.btnAppStar, R.id.btnAppStar_LIA, R.drawable.ic_star_gold);
+            setDrawable(appViewHolder.btnAppStar, R.drawable.ic_star_gold);
         } else {
-            setDrawable(appViewHolder.btnAppStar, R.id.btnAppStar_LIA, R.drawable.ic_star_grey);
+            setDrawable(appViewHolder.btnAppStar, R.drawable.ic_star_grey);
         }
     }
 
@@ -99,7 +100,7 @@ public final class AppsListAdapter extends CursorAdapter {
         imageLoader.displayImage(_appModel.getAppPackageName(), appViewHolder.ivAppIcon);
     }
 
-    private void showDialog(final View v, final String _packageName) {
+    private void showDialog(final ImageView v, final String _packageName) {
         final AppModel appModel = dbManager.getApp(_packageName);
         new MaterialDialog.Builder(mContext)
                 .backgroundColorRes(android.R.color.white)
@@ -116,7 +117,7 @@ public final class AppsListAdapter extends CursorAdapter {
                         super.onPositive(dialog);
                         if (appModel != null && appModel.isFavourite() == 0) {
                             dbManager.addToFavoriteByTap(_packageName);
-                            setDrawable(v, R.id.btnAppStar_LIA, R.drawable.ic_star_gold);
+                            setDrawable(v, R.drawable.ic_star_gold);
                             sendSearchBroadcastFavorute();
                         }
                     }
@@ -126,7 +127,7 @@ public final class AppsListAdapter extends CursorAdapter {
                         super.onNegative(dialog);
                         if (appModel != null && appModel.isFavourite() == 1) {
                             dbManager.removeFromFavorite(_packageName);
-                            setDrawable(v, R.id.btnAppStar_LIA, R.drawable.ic_star_grey);
+                            setDrawable(v, R.drawable.ic_star_grey);
                             sendSearchBroadcastFavorute();
                         }
                     }
@@ -134,13 +135,8 @@ public final class AppsListAdapter extends CursorAdapter {
                 .show();
     }
 
-    private void setDrawable(final View _view, final int _idView, final int _idDrawable) {
-        if (android.os.Build.VERSION.SDK_INT >= 21) {
-            _view.findViewById(_idView).setBackground(mContext.getResources()
-                    .getDrawable(_idDrawable, mContext.getTheme()));
-        } else {
-            _view.findViewById(_idView).setBackground(mContext.getResources().getDrawable(_idDrawable));
-        }
+    private void setDrawable(final ImageView _view, final int _idDrawable) {
+            _view.setImageResource(_idDrawable);
     }
 
     private void sendSearchBroadcastFavorute() {

@@ -14,6 +14,7 @@ import android.widget.FilterQueryProvider;
 import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.INewTextListener;
+import com.watchappz.android.interfaces.IReloadList;
 import com.watchappz.android.loaders.RecentlyCursorLoader;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.system.models.CursorLoaderRestartEvent;
@@ -25,7 +26,7 @@ import java.sql.SQLException;
  * mRogach on 17.09.2015.
  */
 
-public final class RecentlyUsedAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, INewTextListener {
+public final class RecentlyUsedAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, INewTextListener, IReloadList {
 
 
     public static RecentlyUsedAppsListFragment newInstance() {
@@ -40,6 +41,7 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
         mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
         mainActivity.registerReceiver(clickFavoriteReceiver, mFavoriteFilter);
         mainActivity.getSupportLoaderManager().initLoader(2, null, this);
+        mainActivity.addiReloadList(this);
     }
 
     @Override
@@ -133,5 +135,10 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
 
     public void onEvent(CursorLoaderRestartEvent event) {
         isNewAccessibilityEvent = true;
+    }
+
+    @Override
+    public void reloadList() {
+        mainActivity.getSupportLoaderManager().restartLoader(2, null, this);
     }
 }

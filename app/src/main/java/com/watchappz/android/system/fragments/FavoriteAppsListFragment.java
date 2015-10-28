@@ -21,6 +21,7 @@ import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.global.Variables;
 import com.watchappz.android.interfaces.INewTextListener;
+import com.watchappz.android.interfaces.IReloadList;
 import com.watchappz.android.loaders.FavoriteCursorLoader;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.system.models.CursorLoaderRestartEvent;
@@ -32,7 +33,7 @@ import java.sql.SQLException;
  * mRogach on 17.09.2015.
  */
 
-public final class FavoriteAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, INewTextListener {
+public final class FavoriteAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, INewTextListener, IReloadList {
 
 
     public static FavoriteAppsListFragment newInstance() {
@@ -48,6 +49,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         mainActivity.registerReceiver(clickFavoriteReceiver, mFavoriteFilter);
         mainActivity.setFloatingMenuVisibility(true);
         mainActivity.getSupportLoaderManager().initLoader(1, null, this);
+        mainActivity.addiReloadList(this);
     }
 
     @Override
@@ -171,5 +173,10 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     public void onEvent(CursorLoaderRestartEvent event) {
         isNewAccessibilityEvent = true;
+    }
+
+    @Override
+    public void reloadList() {
+        mainActivity.getSupportLoaderManager().restartLoader(1, null, this);
     }
 }

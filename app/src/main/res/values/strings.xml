@@ -13,7 +13,9 @@
     <string name="app_use_today">today</string>
     <string name="app_use_total">total</string>
     <string name="app_sorts_gebruikt">Sort apps on most used</string>
+    <string name="app_sorts_gebruikt_menu">Sort on most used</string>
     <string name="app_sorts_data">Sort apps on data usage</string>
+    <string name="app_sorts_data_menu">Sort on data usage</string>
     <string name="app_sorts_minste_gebruikt">Sort apps on lowest use</string>
     <string name="app_favorites_empty_view">No Favorite Apps</string>
     <string name="app_resently_used_empty_view">No Resently used Apps</string>

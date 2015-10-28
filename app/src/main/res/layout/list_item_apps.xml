@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
     
     <ImageView
         android:id="@+id/ivAppIcon_LIA"
         style="@style/AppIconLIA"
         android:src="@mipmap/ic_launcher"/>
 
-    <Button
-        android:id="@+id/btnAppStar_LIA"
-        style="@style/AppStarIconLIA"
-        android:background="@drawable/ic_star_grey"
-        android:focusable="false"
-        />
+        <ImageView
+            android:id="@+id/btnAppStar_LIA"
+            style="@style/AppStarIconLIA"
+            tools:src="@drawable/ic_star_gold"
+            android:paddingLeft="20dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
+            android:background="@drawable/settings_textview_slector"
+            />
 
     <TextView
         android:id="@+id/tvAppName_LIA"

@@ -14,10 +14,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+
 import com.watchappz.android.R;
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.INewTextListener;
+import com.watchappz.android.interfaces.IReloadList;
 import com.watchappz.android.interfaces.ISendSortTypeListener;
 import com.watchappz.android.system.fragments.AppViewPagerFragment;
 import com.watchappz.android.system.fragments.HelpFragment;
@@ -26,6 +28,9 @@ import com.watchappz.android.utils.AccessibilityManager;
 import com.watchappz.android.utils.FacebookShareManager;
 import com.watchappz.android.utils.FavoriteCountManager;
 import com.watchappz.android.utils.LoadingDialogController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements ISendSortTypeListener {
 
@@ -38,6 +43,7 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
     private int sortType;
     private FacebookShareManager facebookShareManager;
     protected FloatingActionButton facebook;
+    private List<IReloadList> reloadLists;
 
     public final void setINewTextListener(final INewTextListener _iNewTextListener) {
         iNewTextAllAppsListener = _iNewTextListener;
@@ -49,6 +55,10 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
 
     public final void setINewTextRecentlyListener(final INewTextListener _iNewTextListener) {
         iNewTextRecentlyListener = _iNewTextListener;
+    }
+
+    public void addiReloadList(final IReloadList _iReloadList) {
+        reloadLists.add(_iReloadList);
     }
 
     public FloatingActionButton getFacebook() {
@@ -66,6 +76,7 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
         initFacebook();
         mFragmentNavigator.replaceFragment(AppViewPagerFragment.newInstance());
         facebookButtonClick();
+        reloadLists = new ArrayList<>();
     }
 
     @Override
@@ -91,6 +102,14 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
         switch (item.getItemId()) {
             case R.id.action_settings:
                 mFragmentNavigator.clearBackStackToFragmentOrShow(SettingsFragment.newInstance());
+                break;
+            case R.id.action_sort_data:
+                sortType = Constants.SORT_TYPE_DATA_MENU;
+                reloadLists();
+                break;
+            case R.id.action_sort_most_used:
+                sortType = Constants.SORT_TYPE_MOST_MENU;
+                reloadLists();
                 break;
             case R.id.action_help:
                 mFragmentNavigator.clearBackStackToFragmentOrShow(HelpFragment.newInstance());
@@ -223,10 +242,10 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
         return facebookShareManager;
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
+    private void reloadLists() {
+        for (IReloadList iReloadList : reloadLists) {
+            iReloadList.reloadList();
+        }
     }
 
 

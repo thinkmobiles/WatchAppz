@@ -24,4 +24,6 @@ public abstract class Constants {
     public static final int SORT_TYPE_MOST        = 1;
     public static final int SORT_TYPE_DATA        = 2;
     public static final int SORT_TYPE_LOWEST      = 3;
+    public static final int SORT_TYPE_DATA_MENU   = 4;
+    public static final int SORT_TYPE_MOST_MENU   = 5;
 }

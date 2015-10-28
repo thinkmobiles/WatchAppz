@@ -14,6 +14,7 @@ import android.widget.FilterQueryProvider;
 import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.INewTextListener;
+import com.watchappz.android.interfaces.IReloadList;
 import com.watchappz.android.loaders.AllAppsCursorLoader;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.system.models.CursorLoaderRestartEvent;
@@ -26,7 +27,7 @@ import java.sql.SQLException;
  */
 
 public final class AllAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        AdapterView.OnItemClickListener, INewTextListener {
+        AdapterView.OnItemClickListener, INewTextListener, IReloadList {
 
     public static AllAppsListFragment newInstance() {
         return new AllAppsListFragment();
@@ -40,6 +41,7 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
         mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
         mainActivity.registerReceiver(clickFavoriteReceiver, mFavoriteFilter);
         mainActivity.getSupportLoaderManager().initLoader(3, null, this);
+        mainActivity.addiReloadList(this);
     }
 
     @Override
@@ -133,5 +135,10 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
 
     public void onEvent(CursorLoaderRestartEvent event) {
         isNewAccessibilityEvent = true;
+    }
+
+    @Override
+    public void reloadList() {
+        mainActivity.getSupportLoaderManager().restartLoader(3, null, this);
     }
 }
