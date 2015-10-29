@@ -43,7 +43,7 @@ public final class HelpFragment extends BaseFragment {
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_search).setVisible(false);
+        menu.setGroupVisible(R.id.groupMenu, false);
         super.onPrepareOptionsMenu(menu);
     }
 

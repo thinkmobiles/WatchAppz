@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +74,7 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_search).setVisible(false);
+        menu.setGroupVisible(R.id.groupMenu, false);
         super.onPrepareOptionsMenu(menu);
     }
 
