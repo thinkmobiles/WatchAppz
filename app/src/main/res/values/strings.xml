@@ -14,6 +14,7 @@
     <string name="app_use_total">total</string>
     <string name="app_sorts_gebruikt">Sort apps on most used</string>
     <string name="app_sorts_gebruikt_menu">Sort on most used</string>
+    <string name="app_sorts_default_menu">Default sort</string>
     <string name="app_sorts_data">Sort apps on data usage</string>
     <string name="app_sorts_data_menu">Sort on data usage</string>
     <string name="app_sorts_minste_gebruikt">Sort apps on lowest use</string>
