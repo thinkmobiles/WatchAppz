@@ -44,6 +44,7 @@ public final class HelpFragment extends BaseFragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         menu.setGroupVisible(R.id.groupMenu, false);
+        menu.setGroupVisible(R.id.groupOptions, false);
         super.onPrepareOptionsMenu(menu);
     }
 

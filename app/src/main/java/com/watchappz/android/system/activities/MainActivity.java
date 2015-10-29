@@ -74,7 +74,8 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
         initLoadingController();
         initFloatingButton();
         initFacebook();
-        mFragmentNavigator.replaceFragment(AppViewPagerFragment.newInstance());
+        if (savedInstanceState == null)
+            mFragmentNavigator.replaceFragment(AppViewPagerFragment.newInstance());
         facebookButtonClick();
         reloadLists = new ArrayList<>();
     }
@@ -158,10 +159,18 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
         mSearchView = (SearchView) searchItem.getActionView();
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         mSearchView.setActivated(true);
+
+        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menu.setGroupVisible(R.id.groupOptions, false);
+            }
+        });
         mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
                 sendSearchBroadcastQuery("");
+                menu.setGroupVisible(R.id.groupOptions, true);
                 return false;
             }
         });

@@ -10,37 +10,39 @@
             android:title="@string/menu_search"
             app:actionViewClass="android.support.v7.widget.SearchView"
             app:showAsAction="always" />
+        <group android:id="@+id/groupOptions">
 
-        <item
-            android:id="@+id/action_settings"
-            android:orderInCategory="100"
-            android:title="@string/action_settings"
-            app:showAsAction="never" />
-        <item
-            android:id="@+id/action_sort_data"
-            android:orderInCategory="100"
-            android:title="@string/app_sorts_data_menu"
-            app:showAsAction="never" />
-        <item
-            android:id="@+id/action_sort_most_used"
-            android:orderInCategory="100"
-            android:title="@string/app_sorts_gebruikt_menu"
-            app:showAsAction="never" />
+            <item
+                android:id="@+id/action_settings"
+                android:orderInCategory="100"
+                android:title="@string/action_settings"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_sort_data"
+                android:orderInCategory="100"
+                android:title="@string/app_sorts_data_menu"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_sort_most_used"
+                android:orderInCategory="100"
+                android:title="@string/app_sorts_gebruikt_menu"
+                app:showAsAction="never" />
 
-        <item
-            android:id="@+id/action_sort_default"
-            android:orderInCategory="100"
-            android:title="@string/app_sorts_default_menu"
-            app:showAsAction="never" />
-        <item
-            android:id="@+id/action_help"
-            android:orderInCategory="100"
-            android:title="@string/action_help"
-            app:showAsAction="never" />
-        <item
-            android:id="@+id/action_over_watchappz"
-            android:orderInCategory="100"
-            android:title="@string/action_over_watchappz"
-            app:showAsAction="never" />
+            <item
+                android:id="@+id/action_sort_default"
+                android:orderInCategory="100"
+                android:title="@string/app_sorts_default_menu"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_help"
+                android:orderInCategory="100"
+                android:title="@string/action_help"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_over_watchappz"
+                android:orderInCategory="100"
+                android:title="@string/action_over_watchappz"
+                app:showAsAction="never" />
+        </group>
     </group>
 </menu>

@@ -75,6 +75,7 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         menu.setGroupVisible(R.id.groupMenu, false);
+        menu.setGroupVisible(R.id.groupOptions, false);
         super.onPrepareOptionsMenu(menu);
     }
 
