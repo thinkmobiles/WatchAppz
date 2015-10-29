@@ -105,16 +105,22 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
                 mFragmentNavigator.clearBackStackToFragmentOrShow(SettingsFragment.newInstance());
                 break;
             case R.id.action_sort_data:
-                sortType = Constants.SORT_TYPE_DATA_MENU;
-                reloadLists();
+                if (sortType != Constants.SORT_TYPE_DATA_MENU) {
+                    sortType = Constants.SORT_TYPE_DATA_MENU;
+                    reloadLists();
+                }
                 break;
             case R.id.action_sort_most_used:
-                sortType = Constants.SORT_TYPE_MOST_MENU;
-                reloadLists();
+                if (sortType != Constants.SORT_TYPE_MOST_MENU) {
+                    sortType = Constants.SORT_TYPE_MOST_MENU;
+                    reloadLists();
+                }
                 break;
             case R.id.action_sort_default:
-                sortType = Constants.SORT_TYPE_MOST;
-                reloadLists();
+                if (sortType != Constants.SORT_TYPE_MOST) {
+                    sortType = Constants.SORT_TYPE_MOST;
+                    reloadLists();
+                }
                 break;
             case R.id.action_help:
                 mFragmentNavigator.clearBackStackToFragmentOrShow(HelpFragment.newInstance());
