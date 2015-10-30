@@ -117,8 +117,8 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
                 }
                 break;
             case R.id.action_sort_default:
-                if (sortType != Constants.SORT_TYPE_MOST) {
-                    sortType = Constants.SORT_TYPE_MOST;
+                if (sortType != Constants.SORT_TYPE_DEFAULT) {
+                    sortType = Constants.SORT_TYPE_DEFAULT;
                     reloadLists();
                 }
                 break;

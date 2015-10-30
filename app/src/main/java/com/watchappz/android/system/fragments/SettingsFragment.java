@@ -153,6 +153,16 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
                 rbSortMostUsed.setChecked(false);
                 rbSortDataUsed.setChecked(false);
                 break;
+            case Constants.SORT_TYPE_DATA_MENU:
+                rbSortDataUsed.setChecked(true);
+                rbSortMostUsed.setChecked(false);
+                rbSortLowestUsed.setChecked(false);
+                break;
+            case Constants.SORT_TYPE_MOST_MENU:
+                rbSortMostUsed.setChecked(true);
+                rbSortDataUsed.setChecked(false);
+                rbSortLowestUsed.setChecked(false);
+                break;
             default:
                 rbSortMostUsed.setChecked(true);
                 rbSortDataUsed.setChecked(false);

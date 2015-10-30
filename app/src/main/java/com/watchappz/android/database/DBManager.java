@@ -354,7 +354,7 @@ public final class DBManager implements Serializable {
         Cursor cursor;
         switch (_sortType) {
             case 1:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_NAME + " ASC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
                 break;
             case 2:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_APP_SIZE + " DESC");
@@ -367,6 +367,9 @@ public final class DBManager implements Serializable {
                 break;
             case 5:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
+                break;
+            case 6:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_NAME + " ASC");
                 break;
             default:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_NAME + " ASC");
@@ -378,7 +381,7 @@ public final class DBManager implements Serializable {
         Cursor cursor;
         switch (_sortType) {
             case 1:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_DATE_USEGE + " DESC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
                 break;
             case 2:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_APP_SIZE + " DESC");
@@ -392,6 +395,9 @@ public final class DBManager implements Serializable {
             case 5:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
                 break;
+            case 6:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_DATE_USEGE + " DESC");
+                break;
             default:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_DATE_USEGE + " DESC");
         }
@@ -402,7 +408,7 @@ public final class DBManager implements Serializable {
         Cursor cursor;
         switch (_sortType) {
             case 1:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_NAME + " ASC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
                 break;
             case 2:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
@@ -415,6 +421,9 @@ public final class DBManager implements Serializable {
                 break;
             case 5:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+                break;
+            case 6:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_NAME + " ASC");
                 break;
             default:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_NAME + " ASC");
@@ -426,7 +435,7 @@ public final class DBManager implements Serializable {
         Cursor cursor;
         switch (_sortType) {
             case 1:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_DATE_USEGE + " DESC");
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
                 break;
             case 2:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
@@ -439,6 +448,9 @@ public final class DBManager implements Serializable {
                 break;
             case 5:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+                break;
+            case 6:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_DATE_USEGE + " DESC");
                 break;
             default:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null,  KEY_DATE_USEGE + " DESC");
