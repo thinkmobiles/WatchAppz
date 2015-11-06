@@ -22,6 +22,7 @@ import com.watchappz.android.interfaces.IReloadList;
 import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.interfaces.ISendSortTypeListener;
 import com.watchappz.android.system.fragments.AppViewPagerFragment;
+import com.watchappz.android.system.fragments.DragAndDropFavoriteListFragment;
 import com.watchappz.android.system.fragments.HelpFragment;
 import com.watchappz.android.system.fragments.SettingsFragment;
 import com.watchappz.android.utils.AccessibilityManager;
@@ -115,6 +116,9 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
                     sortType = Constants.SORT_TYPE_MOST_MENU;
                     reloadLists();
                 }
+                break;
+            case R.id.action_sort_drag_drop:
+                mFragmentNavigator.replaceFragment(DragAndDropFavoriteListFragment.newInstance());
                 break;
             case R.id.action_sort_default:
                 if (sortType != Constants.SORT_TYPE_DEFAULT) {

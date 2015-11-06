@@ -281,6 +281,27 @@ public final class DBManager implements Serializable {
         return getCursorBySortType(selectQuery, _sortType);
     }
 
+    private Cursor getFavorites() {
+        mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return null;
+        }
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_IS_FAVOURITE + " == " + 1
+                + " OR " + KEY_IS_ABLE_TO_FAVORITE + " == " + 1;
+        return getFavorite(selectQuery);
+    }
+
+    public List<AppModel> getFavoriteList() {
+        List<AppModel> list = new ArrayList<>();
+        Cursor cursor = getFavorites();
+        if (cursor != null) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                list.add(fillAppModelFromCursor(cursor));
+            }
+        }
+        return list;
+    }
+
     public Cursor getResentlyData(final int _sortType) {
         mDB = mDBHelper.getWritableDatabase();
         if (mDB == null) {
@@ -435,6 +456,10 @@ public final class DBManager implements Serializable {
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_NAME + " ASC");
         }
         return cursor;
+    }
+
+    private Cursor getFavorite(final String selectQuery) {
+        return mDB.query(TABLE_APPS, null, selectQuery, null, null, null, null);
     }
 
     private Cursor getRecentlyCursorBySortType(final String selectQuery,  final int _sortType) {
