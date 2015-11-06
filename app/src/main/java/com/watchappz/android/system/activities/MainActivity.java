@@ -18,8 +18,8 @@ import android.view.View;
 import com.watchappz.android.R;
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
-import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.interfaces.IReloadList;
+import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.interfaces.ISendSortTypeListener;
 import com.watchappz.android.system.fragments.AppViewPagerFragment;
 import com.watchappz.android.system.fragments.HelpFragment;
@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
         initFacebook();
         if (savedInstanceState == null)
             mFragmentNavigator.replaceFragment(AppViewPagerFragment.newInstance());
-        facebookButtonClick();
+//        facebookButtonClick();
         reloadLists = new ArrayList<>();
     }
 
@@ -244,14 +244,14 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
         facebookShareManager = new FacebookShareManager(this);
     }
 
-    private void facebookButtonClick() {
-        facebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                facebookShareManager.shareToFacebook();
-            }
-        });
-    }
+//    private void facebookButtonClick() {
+//        facebook.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                facebookShareManager.shareToFacebook();
+//            }
+//        });
+//    }
 
     public void setFloatingMenuVisibility(final boolean _visible) {
         faMenu.setVisibility(_visible ? View.VISIBLE : View.GONE);

@@ -55,8 +55,10 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mainActivity.unregisterReceiver(mSearchBroadcastReceiver);
-        mainActivity.unregisterReceiver(clickFavoriteReceiver);
+        if (mainActivity != null) {
+            mainActivity.unregisterReceiver(mSearchBroadcastReceiver);
+            mainActivity.unregisterReceiver(clickFavoriteReceiver);
+        }
     }
 
     @Override

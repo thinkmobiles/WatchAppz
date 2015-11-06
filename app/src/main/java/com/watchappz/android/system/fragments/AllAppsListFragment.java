@@ -13,8 +13,8 @@ import android.widget.FilterQueryProvider;
 
 import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
-import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.interfaces.IReloadList;
+import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.loaders.AllAppsCursorLoader;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.system.models.CursorLoaderRestartEvent;
@@ -55,8 +55,10 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mainActivity.unregisterReceiver(mSearchBroadcastReceiver);
-        mainActivity.unregisterReceiver(clickFavoriteReceiver);
+        if (mainActivity != null) {
+            mainActivity.unregisterReceiver(mSearchBroadcastReceiver);
+            mainActivity.unregisterReceiver(clickFavoriteReceiver);
+        }
     }
 
     @Override

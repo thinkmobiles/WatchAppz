@@ -128,13 +128,19 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return false;
         }
-        Cursor cursor = getAllData();
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                if (cursor.getString(5).equals(_packageName) && cursor.getInt(7) == 1) {
-                    return true;
+        Cursor cursor = null;
+        try {
+            cursor = getAllData();
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    if (cursor.getString(5).equals(_packageName) && cursor.getInt(7) == 1) {
+                        return true;
+                    }
                 }
             }
+        }finally {
+            if(cursor != null)
+                cursor.close();
         }
         mDB.close();
         return false;

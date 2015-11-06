@@ -1,6 +1,7 @@
 package com.watchappz.android.utils;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,7 +12,6 @@ import com.facebook.share.Sharer;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
-import com.watchappz.android.global.Variables;
 import com.watchappz.android.system.activities.MainActivity;
 
 /**
@@ -31,9 +31,9 @@ public final class FacebookShareManager {
         shareDialog.registerCallback(callbackManager, facebookCallback);
     }
 
-    public void shareToFacebook() {
+    public void shareToFacebook(final Bitmap _bitmap) {
         SharePhoto photo5 = new SharePhoto.Builder()
-                .setBitmap(Variables.bitmap)
+                .setBitmap(_bitmap)
                 .setCaption("Favorite apps")
                 .build();
 

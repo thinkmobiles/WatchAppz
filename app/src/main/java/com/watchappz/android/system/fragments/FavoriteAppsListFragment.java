@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
-import com.watchappz.android.global.Variables;
 import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.interfaces.IReloadList;
 import com.watchappz.android.loaders.FavoriteCursorLoader;
@@ -63,8 +62,10 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mainActivity.unregisterReceiver(mSearchBroadcastReceiver);
-        mainActivity.unregisterReceiver(clickFavoriteReceiver);
+        if (mainActivity != null) {
+            mainActivity.unregisterReceiver(mSearchBroadcastReceiver);
+            mainActivity.unregisterReceiver(clickFavoriteReceiver);
+        }
     }
 
     @Override
@@ -79,8 +80,8 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         initAdapter(cursor);
         setFilterQueryProvider();
         setEmptyView(R.string.app_favorites_empty_view);
-        Variables.bitmap = loadBitmapFromView(rlAppsContainer);
         shareToFacebook(cursor);
+//        Variables.bitmap = loadBitmapFromView(rlAppsContainer);
     }
 
     @Override
@@ -162,8 +163,8 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         mainActivity.getFacebook().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (_cursor.getCount() >= 5) {
-                    mainActivity.getFacebookShareManager().shareToFacebook();
+                if (_cursor != null && _cursor.getCount() >= 5) {
+                    mainActivity.getFacebookShareManager().shareToFacebook(loadBitmapFromView(rlAppsContainer));
                 } else {
                     Toast.makeText(mainActivity, mainActivity.getResources().getString(R.string.facebook_empty_favorite_apps), Toast.LENGTH_LONG).show();
                 }

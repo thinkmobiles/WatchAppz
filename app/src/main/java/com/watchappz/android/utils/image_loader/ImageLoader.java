@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -60,11 +61,11 @@ public final class ImageLoader {
 
     private class PhotoToLoad {
         public String packageName;
-        public ImageView imageView;
+        public WeakReference<ImageView> imageView;
 
         public PhotoToLoad(String _packageName, ImageView i) {
             packageName = _packageName;
-            imageView = i;
+            imageView = new WeakReference<>(i);
         }
     }
 
@@ -148,8 +149,8 @@ public final class ImageLoader {
     }
 
     boolean imageViewReused(PhotoToLoad photoToLoad) {
-
-        String tag = imageViews.get(photoToLoad.imageView);
+        if (photoToLoad.imageView.get() == null) return false;
+        String tag = imageViews.get(photoToLoad.imageView.get());
         return tag == null || !tag.equals(photoToLoad.packageName);
     }
 
@@ -163,12 +164,12 @@ public final class ImageLoader {
         }
 
         public void run() {
-            if (imageViewReused(photoToLoad))
+            if (imageViewReused(photoToLoad) || photoToLoad.imageView.get() == null)
                 return;
             if (bitmap != null)
-                photoToLoad.imageView.setImageBitmap(bitmap);
+                photoToLoad.imageView.get().setImageBitmap(bitmap);
             else
-                photoToLoad.imageView.setImageResource(stub_id);
+                photoToLoad.imageView.get().setImageResource(stub_id);
         }
     }
 
