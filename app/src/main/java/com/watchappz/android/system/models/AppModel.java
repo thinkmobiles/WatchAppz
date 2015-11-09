@@ -14,6 +14,7 @@ public final class AppModel {
     private int isFavourite;
     private String mAppPackageName;
     private long mDateUsege;
+    private long mAppLastUsege;
     private int isAbleToFavorite;
     private long mFavoriteCount;
     private long mAppSize;
@@ -105,5 +106,13 @@ public final class AppModel {
 
     public void setAppDeleted(int mAppDeleted) {
         this.mAppDeleted = mAppDeleted;
+    }
+
+    public long getAppLastUsege() {
+        return mAppLastUsege;
+    }
+
+    public void setAppLastUsege(long mAppLastUsege) {
+        this.mAppLastUsege = mAppLastUsege;
     }
 }

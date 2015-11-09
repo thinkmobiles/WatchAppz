@@ -25,7 +25,8 @@ public final class DBHelper extends SQLiteOpenHelper implements Serializable {
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NAME + " TEXT,"
                 + KEY_TODAY_COUNT + " INTEGER," + KEY_TOTAL_COUNT + " INTEGER," +
                 KEY_IS_FAVOURITE + " INTEGER," + KEY_PACKAGE_NAME + " TEXT," + KEY_DATE_USEGE + " INTEGER, "  +
-                KEY_IS_ABLE_TO_FAVORITE + " INTEGER,"  + KEY_FAVORITE_COUNT + " INTEGER," + KEY_APP_SIZE + " INTEGER" + " )";
+                KEY_IS_ABLE_TO_FAVORITE + " INTEGER,"  + KEY_FAVORITE_COUNT + " INTEGER," +
+                KEY_APP_SIZE + " INTEGER," + KEY_APP_LAST_USAGE + " INTEGER" + " )";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
 

@@ -24,11 +24,23 @@
         android:id="@+id/tvAppName_LIA"
         android:layout_toRightOf="@id/ivAppIcon_LIA"
         android:layout_toLeftOf="@id/btnAppStar_LIA"
+        tools:text="title"
         style="@style/AppNameTextViewLIA"/>
     <TextView
         android:id="@+id/tvAppInfo_LIA"
         android:layout_below="@id/tvAppName_LIA"
         android:layout_toRightOf="@id/ivAppIcon_LIA"
+        tools:text="Description"
         style="@style/AppInfoTextViewLIA"/>
+
+    <TextView
+        android:id="@+id/tvAppInfoSizeMinutes_LIA"
+        android:layout_below="@id/tvAppInfo_LIA"
+        android:layout_toRightOf="@id/ivAppIcon_LIA"
+        tools:text="Description"
+        style="@style/AppInfoTextViewLIA"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"/>
 
 </RelativeLayout>

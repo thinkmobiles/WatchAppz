@@ -11,6 +11,13 @@
         android:scrollingCache="false"
         android:animationCache="false"/>
 
+    <!--<com.nhaarman.listviewanimations.itemmanipulation.DynamicListView-->
+        <!--android:id="@+id/lvFavoriteApps_FA"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:scrollingCache="false"-->
+        <!--android:animationCache="false"/>-->
+
     <TextView
         android:id="@+id/tvEmptyAppsList_EV"
         android:layout_width="wrap_content"

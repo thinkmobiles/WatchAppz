@@ -58,6 +58,7 @@ public final class DBManager implements Serializable {
         values.put(KEY_IS_ABLE_TO_FAVORITE, _app.getIsAbleToFavorite());
         values.put(KEY_FAVORITE_COUNT, _app.getFavoriteCount());
         values.put(KEY_APP_SIZE, _app.getAppSize());
+        values.put(KEY_APP_LAST_USAGE, _app.getAppLastUsege());
 
         AppModel existApp = getAppModelIfExistsInDB(_app.getAppPackageName());
         if (existApp != null) {
@@ -227,6 +228,7 @@ public final class DBManager implements Serializable {
             app.setIsAbleToFavorite(cursor.getInt(7));
             app.setFavoriteCount(cursor.getLong(8));
             app.setAppSize(cursor.getLong(9));
+            app.setAppLastUsege(cursor.getLong(10));
         }
         return app;
     }
@@ -302,6 +304,16 @@ public final class DBManager implements Serializable {
         return list;
     }
 
+    public List<AppModel> getAppsFromCursor(final Cursor _cursor) {
+        List<AppModel> list = new ArrayList<>();
+        if (_cursor != null) {
+            for (_cursor.moveToFirst(); !_cursor.isAfterLast(); _cursor.moveToNext()) {
+                list.add(fillAppModelFromCursor(_cursor));
+            }
+        }
+        return list;
+    }
+
     public Cursor getResentlyData(final int _sortType) {
         mDB = mDBHelper.getWritableDatabase();
         if (mDB == null) {
@@ -347,6 +359,7 @@ public final class DBManager implements Serializable {
         app.setIsAbleToFavorite(_cursor.getInt(7));
         app.setFavoriteCount(_cursor.getLong(8));
         app.setAppSize(_cursor.getLong(9));
+        app.setAppLastUsege(_cursor.getLong(10));
         return app;
     }
 
@@ -398,6 +411,9 @@ public final class DBManager implements Serializable {
             case 6:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_NAME + " ASC");
                 break;
+            case 7:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_DATE_USEGE + " DESC");
+                break;
             default:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_NAME + " ASC");
         }
@@ -423,6 +439,9 @@ public final class DBManager implements Serializable {
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
                 break;
             case 6:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_DATE_USEGE + " DESC");
+                break;
+            case 7:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_DATE_USEGE + " DESC");
                 break;
             default:
@@ -451,6 +470,9 @@ public final class DBManager implements Serializable {
                 break;
             case 6:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_NAME + " ASC");
+                break;
+            case 7:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_DATE_USEGE + " DESC");
                 break;
             default:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_NAME + " ASC");
@@ -481,6 +503,9 @@ public final class DBManager implements Serializable {
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
                 break;
             case 6:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_DATE_USEGE + " DESC");
+                break;
+            case 7:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_DATE_USEGE + " DESC");
                 break;
             default:

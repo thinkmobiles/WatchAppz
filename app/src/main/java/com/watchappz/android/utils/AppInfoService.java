@@ -90,6 +90,7 @@ public final class AppInfoService extends AccessibilityService {
         AppModel appModel = dbManager.getAppModelIfExistsInDB(_accessibilityEvent.getPackageName().toString());
         if (appModel != null) {
             appModel.setDateUsege(calendar.getTimeInMillis());
+            appModel.setAppLastUsege(calendar.getTimeInMillis());
             appModel.setAppUseTodayCount(appModel.getAppUseTodayCount() + 1);
             appModel.setAppUseTotalCount(appModel.getAppUseTotalCount() + 1);
             appModel.setFavoriteCount(appModel.getFavoriteCount() + 1);
@@ -101,6 +102,7 @@ public final class AppInfoService extends AccessibilityService {
             appModel.setAppName(mAndroidManager.getAppNameByPackage(_accessibilityEvent.getPackageName().toString()));
             appModel.setAppPackageName(_accessibilityEvent.getPackageName().toString());
             appModel.setDateUsege(calendar.getTimeInMillis());
+            appModel.setAppLastUsege(calendar.getTimeInMillis());
             appModel.setIsFavourite(0);
             appModel.setIsAbleToFavorite(0);
         }

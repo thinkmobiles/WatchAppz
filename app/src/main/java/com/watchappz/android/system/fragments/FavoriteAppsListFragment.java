@@ -9,6 +9,8 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
@@ -32,7 +34,8 @@ import java.sql.SQLException;
  * mRogach on 17.09.2015.
  */
 
-public final class FavoriteAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, INewTextListener, IReloadList {
+public final class FavoriteAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener,
+        INewTextListener, IReloadList {
 
 
     public static FavoriteAppsListFragment newInstance() {
@@ -78,6 +81,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     public void onLoadFinished(Loader<Cursor> loader, final Cursor cursor) {
         mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.FAVORITE_RECEIVER);
         initAdapter(cursor);
+//        initDragAndDropAdapter(mainActivity.getDbManager().getFavoriteList());
         setFilterQueryProvider();
         setEmptyView(R.string.app_favorites_empty_view);
         shareToFacebook(cursor);
@@ -121,6 +125,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+//            initDragAndDropAdapter(mainActivity.getDbManager().getAppsFromCursor(cursor));
             initAdapter(cursor);
         }
     };

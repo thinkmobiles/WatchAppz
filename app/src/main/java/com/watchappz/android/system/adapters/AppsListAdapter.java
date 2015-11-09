@@ -19,6 +19,9 @@ import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.utils.image_loader.ImageLoader;
 
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by
  * mRogach on 15.09.2015.
@@ -52,6 +55,7 @@ public final class AppsListAdapter extends CursorAdapter {
         appViewHolder.btnAppStar = (ImageView) view.findViewById(R.id.btnAppStar_LIA);
         appViewHolder.tvAppName = (TextView) view.findViewById(R.id.tvAppName_LIA);
         appViewHolder.tvAppInfo = (TextView) view.findViewById(R.id.tvAppInfo_LIA);
+        appViewHolder.tvAppInfoSizeMinutes = (TextView) view.findViewById(R.id.tvAppInfoSizeMinutes_LIA);
         view.setTag(appViewHolder);
         return view;
     }
@@ -64,7 +68,7 @@ public final class AppsListAdapter extends CursorAdapter {
         appViewHolder.tvAppInfo.setText(getAppInfo(appModel));
         setStarColor(appViewHolder, appModel);
         setAppIcon(appViewHolder, appModel);
-
+        appViewHolder.tvAppInfoSizeMinutes.setText(getAppInfoSizeTime(appModel));
         appViewHolder.btnAppStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +79,7 @@ public final class AppsListAdapter extends CursorAdapter {
 
     private static class AppViewHolder {
 
-        private TextView tvAppName, tvAppInfo;
+        private TextView tvAppName, tvAppInfo, tvAppInfoSizeMinutes;
         private ImageView ivAppIcon;
         private ImageView btnAppStar;
 
@@ -86,6 +90,35 @@ public final class AppsListAdapter extends CursorAdapter {
                         ": %d x " + mContext.getResources().getString(R.string.app_use_today) +
                         " | %d x " + mContext.getResources().getString(R.string.app_use_total),
                 _appModel.getAppUseTodayCount(), _appModel.getAppUseTotalCount());
+    }
+
+    private String getAppInfoSizeTime(final AppModel _appModel) {
+        long mills = 0;
+        long minutes;
+        if (_appModel.getAppLastUsege() > 0) {
+            mills = Calendar.getInstance().getTimeInMillis() - _appModel.getAppLastUsege();
+        }
+        minutes = TimeUnit.MILLISECONDS.toMinutes(mills);
+        return getAppSize(_appModel.getAppSize(), true) + " | " + getTimeLastUsage(minutes);
+    }
+
+    private String getTimeLastUsage(final long minutes) {
+        String time = "";
+        double hours = (double) minutes / 60;
+        if (hours < 1) {
+            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_minutes), (double) minutes);
+        } else if (hours > 1 && hours < 24) {
+            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_hours), hours);
+        }
+        double days = hours / 24;
+        if (days > 1 && days < 365) {
+            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_days), days);
+        }
+        double years = days / 365;
+        if (years > 1) {
+            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_years), years);
+        }
+        return time;
     }
 
     private void setStarColor(final AppViewHolder appViewHolder, final AppModel _appModel) {
@@ -142,6 +175,14 @@ public final class AppsListAdapter extends CursorAdapter {
     private void sendSearchBroadcastFavorute() {
         Intent broadcastIntent = new Intent(Constants.FAVORITE_CLICK);
         mContext.sendBroadcast(broadcastIntent);
+    }
+
+    private String getAppSize(long bytes, boolean si) {
+        int unit = si ? 1000 : 1024;
+        if (bytes < unit) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 
 }

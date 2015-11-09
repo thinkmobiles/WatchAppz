@@ -14,6 +14,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.watchappz.android.R;
 import com.watchappz.android.database.DBManager;
@@ -21,8 +24,8 @@ import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.IReloadList;
 import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.interfaces.ISendSortTypeListener;
+import com.watchappz.android.interfaces.SortInTabLayoutListener;
 import com.watchappz.android.system.fragments.AppViewPagerFragment;
-import com.watchappz.android.system.fragments.DragAndDropFavoriteListFragment;
 import com.watchappz.android.system.fragments.HelpFragment;
 import com.watchappz.android.system.fragments.SettingsFragment;
 import com.watchappz.android.utils.AccessibilityManager;
@@ -33,7 +36,7 @@ import com.watchappz.android.utils.LoadingDialogController;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements ISendSortTypeListener {
+public class MainActivity extends BaseActivity implements ISendSortTypeListener, SortInTabLayoutListener {
 
     private DBManager dbManager;
     private LoadingDialogController mLoadingDialogController;
@@ -45,6 +48,7 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
     private FacebookShareManager facebookShareManager;
     protected FloatingActionButton facebook;
     private List<IReloadList> reloadLists;
+//    private SharedPrefManager sharedPrefManager;
 
     public final void setINewTextListener(final INewTextListener _iNewTextListener) {
         iNewTextAllAppsListener = _iNewTextListener;
@@ -70,6 +74,7 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this);
+//        sharedPrefManager = SharedPrefManager.getInstance(this);
         initDBManager();
         initAccessibilityManager();
         initLoadingController();
@@ -105,27 +110,31 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
             case R.id.action_settings:
                 mFragmentNavigator.clearBackStackToFragmentOrShow(SettingsFragment.newInstance());
                 break;
-            case R.id.action_sort_data:
-                if (sortType != Constants.SORT_TYPE_DATA_MENU) {
-                    sortType = Constants.SORT_TYPE_DATA_MENU;
-                    reloadLists();
-                }
-                break;
-            case R.id.action_sort_most_used:
-                if (sortType != Constants.SORT_TYPE_MOST_MENU) {
-                    sortType = Constants.SORT_TYPE_MOST_MENU;
-                    reloadLists();
-                }
-                break;
-            case R.id.action_sort_drag_drop:
-                mFragmentNavigator.replaceFragment(DragAndDropFavoriteListFragment.newInstance());
-                break;
-            case R.id.action_sort_default:
-                if (sortType != Constants.SORT_TYPE_DEFAULT) {
-                    sortType = Constants.SORT_TYPE_DEFAULT;
-                    reloadLists();
-                }
-                break;
+//            case R.id.action_sort_data:
+//                if (sortType != Constants.SORT_TYPE_DATA_MENU) {
+//                    sortType = Constants.SORT_TYPE_DATA_MENU;
+//                    reloadLists();
+//                }
+//                break;
+//            case R.id.action_sort_most_used:
+//                if (sortType != Constants.SORT_TYPE_MOST_MENU) {
+//                    sortType = Constants.SORT_TYPE_MOST_MENU;
+//                    reloadLists();
+//                }
+//                break;
+//            case R.id.action_sort_drag_drop:
+//                if (sortType != Constants.SORT_TYPE_DRAG_AND_DROP) {
+//                    sortType = Constants.SORT_TYPE_DRAG_AND_DROP;
+//                    sharedPrefManager.putSharedSortType("drag_and_drop", Constants.SORT_TYPE_DRAG_AND_DROP);
+//                    mFragmentNavigator.replaceFragment(AppViewPagerFragment.newInstance());
+//                }
+//                break;
+//            case R.id.action_sort_default:
+//                if (sortType != Constants.SORT_TYPE_DEFAULT) {
+//                    sortType = Constants.SORT_TYPE_DEFAULT;
+//                    reloadLists();
+//                }
+//                break;
             case R.id.action_help:
                 mFragmentNavigator.clearBackStackToFragmentOrShow(HelpFragment.newInstance());
                 break;
@@ -276,5 +285,29 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener 
         Intent intent = new Intent(this, AboutWatchAppzActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+    }
+
+    @Override
+    public void sortDefault() {
+        if (sortType != Constants.SORT_TYPE_DEFAULT) {
+            sortType = Constants.SORT_TYPE_DEFAULT;
+            reloadLists();
+        }
+    }
+
+    @Override
+    public void sortData() {
+        if (sortType != Constants.SORT_TYPE_DATA_MENU) {
+            sortType = Constants.SORT_TYPE_DATA_MENU;
+            reloadLists();
+        }
+    }
+
+    @Override
+    public void sortTimeUsed() {
+        if (sortType != Constants.SORT_TYPE_TIME_USED) {
+            sortType = Constants.SORT_TYPE_TIME_USED;
+            reloadLists();
+        }
     }
 }

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.utils.image_loader.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,22 +34,12 @@ public final class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel
     private ImageLoader imageLoader;
     private List<AppModel> appModels;
 
-    public DragDropFavoriteAppsListAdapter(Context mContext, final List<AppModel> _appModels) {
+    public DragDropFavoriteAppsListAdapter(Context mContext, final List<AppModel> _appModels, final DBManager _dbManager) {
         this.mContext = mContext;
+        dbManager = _dbManager;
         imageLoader = new ImageLoader(mContext);
         appModels = _appModels;
         addAll(appModels);
-    }
-
-    @Override
-    public int getCount() {
-        return appModels.size();
-    }
-
-    @NonNull
-    @Override
-    public AppModel getItem(int position) {
-        return appModels.get(position);
     }
 
     @Override
@@ -91,7 +83,7 @@ public final class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel
     }
 
     private void updateView(final AppViewHolder appViewHolder, final int _position) {
-        final AppModel appModel = appModels.get(_position);
+        final AppModel appModel = getItem(_position);
         appViewHolder.tvAppName.setText(appModel.getAppName());
         appViewHolder.tvAppInfo.setText(getAppInfo(appModel));
         setStarColor(appViewHolder, appModel);
@@ -167,4 +159,43 @@ public final class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel
         Intent broadcastIntent = new Intent(Constants.FAVORITE_CLICK);
         mContext.sendBroadcast(broadcastIntent);
     }
+
+//    @Override
+//    public Filter getFilter() {
+//        return new Filter(){
+//
+//            @Override
+//            protected FilterResults performFiltering(CharSequence constraint) {
+//                constraint = constraint.toString().toLowerCase();
+//                FilterResults result = new Filter.FilterResults();
+//
+//                if (constraint != null && constraint.toString().length() > 0) {
+//                    List<AppModel> founded = new ArrayList<>();
+//                    for(AppModel item: appModels){
+//                        if(item.toString().toLowerCase().contains(constraint)){
+//                            founded.add(item);
+//                        }
+//                    }
+//
+//                    result.values = founded;
+//                    result.count = founded.size();
+//                }else {
+//                    result.values = appModels;
+//                    result.count = appModels.size();
+//                }
+//                return result;
+//            }
+//
+//            @Override
+//            protected void publishResults(CharSequence constraint, FilterResults results) {
+//                clear();
+//                for (AppModel item : (List<AppModel>) results.values) {
+//                    add(item);
+//                }
+//                notifyDataSetChanged();
+//
+//            }
+//
+//        };
+//    }
 }

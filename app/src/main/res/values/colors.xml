@@ -9,4 +9,7 @@
     <color name="tab_text_color">#5A958D</color>
     <color name="fab_color">#009688</color>
     <color name="tv_selector">#E0E0E0</color>
+    <color name="sort_tab_layout_background">#FFE2E2E2</color>
+    <color name="sort_tab_layout_background_pressed">#c9c7c7</color>
+    <color name="sort_tab_title_text_color">#aba7a7</color>
 </resources>
