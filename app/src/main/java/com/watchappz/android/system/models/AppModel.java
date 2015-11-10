@@ -19,6 +19,7 @@ public final class AppModel {
     private long mFavoriteCount;
     private long mAppSize;
     private int mAppDeleted;
+    private long mAppTimeSpent;
 
     public long getId() {
         return id;
@@ -114,5 +115,13 @@ public final class AppModel {
 
     public void setAppLastUsege(long mAppLastUsege) {
         this.mAppLastUsege = mAppLastUsege;
+    }
+
+    public long getAppTimeSpent() {
+        return mAppTimeSpent;
+    }
+
+    public void setAppTimeSpent(long mAppTimeSpent) {
+        this.mAppTimeSpent = mAppTimeSpent;
     }
 }

@@ -239,6 +239,10 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener,
         return sortType;
     }
 
+    public void setSortType(int sortType) {
+        this.sortType = sortType;
+    }
+
     private void initFloatingButton() {
         facebook = new FloatingActionButton(getBaseContext());
         Drawable icon;
@@ -289,25 +293,16 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener,
 
     @Override
     public void sortDefault() {
-        if (sortType != Constants.SORT_TYPE_DEFAULT) {
-            sortType = Constants.SORT_TYPE_DEFAULT;
-            reloadLists();
-        }
+        reloadLists();
     }
 
     @Override
     public void sortData() {
-        if (sortType != Constants.SORT_TYPE_DATA_MENU) {
-            sortType = Constants.SORT_TYPE_DATA_MENU;
-            reloadLists();
-        }
+        reloadLists();
     }
 
     @Override
     public void sortTimeUsed() {
-        if (sortType != Constants.SORT_TYPE_TIME_USED) {
-            sortType = Constants.SORT_TYPE_TIME_USED;
-            reloadLists();
-        }
+        reloadLists();
     }
 }

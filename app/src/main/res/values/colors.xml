@@ -12,4 +12,5 @@
     <color name="sort_tab_layout_background">#FFE2E2E2</color>
     <color name="sort_tab_layout_background_pressed">#c9c7c7</color>
     <color name="sort_tab_title_text_color">#aba7a7</color>
+    <color name="sort_tab_title_text_color_pressed">#747272</color>
 </resources>

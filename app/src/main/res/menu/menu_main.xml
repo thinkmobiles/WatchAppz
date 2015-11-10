@@ -17,27 +17,27 @@
                 android:orderInCategory="100"
                 android:title="@string/action_settings"
                 app:showAsAction="never" />
-            <item
-                android:id="@+id/action_sort_data"
-                android:orderInCategory="100"
-                android:title="@string/app_sorts_data_menu"
-                app:showAsAction="never" />
-            <item
-                android:id="@+id/action_sort_most_used"
-                android:orderInCategory="100"
-                android:title="@string/app_sorts_gebruikt_menu"
-                app:showAsAction="never" />
+            <!--<item-->
+                <!--android:id="@+id/action_sort_data"-->
+                <!--android:orderInCategory="100"-->
+                <!--android:title="@string/app_sorts_data_menu"-->
+                <!--app:showAsAction="never" />-->
+            <!--<item-->
+                <!--android:id="@+id/action_sort_most_used"-->
+                <!--android:orderInCategory="100"-->
+                <!--android:title="@string/app_sorts_gebruikt_menu"-->
+                <!--app:showAsAction="never" />-->
             <!--<item-->
                 <!--android:id="@+id/action_sort_drag_drop"-->
                 <!--android:orderInCategory="100"-->
                 <!--android:title="@string/app_sorts_drag_favorite_sort"-->
                 <!--app:showAsAction="never" />-->
 
-            <item
-                android:id="@+id/action_sort_default"
-                android:orderInCategory="100"
-                android:title="@string/app_sorts_default_menu"
-                app:showAsAction="never" />
+            <!--<item-->
+                <!--android:id="@+id/action_sort_default"-->
+                <!--android:orderInCategory="100"-->
+                <!--android:title="@string/app_sorts_default_menu"-->
+                <!--app:showAsAction="never" />-->
             <item
                 android:id="@+id/action_help"
                 android:orderInCategory="100"

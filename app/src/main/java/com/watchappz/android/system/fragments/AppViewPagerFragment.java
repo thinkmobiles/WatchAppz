@@ -4,13 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.watchappz.android.R;
@@ -44,7 +42,7 @@ public class AppViewPagerFragment extends BaseFragment implements View.OnClickLi
         initTabLayout();
         setListeners();
         initTollbar();
-
+        setPressedViews();
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -82,17 +80,17 @@ public class AppViewPagerFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void findViews() {
-        mViewPager           = (ViewPager) mInflatedView.findViewById(R.id.viewpager_AM);
-        mTabLayout           = (TabLayout) mInflatedView.findViewById(R.id.tlSliding_tabs_AM);
-        llDefault            = (LinearLayout) mInflatedView.findViewById(R.id.llDefault_FVP);
-        llData               = (LinearLayout) mInflatedView.findViewById(R.id.llData_FVP);
-        llTimeUsed           = (LinearLayout) mInflatedView.findViewById(R.id.llTime_FVP);
-        tvDefault            = (TextView) mInflatedView.findViewById(R.id.tvDefault_FVP);
-        tvData               = (TextView) mInflatedView.findViewById(R.id.tvData_FVP);
-        tvTimeUsed           = (TextView) mInflatedView.findViewById(R.id.tvTime_FVP);
-        ivArrowDefault       = (ImageView) mInflatedView.findViewById(R.id.ivArrowDefault_FVP);
-        ivArrowData          = (ImageView) mInflatedView.findViewById(R.id.ivArrowData_FVP);
-        ivArrowTimeUsed      = (ImageView) mInflatedView.findViewById(R.id.ivArrowTime_FVP);
+        mViewPager = (ViewPager) mInflatedView.findViewById(R.id.viewpager_AM);
+        mTabLayout = (TabLayout) mInflatedView.findViewById(R.id.tlSliding_tabs_AM);
+        llDefault = (LinearLayout) mInflatedView.findViewById(R.id.llDefault_FVP);
+        llData = (LinearLayout) mInflatedView.findViewById(R.id.llData_FVP);
+        llTimeUsed = (LinearLayout) mInflatedView.findViewById(R.id.llTime_FVP);
+        tvDefault = (TextView) mInflatedView.findViewById(R.id.tvDefault_FVP);
+        tvData = (TextView) mInflatedView.findViewById(R.id.tvData_FVP);
+        tvTimeUsed = (TextView) mInflatedView.findViewById(R.id.tvTime_FVP);
+        ivArrowDefault = (ImageView) mInflatedView.findViewById(R.id.ivArrowDefault_FVP);
+        ivArrowData = (ImageView) mInflatedView.findViewById(R.id.ivArrowData_FVP);
+        ivArrowTimeUsed = (ImageView) mInflatedView.findViewById(R.id.ivArrowTime_FVP);
         mViewPager.setOffscreenPageLimit(3);
     }
 
@@ -128,12 +126,32 @@ public class AppViewPagerFragment extends BaseFragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.llDefault_FVP:
+                if (mainActivity.getSortType() != Constants.SORT_TYPE_DEFAULT) {
+                    mainActivity.setSortType(Constants.SORT_TYPE_DEFAULT);
+                } else {
+                    mainActivity.setSortType(Constants.SORT_TYPE_DEFAULT_DESC);
+                    setUpArrow(llDefault, tvDefault, ivArrowDefault);
+                }
                 sortInTabLayoutListener.sortDefault();
                 break;
             case R.id.llData_FVP:
+                if (mainActivity.getSortType() != Constants.SORT_TYPE_DATA_MENU) {
+                    mainActivity.setSortType(Constants.SORT_TYPE_DATA_MENU);
+                    setUpArrow(llData, tvData, ivArrowData);
+                } else {
+                    mainActivity.setSortType(Constants.SORT_TYPE_DATA_MENU_ASC);
+                    setUpArrow(llData, tvData, ivArrowData);
+                }
                 sortInTabLayoutListener.sortData();
                 break;
             case R.id.llTime_FVP:
+                if (mainActivity.getSortType() != Constants.SORT_TYPE_TIME_USED) {
+                    mainActivity.setSortType(Constants.SORT_TYPE_TIME_USED);
+                    setUpArrow(llTimeUsed, tvTimeUsed, ivArrowTimeUsed);
+                } else {
+                    mainActivity.setSortType(Constants.SORT_TYPE_TIME_USED_ASC);
+                    setUpArrow(llTimeUsed, tvTimeUsed, ivArrowTimeUsed);
+                }
                 sortInTabLayoutListener.sortTimeUsed();
                 break;
         }
@@ -143,24 +161,63 @@ public class AppViewPagerFragment extends BaseFragment implements View.OnClickLi
     private void setPressedViews() {
         switch (mainActivity.getSortType()) {
             case Constants.SORT_TYPE_DEFAULT:
-                llDefault.setPressed(true);
-                tvDefault.setPressed(true);
-                ivArrowDefault.setPressed(true);
+                setCheckedColors(llDefault, tvDefault, ivArrowDefault);
+                setDefaultColors(llData, tvData, ivArrowData);
+                setDefaultColors(llTimeUsed, tvTimeUsed, ivArrowTimeUsed);
+                break;
+            case Constants.SORT_TYPE_DEFAULT_DESC:
+                llDefault.setBackgroundColor(getColor(R.color.sort_tab_layout_background_pressed));
+                tvDefault.setTextColor(getColor(R.color.sort_tab_title_text_color_pressed));
+                ivArrowDefault.setImageResource(R.drawable.ic_arrow_black_up);
+                setDefaultColors(llData, tvData, ivArrowData);
+                setDefaultColors(llTimeUsed, tvTimeUsed, ivArrowTimeUsed);
                 break;
             case Constants.SORT_TYPE_DATA_MENU:
-                llData.setPressed(true);
-                tvData.setPressed(true);
-                ivArrowData.setPressed(true);
+                setCheckedColors(llData, tvData, ivArrowData);
+                setDefaultColors(llDefault, tvDefault, ivArrowDefault);
+                setDefaultColors(llTimeUsed, tvTimeUsed, ivArrowTimeUsed);
+                break;
+            case Constants.SORT_TYPE_DATA_MENU_ASC:
+                llData.setBackgroundColor(getColor(R.color.sort_tab_layout_background_pressed));
+                tvData.setTextColor(getColor(R.color.sort_tab_title_text_color_pressed));
+                ivArrowData.setImageResource(R.drawable.ic_arrow_black_up);
+                setDefaultColors(llDefault, tvDefault, ivArrowDefault);
+                setDefaultColors(llTimeUsed, tvTimeUsed, ivArrowTimeUsed);
                 break;
             case Constants.SORT_TYPE_TIME_USED:
-                llTimeUsed.setPressed(true);
-                tvTimeUsed.setPressed(true);
-                ivArrowTimeUsed.setPressed(true);
+                setCheckedColors(llTimeUsed, tvTimeUsed, ivArrowTimeUsed);
+                setDefaultColors(llDefault, tvDefault, ivArrowDefault);
+                setDefaultColors(llData, tvData, ivArrowData);
+                break;
+            case Constants.SORT_TYPE_TIME_USED_ASC:
+                llTimeUsed.setBackgroundColor(getColor(R.color.sort_tab_layout_background_pressed));
+                tvTimeUsed.setTextColor(getColor(R.color.sort_tab_title_text_color_pressed));
+                ivArrowTimeUsed.setImageResource(R.drawable.ic_arrow_black_up);
+                setDefaultColors(llDefault, tvDefault, ivArrowDefault);
+                setDefaultColors(llData, tvData, ivArrowData);
                 break;
             default:
-                llDefault.setPressed(true);
-                tvDefault.setPressed(true);
-                ivArrowDefault.setPressed(true);
+                setCheckedColors(llDefault, tvDefault, ivArrowDefault);
+                setDefaultColors(llData, tvData, ivArrowData);
+                setDefaultColors(llTimeUsed, tvTimeUsed, ivArrowTimeUsed);
         }
+    }
+
+    private void setDefaultColors(final LinearLayout _layout, final TextView _textView, final ImageView _arrow) {
+        _layout.setBackgroundColor(getColor(R.color.sort_tab_layout_background));
+        _textView.setTextColor(getColor(R.color.sort_tab_title_text_color));
+        _arrow.setImageResource(R.drawable.ic_arrow_grey_down);
+    }
+
+    private void setCheckedColors(final LinearLayout _layout, final TextView _textView, final ImageView _arrow) {
+        _layout.setBackgroundColor(getColor(R.color.sort_tab_layout_background_pressed));
+        _textView.setTextColor(getColor(R.color.sort_tab_title_text_color_pressed));
+        _arrow.setImageResource(R.drawable.ic_arrow_black_down);
+    }
+
+    private void setUpArrow(final LinearLayout _layout, final TextView _textView, final ImageView _arrow) {
+        _layout.setBackgroundColor(getColor(R.color.sort_tab_layout_background_pressed));
+        _textView.setTextColor(getColor(R.color.sort_tab_title_text_color_pressed));
+        _arrow.setImageResource(R.drawable.ic_arrow_black_up);
     }
 }

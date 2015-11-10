@@ -29,10 +29,12 @@
     <string name="app_sort_data">Data</string>
     <string name="app_sort_recent">Recent</string>
     <string name="app_sort_time_used">Time used</string>
+    <string name="app_time_used_seconds">seconds</string>
     <string name="app_time_used_minutes">minutes</string>
     <string name="app_time_used_hours">hours</string>
     <string name="app_time_used_days">days</string>
     <string name="app_time_used_years">years</string>
+    <string name="app_time_last_used_not">not</string>
 
     <string name="help_info">Some text, Some text, Some text, Some text, Some text, Some text, Some text,
     Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text, Some text,

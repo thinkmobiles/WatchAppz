@@ -30,19 +30,30 @@ public final class AppInfoService extends AccessibilityService {
 
     private DBManager dbManager;
     private AndroidManager mAndroidManager;
-    private String mPackageName;
+    private String mLastPackageName, mNewPackageName;
+    private long getEventTime, getNewEventTime, spentTime;
 
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         if (!TextUtils.isEmpty(getEventText(accessibilityEvent))) {
-            if (accessibilityEvent.getPackageName()!= null && !accessibilityEvent.getPackageName().toString().equals(mPackageName)) {
-                if (!accessibilityEvent.getPackageName().toString().equals(Constants.WATCH_APPZ_PAKAGE)) {
-                    mPackageName = accessibilityEvent.getPackageName().toString();
-                    dbManager.addApp(getAppToWriteInDB(accessibilityEvent));
-                    EventBus.getDefault().post(new CursorLoaderRestartEvent());
-                }
-//                    Toast.makeText(this, accessibilityEvent.getPackageName(), Toast.LENGTH_LONG).show();
+            if (accessibilityEvent.getPackageName() != null && !accessibilityEvent.getPackageName().toString().equals(mNewPackageName)) {
+                    mNewPackageName = accessibilityEvent.getPackageName().toString();
+                    getNewEventTime = Calendar.getInstance().getTimeInMillis();
+                    if (getEventTime > 0) {
+                        spentTime = Calendar.getInstance().getTimeInMillis() - getEventTime;
+                        if (!TextUtils.isEmpty(mLastPackageName)) {
+                            dbManager.setAppSpentTimeInDB(mLastPackageName, spentTime);
+                        }
+                    }
+                    mLastPackageName = mNewPackageName;
+                    getEventTime = getNewEventTime;
+                    if (!accessibilityEvent.getPackageName().toString().equals(Constants.WATCH_APPZ_PAKAGE) &&
+                            !accessibilityEvent.getPackageName().toString().equals(Constants.LAUNCHER_PACKAGE) &&
+                            !accessibilityEvent.getPackageName().toString().equals(Constants.SYSTEM_PACKAGE)) {
+                        dbManager.addApp(getAppToWriteInDB(accessibilityEvent));
+                        EventBus.getDefault().post(new CursorLoaderRestartEvent());
+                    }
             }
         }
     }
@@ -76,10 +87,11 @@ public final class AppInfoService extends AccessibilityService {
         String[] appName = new String[packages.size()];
         for (ApplicationInfo packageInfo : packages) {
             Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageInfo.processName);
-            if (launchIntent != null && !packageInfo.processName.contains(Constants.SYSTEM_PACKAGE) &&
-                    !packageInfo.processName.contains(Constants.LAUNCHER_PACKAGE) && !packageInfo.processName.contains(Constants.WATCH_APPZ_PAKAGE)) {
-            appName[count] = packageInfo.processName;
-            count++;
+//            if (launchIntent != null && !packageInfo.processName.contains(Constants.SYSTEM_PACKAGE) &&
+//                    !packageInfo.processName.contains(Constants.LAUNCHER_PACKAGE) && !packageInfo.processName.contains(Constants.WATCH_APPZ_PAKAGE)) {
+            if (launchIntent != null) {
+                appName[count] = packageInfo.processName;
+                count++;
             }
         }
         return appName;
@@ -141,10 +153,10 @@ public final class AppInfoService extends AccessibilityService {
     private void appAllAppsToBD(final String[] _allApps) {
         AppModel appModel;
         for (String _allApp : _allApps) {
-                appModel = getAppToWriteInDB(_allApp);
-                if (!TextUtils.isEmpty(appModel.getAppName())) {
-                    dbManager.addApp(appModel);
-                }
+            appModel = getAppToWriteInDB(_allApp);
+            if (!TextUtils.isEmpty(appModel.getAppName())) {
+                dbManager.addApp(appModel);
+            }
         }
     }
 

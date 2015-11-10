@@ -19,7 +19,9 @@ import com.watchappz.android.global.Constants;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.utils.image_loader.ImageLoader;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -87,25 +89,25 @@ public final class AppsListAdapter extends CursorAdapter {
 
     private String getAppInfo(final AppModel _appModel) {
         return String.format(mContext.getResources().getString(R.string.app_used) +
-                        ": %d x " + mContext.getResources().getString(R.string.app_use_today) +
+                        ": %s " + mContext.getResources().getString(R.string.app_use_today) +
                         " | %d x " + mContext.getResources().getString(R.string.app_use_total),
-                _appModel.getAppUseTodayCount(), _appModel.getAppUseTotalCount());
+                getDate(_appModel.getDateUsege(), "hh:mm"), _appModel.getAppUseTotalCount());
     }
 
     private String getAppInfoSizeTime(final AppModel _appModel) {
-        long mills = 0;
-        long minutes;
-        if (_appModel.getAppLastUsege() > 0) {
-            mills = Calendar.getInstance().getTimeInMillis() - _appModel.getAppLastUsege();
-        }
-        minutes = TimeUnit.MILLISECONDS.toMinutes(mills);
-        return getAppSize(_appModel.getAppSize(), true) + " | " + getTimeLastUsage(minutes);
+        long mills;
+        mills = _appModel.getAppTimeSpent();
+        return getAppSize(_appModel.getAppSize(), true) + " | " + getTimeLastUsage(mills);
     }
 
-    private String getTimeLastUsage(final long minutes) {
+    private String getTimeLastUsage(final long mills) {
         String time = "";
-        double hours = (double) minutes / 60;
-        if (hours < 1) {
+        double minutes = (double) mills / 60000;
+        if (minutes < 1) {
+            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_seconds), (double) mills / 1000);
+        }
+        double hours = minutes / 60;
+        if (hours < 1 && minutes > 1) {
             time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_minutes), (double) minutes);
         } else if (hours > 1 && hours < 24) {
             time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_hours), hours);
@@ -113,10 +115,8 @@ public final class AppsListAdapter extends CursorAdapter {
         double days = hours / 24;
         if (days > 1 && days < 365) {
             time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_days), days);
-        }
-        double years = days / 365;
-        if (years > 1) {
-            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_years), years);
+        } else if (days > 365) {
+            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_years), days);
         }
         return time;
     }
@@ -169,7 +169,7 @@ public final class AppsListAdapter extends CursorAdapter {
     }
 
     private void setDrawable(final ImageView _view, final int _idDrawable) {
-            _view.setImageResource(_idDrawable);
+        _view.setImageResource(_idDrawable);
     }
 
     private void sendSearchBroadcastFavorute() {
@@ -181,8 +181,18 @@ public final class AppsListAdapter extends CursorAdapter {
         int unit = si ? 1000 : 1024;
         if (bytes < unit) return bytes + " B";
         int exp = (int) (Math.log(bytes) / Math.log(unit));
-        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
         return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+    }
+
+    private String getDate(long milliSeconds, String dateFormat) {
+        if (milliSeconds > 0) {
+            SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.getDefault());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(milliSeconds);
+            return formatter.format(calendar.getTime());
+        }
+        return mContext.getResources().getString(R.string.app_time_last_used_not);
     }
 
 }
