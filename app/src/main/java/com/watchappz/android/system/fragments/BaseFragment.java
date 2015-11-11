@@ -2,6 +2,7 @@ package com.watchappz.android.system.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.watchappz.android.R;
@@ -24,10 +25,6 @@ public class BaseFragment extends Fragment {
     }
 
     protected int getColor(int _idRes) {
-        if (android.os.Build.VERSION.SDK_INT >= 21) {
-            return getResources().getColor(_idRes, mainActivity.getTheme());
-        } else {
-            return getResources().getColor(_idRes);
-        }
+        return ContextCompat.getColor(mainActivity, _idRes);
     }
 }
