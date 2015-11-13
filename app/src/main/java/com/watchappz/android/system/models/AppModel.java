@@ -20,6 +20,7 @@ public final class AppModel {
     private long mAppSize;
     private int mAppDeleted;
     private long mAppTimeSpent;
+    private int mAppPosition;
 
     public long getId() {
         return id;
@@ -123,5 +124,13 @@ public final class AppModel {
 
     public void setAppTimeSpent(long mAppTimeSpent) {
         this.mAppTimeSpent = mAppTimeSpent;
+    }
+
+    public int getAppPosition() {
+        return mAppPosition;
+    }
+
+    public void setAppPosition(int mAppPosition) {
+        this.mAppPosition = mAppPosition;
     }
 }

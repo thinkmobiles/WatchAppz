@@ -82,7 +82,6 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener,
         initFacebook();
         if (savedInstanceState == null)
             mFragmentNavigator.replaceFragment(AppViewPagerFragment.newInstance());
-//        facebookButtonClick();
         reloadLists = new ArrayList<>();
     }
 
@@ -110,31 +109,6 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener,
             case R.id.action_settings:
                 mFragmentNavigator.clearBackStackToFragmentOrShow(SettingsFragment.newInstance());
                 break;
-//            case R.id.action_sort_data:
-//                if (sortType != Constants.SORT_TYPE_DATA_MENU) {
-//                    sortType = Constants.SORT_TYPE_DATA_MENU;
-//                    reloadLists();
-//                }
-//                break;
-//            case R.id.action_sort_most_used:
-//                if (sortType != Constants.SORT_TYPE_MOST_MENU) {
-//                    sortType = Constants.SORT_TYPE_MOST_MENU;
-//                    reloadLists();
-//                }
-//                break;
-//            case R.id.action_sort_drag_drop:
-//                if (sortType != Constants.SORT_TYPE_DRAG_AND_DROP) {
-//                    sortType = Constants.SORT_TYPE_DRAG_AND_DROP;
-//                    sharedPrefManager.putSharedSortType("drag_and_drop", Constants.SORT_TYPE_DRAG_AND_DROP);
-//                    mFragmentNavigator.replaceFragment(AppViewPagerFragment.newInstance());
-//                }
-//                break;
-//            case R.id.action_sort_default:
-//                if (sortType != Constants.SORT_TYPE_DEFAULT) {
-//                    sortType = Constants.SORT_TYPE_DEFAULT;
-//                    reloadLists();
-//                }
-//                break;
             case R.id.action_help:
                 mFragmentNavigator.clearBackStackToFragmentOrShow(HelpFragment.newInstance());
                 break;
@@ -260,15 +234,6 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener,
     private void initFacebook() {
         facebookShareManager = new FacebookShareManager(this);
     }
-
-//    private void facebookButtonClick() {
-//        facebook.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                facebookShareManager.shareToFacebook();
-//            }
-//        });
-//    }
 
     public void setFloatingMenuVisibility(final boolean _visible) {
         faMenu.setVisibility(_visible ? View.VISIBLE : View.GONE);

@@ -60,6 +60,8 @@ public final class DBManager implements Serializable {
         values.put(KEY_APP_SIZE, _app.getAppSize());
         values.put(KEY_APP_LAST_USAGE, _app.getAppLastUsege());
         values.put(KEY_TIME_SPENT, _app.getAppTimeSpent());
+        values.put(KEY_TIME_SPENT, _app.getAppTimeSpent());
+        values.put(KEY_APP_POSITION, _app.getAppPosition());
 
         AppModel existApp = getAppModelIfExistsInDB(_app.getAppPackageName());
         if (existApp != null) {
@@ -186,6 +188,24 @@ public final class DBManager implements Serializable {
         mDB.close();
     }
 
+    public void updateAppPosition(final String _packageName, final long _value) {
+        mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return;
+        }
+        Cursor cursor = getAllData();
+        ContentValues values = new ContentValues();
+        values.put(KEY_APP_POSITION, _value);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                if (cursor.getString(5).equals(_packageName)) {
+                    mDB.update(TABLE_APPS, values, KEY_PACKAGE_NAME + " = ?", new String[]{_packageName});
+                }
+            }
+        }
+        mDB.close();
+    }
+
     public void removeFromFavorite(final String _packageName) {
         mDB = mDBHelper.getWritableDatabase();
         if (mDB == null) {
@@ -249,6 +269,7 @@ public final class DBManager implements Serializable {
             app.setAppSize(cursor.getLong(9));
             app.setAppLastUsege(cursor.getLong(10));
             app.setAppTimeSpent(cursor.getLong(11));
+            app.setAppPosition(cursor.getInt(12));
         }
         return app;
     }
@@ -293,6 +314,16 @@ public final class DBManager implements Serializable {
         return getCursorBySortType(selectQuery, _sortType);
     }
 
+//    public Cursor getFavoriteData(final int _sortType) {
+//        mDB = mDBHelper.getWritableDatabase();
+//        if (mDB == null) {
+//            return null;
+//        }
+//        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_IS_FAVOURITE + " == " + 1
+//                + " OR " + KEY_IS_ABLE_TO_FAVORITE + " == " + 1;
+//        return getCursorBySortType(selectQuery, _sortType);
+//    }
+
     public Cursor getFavoriteData(final int _sortType) {
         mDB = mDBHelper.getWritableDatabase();
         if (mDB == null) {
@@ -300,8 +331,24 @@ public final class DBManager implements Serializable {
         }
         String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_IS_FAVOURITE + " == " + 1
                 + " OR " + KEY_IS_ABLE_TO_FAVORITE + " == " + 1;
-        return getCursorBySortType(selectQuery, _sortType);
+        return getCursorFavorite(selectQuery, _sortType);
     }
+
+    private Cursor getCursorFavorite(final String selectQuery, final int _sortType) {
+        Cursor cursor;
+        switch (_sortType) {
+            case 6:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_NAME + " ASC");
+                break;
+            case 8:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_NAME + " DESC");
+                break;
+            default:
+                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_POSITION + " ASC");
+        }
+        return cursor;
+    }
+
 
     private Cursor getFavorites() {
         mDB = mDBHelper.getWritableDatabase();
@@ -313,9 +360,8 @@ public final class DBManager implements Serializable {
         return getFavorite(selectQuery);
     }
 
-    public List<AppModel> getFavoriteList() {
+    public List<AppModel> getAppsList(final Cursor cursor) {
         List<AppModel> list = new ArrayList<>();
-        Cursor cursor = getFavorites();
         if (cursor != null) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 list.add(fillAppModelFromCursor(cursor));
@@ -381,6 +427,7 @@ public final class DBManager implements Serializable {
         app.setAppSize(_cursor.getLong(9));
         app.setAppLastUsege(_cursor.getLong(10));
         app.setAppTimeSpent(_cursor.getLong(11));
+        app.setAppPosition(_cursor.getInt(12));
         return app;
     }
 

@@ -22,11 +22,9 @@ import de.greenrobot.event.EventBus;
  * Created by
  * mRogach on 15.09.2015.
  */
-public final class SettingsFragment extends BaseFragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public final class SettingsFragment extends BaseFragment implements View.OnClickListener {
 
     private TextView tvHelp, tvAbout;
-    private RadioButton rbSortMostUsed, rbSortDataUsed, rbSortLowestUsed;
-    private ISendSortTypeListener iSendSortTypeListener;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -35,9 +33,7 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        iSendSortTypeListener = (ISendSortTypeListener) getActivity();
         initTollbar();
-        setCheckedRadioButton(mainActivity.getSortType());
         mainActivity.setFloatingMenuVisibility(false);
     }
 
@@ -59,17 +55,11 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
     private void findViews() {
         tvHelp                  = (TextView) mInflatedView.findViewById(R.id.tvHelp_FS);
         tvAbout                 = (TextView) mInflatedView.findViewById(R.id.tvOverWatchAppz_FS);
-        rbSortMostUsed          = (RadioButton) mInflatedView.findViewById(R.id.rbSortMostUsed_FS);
-        rbSortDataUsed          = (RadioButton) mInflatedView.findViewById(R.id.rbSortingData_FS);
-        rbSortLowestUsed        = (RadioButton) mInflatedView.findViewById(R.id.rbSortingLowestUsege_FS);
     }
 
     private void setListeners() {
         tvHelp.setOnClickListener(this);
         tvAbout.setOnClickListener(this);
-        rbSortMostUsed.setOnCheckedChangeListener(this);
-        rbSortDataUsed.setOnCheckedChangeListener(this);
-        rbSortLowestUsed.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -112,61 +102,4 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
         mainActivity.setTitle(getResources().getString(R.string.action_settings));
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            switch (buttonView.getId()) {
-                case R.id.rbSortMostUsed_FS:
-                    rbSortDataUsed.setChecked(false);
-                    rbSortLowestUsed.setChecked(false);
-                    iSendSortTypeListener.getSortType(Constants.SORT_TYPE_MOST);
-                    break;
-                case R.id.rbSortingData_FS:
-                    rbSortMostUsed.setChecked(false);
-                    rbSortLowestUsed.setChecked(false);
-                    iSendSortTypeListener.getSortType(Constants.SORT_TYPE_DATA);
-                    break;
-                case R.id.rbSortingLowestUsege_FS:
-                    rbSortMostUsed.setChecked(false);
-                    rbSortDataUsed.setChecked(false);
-                    iSendSortTypeListener.getSortType(Constants.SORT_TYPE_LOWEST);
-                    break;
-            }
-            EventBus.getDefault().post(new CursorLoaderRestartEvent());
-        }
-    }
-
-    private void setCheckedRadioButton(final int _sortType) {
-        switch (_sortType) {
-            case Constants.SORT_TYPE_MOST:
-                rbSortMostUsed.setChecked(true);
-                rbSortDataUsed.setChecked(false);
-                rbSortLowestUsed.setChecked(false);
-                break;
-            case Constants.SORT_TYPE_DATA:
-                rbSortDataUsed.setChecked(true);
-                rbSortMostUsed.setChecked(false);
-                rbSortLowestUsed.setChecked(false);
-                break;
-            case Constants.SORT_TYPE_LOWEST:
-                rbSortLowestUsed.setChecked(true);
-                rbSortMostUsed.setChecked(false);
-                rbSortDataUsed.setChecked(false);
-                break;
-            case Constants.SORT_TYPE_DATA_MENU:
-                rbSortDataUsed.setChecked(true);
-                rbSortMostUsed.setChecked(false);
-                rbSortLowestUsed.setChecked(false);
-                break;
-            case Constants.SORT_TYPE_MOST_MENU:
-                rbSortMostUsed.setChecked(true);
-                rbSortDataUsed.setChecked(false);
-                rbSortLowestUsed.setChecked(false);
-                break;
-            default:
-                rbSortMostUsed.setChecked(true);
-                rbSortDataUsed.setChecked(false);
-                rbSortLowestUsed.setChecked(false);
-        }
-    }
 }

@@ -3,30 +3,30 @@ package com.watchappz.android.system.fragments;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FilterQueryProvider;
 
 import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.interfaces.IReloadList;
-import com.watchappz.android.loaders.RecentlyCursorLoader;
+import com.watchappz.android.loaders.RecentlyAppsLoader;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.system.models.CursorLoaderRestartEvent;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by
  * mRogach on 17.09.2015.
  */
 
-public final class RecentlyUsedAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, INewTextListener, IReloadList {
+public final class RecentlyUsedAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<List<AppModel>>, AdapterView.OnItemClickListener, INewTextListener, IReloadList {
 
 
     public static RecentlyUsedAppsListFragment newInstance() {
@@ -62,27 +62,25 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    public Loader<List<AppModel>> onCreateLoader(int id, Bundle args) {
         mainActivity.getLoadingDialogController().showLoadingDialog(Constants.RECENTLY_RECEIVER);
-        return new RecentlyCursorLoader(mainActivity, mainActivity.getDbManager(), mainActivity.getSortType());
+        return new RecentlyAppsLoader(mainActivity, mainActivity.getDbManager(), mainActivity.getSortType());
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(Loader<List<AppModel>> loader, List<AppModel> _list) {
         mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.RECENTLY_RECEIVER);
-        initAdapter(cursor);
-        setFilterQueryProvider();
+        initDragAndDropAdapter(_list);
         setEmptyView(R.string.app_resently_used_empty_view);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        appsListAdapter.changeCursor(null);
+    public void onLoaderReset(Loader<List<AppModel>> loader) {
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        AppModel appModel = appsListAdapter.getItem(i);
+        AppModel appModel = dragDropFavoriteAppsListAdapter.getItem(i);
         Intent launchIntent = mainActivity.getPackageManager().getLaunchIntentForPackage(appModel.getAppPackageName());
         if (launchIntent != null) {
             startActivity(launchIntent);
@@ -94,18 +92,18 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
         public void onReceive(Context context, Intent intent) {
             mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.RECENTLY_RECEIVER);
             mainActivity.getSupportLoaderManager().destroyLoader(2);
-            Cursor cursor = null;
+            List<AppModel> appModels = new ArrayList<>();
             String query = intent.getStringExtra(Constants.QUERY);
             try {
                 if (query.isEmpty()) {
                     mainActivity.getSupportLoaderManager().restartLoader(2, null, RecentlyUsedAppsListFragment.this);
                 } else {
-                    cursor = mainActivity.getDbManager().searchRecentlyByInputText(query, mainActivity.getSortType());
+                    appModels = mainActivity.getDbManager().getAppsList(mainActivity.getDbManager().searchRecentlyByInputText(query, mainActivity.getSortType()));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            initAdapter(cursor);
+            initDragAndDropAdapter(appModels);
         }
     };
 
@@ -116,31 +114,18 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
         }
     };
 
-    private void setFilterQueryProvider() {
-        appsListAdapter.setFilterQueryProvider(new FilterQueryProvider() {
-            @Override
-            public Cursor runQuery(CharSequence constraint) {
-                try {
-                    return mainActivity.getDbManager().searchRecentlyByInputText(constraint.toString(), mainActivity.getSortType());
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        });
-    }
 
     @Override
     public void onNewText(String _newText) {
-        appsListAdapter.getFilter().filter(_newText);
-    }
-
-    public void onEvent(CursorLoaderRestartEvent event) {
-        isNewAccessibilityEvent = true;
+        dragDropFavoriteAppsListAdapter.getFilter().filter(_newText);
     }
 
     @Override
     public void reloadList() {
         mainActivity.getSupportLoaderManager().restartLoader(2, null, this);
+    }
+
+    public void onEvent(CursorLoaderRestartEvent event) {
+        isNewAccessibilityEvent = true;
     }
 }
