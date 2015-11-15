@@ -15,6 +15,7 @@ import com.nhaarman.listviewanimations.ArrayAdapter;
 import com.watchappz.android.R;
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
+import com.watchappz.android.system.filters.AppFilter;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.utils.image_loader.ImageLoader;
 
@@ -30,12 +31,13 @@ import java.util.Locale;
  * mRogach on 06.11.2015.
  */
 
-public final class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> implements Filterable {
+public class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> implements Filterable {
 
-    private Context mContext;
-    private DBManager dbManager;
-    private ImageLoader imageLoader;
-    private List<AppModel> appModels;
+    protected Context mContext;
+    protected DBManager dbManager;
+    protected ImageLoader imageLoader;
+    protected List<AppModel> appModels;
+    protected AppFilter mFilter;
 
     public DragDropFavoriteAppsListAdapter(Context mContext, final List<AppModel> _appModels, final DBManager _dbManager) {
         this.mContext = mContext;
@@ -70,11 +72,11 @@ public final class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel
         return _convertView;
     }
 
-    private static class AppViewHolder {
+    protected static class AppViewHolder {
 
-        private TextView tvAppName, tvAppInfo, tvAppInfoSizeMinutes;
-        private ImageView ivAppIcon;
-        private ImageView btnAppStar;
+        protected TextView tvAppName, tvAppInfo, tvAppInfoSizeMinutes;
+        protected ImageView ivAppIcon;
+        protected ImageView btnAppStar;
 
     }
 
@@ -102,20 +104,20 @@ public final class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel
         });
     }
 
-    private String getAppInfo(final AppModel _appModel) {
+    protected String getAppInfo(final AppModel _appModel) {
         return String.format(mContext.getResources().getString(R.string.app_used) +
                         ": %s " + mContext.getResources().getString(R.string.app_use_today) +
                         " | %d x " + mContext.getResources().getString(R.string.app_use_total),
                 getDate(_appModel.getDateUsege(), "hh:mm"), _appModel.getAppUseTotalCount());
     }
 
-    private String getAppInfoSizeTime(final AppModel _appModel) {
+    protected String getAppInfoSizeTime(final AppModel _appModel) {
         long mills;
         mills = _appModel.getAppTimeSpent();
         return getAppSize(_appModel.getAppSize(), true) + " | " + getTimeLastUsage(mills);
     }
 
-    private String getTimeLastUsage(final long mills) {
+    protected String getTimeLastUsage(final long mills) {
         String time = "";
         double minutes = (double) mills / 60000;
         if (minutes < 1) {
@@ -136,7 +138,7 @@ public final class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel
         return time;
     }
 
-    private void setStarColor(final AppViewHolder appViewHolder, final AppModel _appModel) {
+    protected void setStarColor(final AppViewHolder appViewHolder, final AppModel _appModel) {
         if (_appModel.isFavourite() == 1) {
             setDrawable(appViewHolder.btnAppStar, R.drawable.ic_star_gold);
         } else {
@@ -144,11 +146,11 @@ public final class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel
         }
     }
 
-    private void setAppIcon(final AppViewHolder appViewHolder, final AppModel _appModel) {
+    protected void setAppIcon(final AppViewHolder appViewHolder, final AppModel _appModel) {
         imageLoader.displayImage(_appModel.getAppPackageName(), appViewHolder.ivAppIcon);
     }
 
-    private void showDialog(final ImageView v, final String _packageName) {
+    protected void showDialog(final ImageView v, final String _packageName) {
         final AppModel appModel = dbManager.getApp(_packageName);
         new MaterialDialog.Builder(mContext)
                 .backgroundColorRes(android.R.color.white)
@@ -183,55 +185,24 @@ public final class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel
                 .show();
     }
 
-    private void setDrawable(final ImageView _view, final int _idDrawable) {
+    protected void setDrawable(final ImageView _view, final int _idDrawable) {
         _view.setImageResource(_idDrawable);
     }
 
-    private void sendSearchBroadcastFavorute() {
+    protected void sendSearchBroadcastFavorute() {
         Intent broadcastIntent = new Intent(Constants.FAVORITE_CLICK);
         mContext.sendBroadcast(broadcastIntent);
     }
 
     @Override
     public Filter getFilter() {
-        return new Filter(){
-
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                constraint = constraint.toString().toLowerCase();
-                FilterResults result = new Filter.FilterResults();
-
-                if (constraint != null && constraint.toString().length() > 0) {
-                    List<AppModel> founded = new ArrayList<>();
-                    for(AppModel item: appModels){
-                        if(item.toString().toLowerCase().contains(constraint)){
-                            founded.add(item);
-                        }
-                    }
-
-                    result.values = founded;
-                    result.count = founded.size();
-                }else {
-                    result.values = appModels;
-                    result.count = appModels.size();
-                }
-                return result;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                clear();
-                for (AppModel item : (List<AppModel>) results.values) {
-                    add(item);
-                }
-                notifyDataSetChanged();
-
-            }
-
-        };
+        if (mFilter == null) {
+            mFilter = new AppFilter(this, appModels);
+        }
+        return mFilter;
     }
 
-    private String getAppSize(long bytes, boolean si) {
+    protected String getAppSize(long bytes, boolean si) {
         int unit = si ? 1000 : 1024;
         if (bytes < unit) return bytes + " B";
         int exp = (int) (Math.log(bytes) / Math.log(unit));
@@ -239,7 +210,7 @@ public final class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel
         return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 
-    private String getDate(long milliSeconds, String dateFormat) {
+    protected String getDate(long milliSeconds, String dateFormat) {
         if (milliSeconds > 0) {
             SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.getDefault());
             Calendar calendar = Calendar.getInstance();

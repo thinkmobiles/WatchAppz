@@ -70,9 +70,6 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     @Override
     public void onPause() {
         super.onPause();
-        if (!favoriteApps.isEmpty()) {
-
-        }
     }
 
     private void setVisibleSortingLayout() {
@@ -101,7 +98,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     public void onLoadFinished(Loader<List<AppModel>> loader, final List<AppModel> _list) {
         favoriteApps = _list;
         mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.FAVORITE_RECEIVER);
-        initDragAndDropAdapter(_list);
+        initFavoriteAdapter(_list);
         setEmptyView(R.string.app_favorites_empty_view);
         shareToFacebook(_list.size());
     }
@@ -112,7 +109,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        AppModel appModel = dragDropFavoriteAppsListAdapter.getItem(i);
+        AppModel appModel = favoriteAdapter.getItem(i);
         Intent launchIntent = mainActivity.getPackageManager().getLaunchIntentForPackage(appModel.getAppPackageName());
         if (launchIntent != null) {
             startActivity(launchIntent);
@@ -148,7 +145,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     @Override
     public void onNewText(String _newText) {
-        dragDropFavoriteAppsListAdapter.getFilter().filter(_newText);
+        favoriteAdapter.getFilter().filter(_newText);
     }
 
     public void onEvent(CursorLoaderRestartEvent event) {
@@ -185,7 +182,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     @Override
     public void reloadList() {
-        mainActivity.getSupportLoaderManager().restartLoader(1, null, this);
+//        mainActivity.getSupportLoaderManager().restartLoader(1, null, this);
     }
 
     @Override

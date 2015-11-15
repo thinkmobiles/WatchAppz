@@ -107,7 +107,7 @@ public final class DBManager implements Serializable {
                 }
             }
         }
-        mDB.close();
+//        mDB.close();
     }
 
     public boolean setToFavotiteIfMaxValueMoreThenTen(final String _packageName) {
@@ -123,7 +123,7 @@ public final class DBManager implements Serializable {
                 }
             }
         }
-        mDB.close();
+//        mDB.close();
         return false;
     }
 
@@ -146,7 +146,7 @@ public final class DBManager implements Serializable {
             if(cursor != null)
                 cursor.close();
         }
-        mDB.close();
+//        mDB.close();
         return false;
     }
 
@@ -167,7 +167,7 @@ public final class DBManager implements Serializable {
                 }
             }
         }
-        mDB.close();
+//        mDB.close();
     }
 
     public void setAppSpentTimeInDB(final String _packageName, final long _spentTime) {
@@ -185,7 +185,7 @@ public final class DBManager implements Serializable {
                 }
             }
         }
-        mDB.close();
+//        mDB.close();
     }
 
     public void updateAppPosition(final String _packageName, final long _value) {
@@ -203,7 +203,7 @@ public final class DBManager implements Serializable {
                 }
             }
         }
-        mDB.close();
+//        mDB.close();
     }
 
     public void removeFromFavorite(final String _packageName) {
@@ -216,7 +216,7 @@ public final class DBManager implements Serializable {
         values.put(KEY_FAVORITE_COUNT, 0);
         values.put(KEY_IS_ABLE_TO_FAVORITE, 0);
         mDB.update(TABLE_APPS, values, KEY_PACKAGE_NAME + " = ?", new String[]{_packageName});
-        mDB.close();
+//        mDB.close();
     }
 
     public void removeFavoriteIfLessPersent(final String _packageName) {
@@ -227,7 +227,7 @@ public final class DBManager implements Serializable {
         ContentValues values = new ContentValues();
         values.put(KEY_IS_FAVOURITE, 0);
         mDB.update(TABLE_APPS, values, KEY_PACKAGE_NAME + " = ?", new String[]{_packageName});
-        mDB.close();
+//        mDB.close();
     }
 
     public void updateTodayCount() {
@@ -243,7 +243,7 @@ public final class DBManager implements Serializable {
                 mDB.update(TABLE_APPS, values, KEY_ID + " =?", new String[]{String.valueOf(cursor.getLong(0))});
             }
         }
-        mDB.close();
+//        mDB.close();
     }
 
     public AppModel getApp(final String _fieldValue) {
@@ -362,10 +362,15 @@ public final class DBManager implements Serializable {
 
     public List<AppModel> getAppsList(final Cursor cursor) {
         List<AppModel> list = new ArrayList<>();
-        if (cursor != null) {
-            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                list.add(fillAppModelFromCursor(cursor));
+        try {
+            if (cursor != null) {
+                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                    list.add(fillAppModelFromCursor(cursor));
+                }
             }
+        } finally {
+            if(cursor != null)
+                cursor.close();
         }
         return list;
     }
@@ -461,21 +466,21 @@ public final class DBManager implements Serializable {
     private Cursor getCursorBySortType(final String selectQuery, final String inputText, final int _sortType) {
         Cursor cursor;
         switch (_sortType) {
-            case 1:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
-                break;
-            case 2:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_APP_SIZE + " DESC");
-                break;
-            case 3:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " ASC");
-                break;
+//            case 1:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
+//                break;
+//            case 2:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_APP_SIZE + " DESC");
+//                break;
+//            case 3:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " ASC");
+//                break;
             case 4:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_APP_SIZE + " DESC");
                 break;
-            case 5:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
-                break;
+//            case 5:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
+//                break;
             case 6:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_NAME + " ASC");
                 break;
@@ -500,21 +505,21 @@ public final class DBManager implements Serializable {
     private Cursor getRecentlyCursorBySortType(final String selectQuery, final String inputText, final int _sortType) {
         Cursor cursor;
         switch (_sortType) {
-            case 1:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
-                break;
-            case 2:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_APP_SIZE + " DESC");
-                break;
-            case 3:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " ASC");
-                break;
+//            case 1:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
+//                break;
+//            case 2:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_APP_SIZE + " DESC");
+//                break;
+//            case 3:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " ASC");
+//                break;
             case 4:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_APP_SIZE + " DESC");
                 break;
-            case 5:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
-                break;
+//            case 5:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_TOTAL_COUNT + " DESC");
+//                break;
             case 6:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, new String[]{"%" + inputText + "%"}, null, null, KEY_DATE_USEGE + " DESC");
                 break;
@@ -530,21 +535,21 @@ public final class DBManager implements Serializable {
     private Cursor getCursorBySortType(final String selectQuery,  final int _sortType) {
         Cursor cursor;
         switch (_sortType) {
-            case 1:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
-                break;
-            case 2:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
-                break;
-            case 3:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " ASC");
-                break;
+//            case 1:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+//                break;
+//            case 2:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
+//                break;
+//            case 3:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " ASC");
+//                break;
             case 4:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
                 break;
-            case 5:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
-                break;
+//            case 5:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+//                break;
             case 6:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_NAME + " ASC");
                 break;
@@ -573,21 +578,21 @@ public final class DBManager implements Serializable {
     private Cursor getRecentlyCursorBySortType(final String selectQuery,  final int _sortType) {
         Cursor cursor;
         switch (_sortType) {
-            case 1:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
-                break;
-            case 2:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
-                break;
-            case 3:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " ASC");
-                break;
+//            case 1:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+//                break;
+//            case 2:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
+//                break;
+//            case 3:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " ASC");
+//                break;
             case 4:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " DESC");
                 break;
-            case 5:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
-                break;
+//            case 5:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TOTAL_COUNT + " DESC");
+//                break;
             case 6:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_DATE_USEGE + " DESC");
                 break;

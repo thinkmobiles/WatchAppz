@@ -28,6 +28,7 @@ import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.SortInTabLayoutListener;
 import com.watchappz.android.system.adapters.AppsListAdapter;
 import com.watchappz.android.system.adapters.DragDropFavoriteAppsListAdapter;
+import com.watchappz.android.system.adapters.FavoriteAdapter;
 import com.watchappz.android.system.models.AppModel;
 
 import java.util.List;
@@ -44,6 +45,7 @@ public class BaseAppsFragment extends BaseFragment {
     protected TextView tvEmptyView;
     protected RelativeLayout rlAppsContainer;
     protected DragDropFavoriteAppsListAdapter dragDropFavoriteAppsListAdapter;
+    protected FavoriteAdapter favoriteAdapter;
     protected IntentFilter mSearchFilter = new IntentFilter(Constants.QUERY);
     protected IntentFilter mFavoriteFilter = new IntentFilter(Constants.FAVORITE_CLICK);
     protected SearchManager searchManager;
@@ -108,6 +110,15 @@ public class BaseAppsFragment extends BaseFragment {
         listView.enableDragAndDrop();
         listView.setTextFilterEnabled(true);
         listView.setOnItemMovedListener(new MyOnItemMovedListener(dragDropFavoriteAppsListAdapter));
+        listView.setOnItemLongClickListener(new MyOnItemLongClickListener(listView));
+    }
+
+    protected void initFavoriteAdapter(final List<AppModel> _appModels) {
+        favoriteAdapter = new FavoriteAdapter(mainActivity, _appModels, mainActivity.getDbManager());
+        listView.setAdapter(favoriteAdapter);
+        listView.enableDragAndDrop();
+        listView.setTextFilterEnabled(true);
+        listView.setOnItemMovedListener(new MyOnItemMovedListener(favoriteAdapter));
         listView.setOnItemLongClickListener(new MyOnItemLongClickListener(listView));
     }
 
