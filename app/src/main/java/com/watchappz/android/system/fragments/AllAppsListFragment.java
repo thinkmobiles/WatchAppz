@@ -81,7 +81,7 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
     @Override
     public void onLoadFinished(Loader<List<AppModel>> loader, List<AppModel> _list) {
         mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.All_APPS_RECEIVER);
-        initDragAndDropAdapter(_list);
+        initAllAdapter(_list);
         setEmptyView(R.string.app_all_empty_view);
     }
 
@@ -114,7 +114,7 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            initDragAndDropAdapter(appModels);
+            initAllAdapter(appModels);
         }
     };
 

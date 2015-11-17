@@ -107,10 +107,18 @@ public class BaseAppsFragment extends BaseFragment {
     protected void initDragAndDropAdapter(final List<AppModel> _appModels) {
         dragDropFavoriteAppsListAdapter = new DragDropFavoriteAppsListAdapter(mainActivity, _appModels, mainActivity.getDbManager());
         listView.setAdapter(dragDropFavoriteAppsListAdapter);
-        listView.enableDragAndDrop();
         listView.setTextFilterEnabled(true);
         listView.setOnItemMovedListener(new MyOnItemMovedListener(dragDropFavoriteAppsListAdapter));
         listView.setOnItemLongClickListener(new MyOnItemLongClickListener(listView));
+    }
+
+    protected void initRecentlyAdapter(final List<AppModel> _appModels) {
+        initDragAndDropAdapter(_appModels);
+        listView.disableDragAndDrop();
+    }
+    protected void initAllAdapter(final List<AppModel> _appModels) {
+        initDragAndDropAdapter(_appModels);
+        listView.disableDragAndDrop();
     }
 
     protected void initFavoriteAdapter(final List<AppModel> _appModels) {
@@ -154,12 +162,14 @@ public class BaseAppsFragment extends BaseFragment {
 
         @Override
         public void onItemMoved(final int originalPosition, final int newPosition) {
-            Thread t = new Thread(new Runnable() {
-                public void run() {
-                    mainActivity.getDbManager().updateAppPosition(mAdapter.getItem(newPosition).getAppPackageName(), newPosition);
-                }
-            });
-            t.start();
+            if (mainActivity.getSortType() != Constants.SORT_TYPE_DEFAULT_DESC && mainActivity.getSortType() != Constants.SORT_TYPE_DEFAULT) {
+                Thread t = new Thread(new Runnable() {
+                    public void run() {
+                        mainActivity.getDbManager().updateAppPosition(mAdapter.getItem(newPosition).getAppPackageName(), newPosition);
+                    }
+                });
+                t.start();
+            }
 //            mAdapter.getItem(newPosition).setAppPosition(newPosition);
             mAdapter.notifyDataSetChanged();
         }

@@ -48,7 +48,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
         mainActivity.registerReceiver(clickFavoriteReceiver, mFavoriteFilter);
         mainActivity.setFloatingMenuVisibility(true);
-        mainActivity.getSupportLoaderManager().initLoader(1, null, this);
+        mainActivity.getSupportLoaderManager().restartLoader(1, null, this);
         setVisibleSortingLayout();
     }
 
@@ -90,14 +90,14 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     @Override
     public Loader<List<AppModel>> onCreateLoader(int id, Bundle args) {
-        mainActivity.getLoadingDialogController().showLoadingDialog(Constants.FAVORITE_RECEIVER);
+//        mainActivity.getLoadingDialogController().showLoadingDialog(Constants.FAVORITE_RECEIVER);
         return new FavoriteAppsLoader(mainActivity, mainActivity.getDbManager(), mainActivity.getSortType());
     }
 
     @Override
     public void onLoadFinished(Loader<List<AppModel>> loader, final List<AppModel> _list) {
         favoriteApps = _list;
-        mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.FAVORITE_RECEIVER);
+//        mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.FAVORITE_RECEIVER);
         initFavoriteAdapter(_list);
         setEmptyView(R.string.app_favorites_empty_view);
         shareToFacebook(_list.size());
@@ -134,7 +134,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
                 if (query.isEmpty()) {
                     mainActivity.getSupportLoaderManager().restartLoader(1, null, FavoriteAppsListFragment.this);
                 } else {
-                    appModels = mainActivity.getDbManager().getAppsList(mainActivity.getDbManager().searchAllByInputText(query, mainActivity.getSortType()));
+                    appModels = mainActivity.getDbManager().getAppsList(mainActivity.getDbManager().searchFavoriteByInputText(query, mainActivity.getSortType()));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -182,7 +182,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     @Override
     public void reloadList() {
-//        mainActivity.getSupportLoaderManager().restartLoader(1, null, this);
+        mainActivity.getSupportLoaderManager().restartLoader(1, null, this);
     }
 
     @Override

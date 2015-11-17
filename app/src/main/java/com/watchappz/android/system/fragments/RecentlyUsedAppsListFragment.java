@@ -70,7 +70,7 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
     @Override
     public void onLoadFinished(Loader<List<AppModel>> loader, List<AppModel> _list) {
         mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.RECENTLY_RECEIVER);
-        initDragAndDropAdapter(_list);
+        initRecentlyAdapter(_list);
         setEmptyView(R.string.app_resently_used_empty_view);
     }
 
@@ -103,7 +103,7 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            initDragAndDropAdapter(appModels);
+            initRecentlyAdapter(appModels);
         }
     };
 

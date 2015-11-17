@@ -19,6 +19,8 @@ public abstract class Constants {
     public static final String FAVORITE_RECEIVER        = "favorite";
     public static final String All_APPS_RECEIVER        = "all";
     public static final String APP_INFO_SERVICE         = "com.watchappz.android/.utils.AppInfoService";
+    public static final String ITEM_POSITION            = "item_position";
+    public static final String STAR_LICK                = "item_star_click";
 
 
     public static final int SORT_TYPE_MOST              = 1;

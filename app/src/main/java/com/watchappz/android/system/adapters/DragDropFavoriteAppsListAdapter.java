@@ -80,7 +80,7 @@ public class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> impl
 
     }
 
-    private void findViews(final AppViewHolder appViewHolder, final View _convertView) {
+    protected void findViews(final AppViewHolder appViewHolder, final View _convertView) {
         appViewHolder.ivAppIcon = (ImageView) _convertView.findViewById(R.id.ivAppIcon_LIA);
         appViewHolder.btnAppStar = (ImageView) _convertView.findViewById(R.id.btnAppStar_LIA);
         appViewHolder.tvAppName = (TextView) _convertView.findViewById(R.id.tvAppName_LIA);

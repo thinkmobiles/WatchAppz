@@ -15,6 +15,7 @@ import com.nhaarman.listviewanimations.ArrayAdapter;
 import com.watchappz.android.R;
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
+import com.watchappz.android.system.activities.MainActivity;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.utils.image_loader.ImageLoader;
 
@@ -32,9 +33,11 @@ import java.util.Locale;
 
 public final class FavoriteAdapter extends DragDropFavoriteAppsListAdapter {
 
+    private MainActivity mActivity;
 
     public FavoriteAdapter(Context mContext, List<AppModel> _appModels, DBManager _dbManager) {
         super(mContext, _appModels, _dbManager);
+        mActivity = (MainActivity) mContext;
     }
 
     @Override
@@ -63,17 +66,8 @@ public final class FavoriteAdapter extends DragDropFavoriteAppsListAdapter {
         return _convertView;
     }
 
-    protected void findViews(final AppViewHolder appViewHolder, final View _convertView) {
-        appViewHolder.ivAppIcon = (ImageView) _convertView.findViewById(R.id.ivAppIcon_LIA);
-        appViewHolder.btnAppStar = (ImageView) _convertView.findViewById(R.id.btnAppStar_LIA);
-        appViewHolder.tvAppName = (TextView) _convertView.findViewById(R.id.tvAppName_LIA);
-        appViewHolder.tvAppInfo = (TextView) _convertView.findViewById(R.id.tvAppInfo_LIA);
-        appViewHolder.tvAppInfoSizeMinutes = (TextView) _convertView.findViewById(R.id.tvAppInfoSizeMinutes_LIA);
-    }
-
     protected void updateView(final AppViewHolder appViewHolder, final int _position) {
         final AppModel appModel = getItem(_position);
-//        dbManager.updateAppPosition(appModel.getAppPackageName(), _position);
         appViewHolder.tvAppName.setText(appModel.getAppName());
         appViewHolder.tvAppInfo.setText(getAppInfo(appModel));
         setStarColor(appViewHolder, appModel);
@@ -85,11 +79,13 @@ public final class FavoriteAdapter extends DragDropFavoriteAppsListAdapter {
                 showDialog(appViewHolder.btnAppStar, appModel.getAppPackageName());
             }
         });
-        Thread t = new Thread(new Runnable() {
-            public void run() {
-                dbManager.updateAppPosition(appModel.getAppPackageName(), _position);
-            }
-        });
-        t.start();
+        if (mActivity.getSortType() != Constants.SORT_TYPE_DEFAULT_DESC && mActivity.getSortType() != Constants.SORT_TYPE_DEFAULT) {
+            Thread t = new Thread(new Runnable() {
+                public void run() {
+                    dbManager.updateAppPosition(appModel.getAppPackageName(), _position);
+                }
+            });
+            t.start();
+        }
     }
 }
