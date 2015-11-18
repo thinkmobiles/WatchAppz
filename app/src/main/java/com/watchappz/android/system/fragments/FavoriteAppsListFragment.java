@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.DisplayMetrics;
@@ -18,11 +19,14 @@ import android.widget.Toast;
 import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.INewTextListener;
+import com.watchappz.android.interfaces.IReloadFavoriteDragList;
 import com.watchappz.android.interfaces.IReloadList;
 import com.watchappz.android.loaders.FavoriteAppsLoader;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.system.models.CursorLoaderRestartEvent;
+import com.watchappz.android.utils.SetPositionService;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +37,7 @@ import java.util.List;
  */
 
 public final class FavoriteAppsListFragment extends BaseAppsFragment implements AdapterView.OnItemClickListener,
-        INewTextListener, IReloadList, View.OnClickListener, LoaderManager.LoaderCallbacks<List<AppModel>> {
+        INewTextListener, IReloadList, IReloadFavoriteDragList, View.OnClickListener, LoaderManager.LoaderCallbacks<List<AppModel>> {
 
     private List<AppModel> favoriteApps;
 
@@ -55,7 +59,9 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     private void setListeners() {
         listView.setOnItemClickListener(this);
         llDefault.setOnClickListener(this);
+        llDrag.setOnClickListener(this);
         mainActivity.addiReloadList(this);
+        mainActivity.setReloadFavoriteList(this);
         mainActivity.setINewTextFavoriteListener(this);
     }
 
@@ -70,11 +76,33 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     @Override
     public void onPause() {
         super.onPause();
+        writeAppsPositionsToDB();
+    }
+
+    private void writeAppsPositionsToDB() {
+        List<AppModel> models = new ArrayList<>();
+        if (mainActivity.getSortType() == Constants.SORT_TYPE_DRAG_AND_DROP) {
+            for (int i = 0; i < dragDropFavoriteAppsListAdapter.getCount(); i++) {
+                final int finalI = i;
+                models.add(dragDropFavoriteAppsListAdapter.getItem(finalI));
+//                Thread t = new Thread(new Runnable() {
+//                    public void run() {
+//                        mainActivity.getDbManager().updateAppPosition(dragDropFavoriteAppsListAdapter.getItem(finalI).getAppPackageName(), finalI);
+//                    }
+//                });
+//                t.start();
+            }
+        }
+
+        Intent intent = new Intent(Intent.ACTION_SYNC, null, mainActivity, SetPositionService.class);
+        intent.putExtra("AppsPosition", (Serializable) models);
+        mainActivity.startService(intent);
     }
 
     private void setVisibleSortingLayout() {
         llSortTabLayout.setVisibility(View.VISIBLE);
         llDefault.setVisibility(View.VISIBLE);
+        llDrag.setVisibility(View.VISIBLE);
         llData.setVisibility(View.GONE);
         llTimeUsed.setVisibility(View.GONE);
     }
@@ -90,14 +118,14 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     @Override
     public Loader<List<AppModel>> onCreateLoader(int id, Bundle args) {
-//        mainActivity.getLoadingDialogController().showLoadingDialog(Constants.FAVORITE_RECEIVER);
+        mainActivity.getLoadingDialogController().showLoadingDialog(Constants.FAVORITE_RECEIVER);
         return new FavoriteAppsLoader(mainActivity, mainActivity.getDbManager(), mainActivity.getSortType());
     }
 
     @Override
     public void onLoadFinished(Loader<List<AppModel>> loader, final List<AppModel> _list) {
         favoriteApps = _list;
-//        mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.FAVORITE_RECEIVER);
+        mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.FAVORITE_RECEIVER);
         initFavoriteAdapter(_list);
         setEmptyView(R.string.app_favorites_empty_view);
         shareToFacebook(_list.size());
@@ -109,7 +137,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        AppModel appModel = favoriteAdapter.getItem(i);
+        AppModel appModel = dragDropFavoriteAppsListAdapter.getItem(i);
         Intent launchIntent = mainActivity.getPackageManager().getLaunchIntentForPackage(appModel.getAppPackageName());
         if (launchIntent != null) {
             startActivity(launchIntent);
@@ -145,7 +173,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     @Override
     public void onNewText(String _newText) {
-        favoriteAdapter.getFilter().filter(_newText);
+            dragDropFavoriteAppsListAdapter.getFilter().filter(_newText);
     }
 
     public void onEvent(CursorLoaderRestartEvent event) {
@@ -189,6 +217,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.llDefault_FVP:
+                writeAppsPositionsToDB();
                 if (mainActivity.getSortType() != Constants.SORT_TYPE_DEFAULT) {
                     mainActivity.setSortType(Constants.SORT_TYPE_DEFAULT);
                 } else {
@@ -197,8 +226,18 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
                 }
                 sortInTabLayoutListener.sortDefault();
                 break;
+            case R.id.llDrag_FVP:
+                if (mainActivity.getSortType() != Constants.SORT_TYPE_DRAG_AND_DROP) {
+                    mainActivity.setSortType(Constants.SORT_TYPE_DRAG_AND_DROP);
+                }
+                sortInTabLayoutListener.sortDrag();
+                break;
         }
         setPressedViews();
     }
 
+    @Override
+    public void reloadFavoriteToDragList() {
+        mainActivity.getSupportLoaderManager().restartLoader(1, null, this);
+    }
 }

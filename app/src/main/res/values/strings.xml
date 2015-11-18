@@ -26,6 +26,7 @@
     <string name="app_favorite_remove">Remove</string>
     <string name="app_favorite_add">Add</string>
     <string name="app_sort_default">Default</string>
+    <string name="app_sort_drag">Drag and Drop</string>
     <string name="app_sort_data">Data</string>
     <string name="app_sort_recent">Recent</string>
     <string name="app_sort_time_used">Time used</string>

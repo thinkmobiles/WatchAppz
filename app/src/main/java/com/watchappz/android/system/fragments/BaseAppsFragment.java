@@ -3,7 +3,6 @@ package com.watchappz.android.system.fragments;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SearchView;
@@ -14,21 +13,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
 import com.nhaarman.listviewanimations.itemmanipulation.dragdrop.OnItemMovedListener;
+import com.nhaarman.listviewanimations.itemmanipulation.dragdrop.TouchViewDraggableManager;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.SimpleSwipeUndoAdapter;
 import com.watchappz.android.R;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.SortInTabLayoutListener;
-import com.watchappz.android.system.adapters.AppsListAdapter;
 import com.watchappz.android.system.adapters.DragDropFavoriteAppsListAdapter;
-import com.watchappz.android.system.adapters.FavoriteAdapter;
 import com.watchappz.android.system.models.AppModel;
 
 import java.util.List;
@@ -45,14 +43,13 @@ public class BaseAppsFragment extends BaseFragment {
     protected TextView tvEmptyView;
     protected RelativeLayout rlAppsContainer;
     protected DragDropFavoriteAppsListAdapter dragDropFavoriteAppsListAdapter;
-    protected FavoriteAdapter favoriteAdapter;
     protected IntentFilter mSearchFilter = new IntentFilter(Constants.QUERY);
     protected IntentFilter mFavoriteFilter = new IntentFilter(Constants.FAVORITE_CLICK);
     protected SearchManager searchManager;
     protected SearchView mSearchView;
     protected boolean isNewAccessibilityEvent = false;
-    protected LinearLayout llDefault, llData, llTimeUsed, llSortTabLayout;
-    protected TextView tvDefault, tvData, tvTimeUsed;
+    protected LinearLayout llDefault, llDrag, llData, llTimeUsed, llSortTabLayout;
+    protected TextView tvDefault, tvDrag, tvData, tvTimeUsed;
     protected ImageView ivArrowDefault, ivArrowData, ivArrowTimeUsed;
     protected SortInTabLayoutListener sortInTabLayoutListener;
 
@@ -83,9 +80,11 @@ public class BaseAppsFragment extends BaseFragment {
         rlAppsContainer = (RelativeLayout) mInflatedView.findViewById(R.id.rlAppsContainer_FA);
         llSortTabLayout = (LinearLayout) mInflatedView.findViewById(R.id.llSortTabLayout_FVP);
         llDefault = (LinearLayout) mInflatedView.findViewById(R.id.llDefault_FVP);
+        llDrag = (LinearLayout) mInflatedView.findViewById(R.id.llDrag_FVP);
         llData = (LinearLayout) mInflatedView.findViewById(R.id.llData_FVP);
         llTimeUsed = (LinearLayout) mInflatedView.findViewById(R.id.llTime_FVP);
         tvDefault = (TextView) mInflatedView.findViewById(R.id.tvDefault_FVP);
+        tvDrag = (TextView) mInflatedView.findViewById(R.id.tvDrag_FVP);
         tvData = (TextView) mInflatedView.findViewById(R.id.tvData_FVP);
         tvTimeUsed = (TextView) mInflatedView.findViewById(R.id.tvTime_FVP);
         ivArrowDefault = (ImageView) mInflatedView.findViewById(R.id.ivArrowDefault_FVP);
@@ -108,26 +107,31 @@ public class BaseAppsFragment extends BaseFragment {
         dragDropFavoriteAppsListAdapter = new DragDropFavoriteAppsListAdapter(mainActivity, _appModels, mainActivity.getDbManager());
         listView.setAdapter(dragDropFavoriteAppsListAdapter);
         listView.setTextFilterEnabled(true);
-        listView.setOnItemMovedListener(new MyOnItemMovedListener(dragDropFavoriteAppsListAdapter));
         listView.setOnItemLongClickListener(new MyOnItemLongClickListener(listView));
+        listView.setOnItemMovedListener(new MyOnItemMovedListener(dragDropFavoriteAppsListAdapter));
     }
 
     protected void initRecentlyAdapter(final List<AppModel> _appModels) {
         initDragAndDropAdapter(_appModels);
         listView.disableDragAndDrop();
+        dragDropFavoriteAppsListAdapter.setIsDragIconVisible(false);
     }
     protected void initAllAdapter(final List<AppModel> _appModels) {
         initDragAndDropAdapter(_appModels);
         listView.disableDragAndDrop();
+        dragDropFavoriteAppsListAdapter.setIsDragIconVisible(false);
     }
 
     protected void initFavoriteAdapter(final List<AppModel> _appModels) {
-        favoriteAdapter = new FavoriteAdapter(mainActivity, _appModels, mainActivity.getDbManager());
-        listView.setAdapter(favoriteAdapter);
-        listView.enableDragAndDrop();
-        listView.setTextFilterEnabled(true);
-        listView.setOnItemMovedListener(new MyOnItemMovedListener(favoriteAdapter));
-        listView.setOnItemLongClickListener(new MyOnItemLongClickListener(listView));
+        initDragAndDropAdapter(_appModels);
+        if (mainActivity.getSortType() != Constants.SORT_TYPE_DRAG_AND_DROP) {
+            listView.disableDragAndDrop();
+            dragDropFavoriteAppsListAdapter.setIsDragIconVisible(false);
+        } else {
+            listView.enableDragAndDrop();
+            listView.setDraggableManager(new TouchViewDraggableManager(R.id.ivDrag_LIA));
+            dragDropFavoriteAppsListAdapter.setIsDragIconVisible(true);
+        }
     }
 
     protected void setEmptyView(final int _id) {
@@ -154,7 +158,7 @@ public class BaseAppsFragment extends BaseFragment {
 
     private class MyOnItemMovedListener implements OnItemMovedListener {
 
-        private final DragDropFavoriteAppsListAdapter mAdapter;
+        DragDropFavoriteAppsListAdapter mAdapter;
 
         MyOnItemMovedListener(final DragDropFavoriteAppsListAdapter adapter) {
             mAdapter = adapter;
@@ -162,16 +166,7 @@ public class BaseAppsFragment extends BaseFragment {
 
         @Override
         public void onItemMoved(final int originalPosition, final int newPosition) {
-            if (mainActivity.getSortType() != Constants.SORT_TYPE_DEFAULT_DESC && mainActivity.getSortType() != Constants.SORT_TYPE_DEFAULT) {
-                Thread t = new Thread(new Runnable() {
-                    public void run() {
-                        mainActivity.getDbManager().updateAppPosition(mAdapter.getItem(newPosition).getAppPackageName(), newPosition);
-                    }
-                });
-                t.start();
-            }
-//            mAdapter.getItem(newPosition).setAppPosition(newPosition);
-            mAdapter.notifyDataSetChanged();
+
         }
     }
 
@@ -199,6 +194,13 @@ public class BaseAppsFragment extends BaseFragment {
                 setCheckedColors(llDefault, tvDefault, ivArrowDefault);
                 setDefaultColors(llData, tvData, ivArrowData);
                 setDefaultColors(llTimeUsed, tvTimeUsed, ivArrowTimeUsed);
+                llDrag.setBackgroundColor(getColor(R.color.sort_tab_layout_background));
+                tvDrag.setTextColor(getColor(R.color.sort_tab_title_text_color));
+                break;
+            case Constants.SORT_TYPE_DRAG_AND_DROP:
+                setDefaultColors(llDefault, tvDefault, ivArrowDefault);
+                llDrag.setBackgroundColor(getColor(R.color.sort_tab_layout_background_pressed));
+                tvDrag.setTextColor(getColor(R.color.sort_tab_title_text_color_pressed));
                 break;
             case Constants.SORT_TYPE_DEFAULT_DESC:
                 llDefault.setBackgroundColor(getColor(R.color.sort_tab_layout_background_pressed));

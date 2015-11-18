@@ -38,6 +38,11 @@ public class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> impl
     protected ImageLoader imageLoader;
     protected List<AppModel> appModels;
     protected AppFilter mFilter;
+    private boolean isDragIconVisible;
+
+    public void setIsDragIconVisible(boolean isDragIconVisible) {
+        this.isDragIconVisible = isDragIconVisible;
+    }
 
     public DragDropFavoriteAppsListAdapter(Context mContext, final List<AppModel> _appModels, final DBManager _dbManager) {
         this.mContext = mContext;
@@ -77,12 +82,14 @@ public class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> impl
         protected TextView tvAppName, tvAppInfo, tvAppInfoSizeMinutes;
         protected ImageView ivAppIcon;
         protected ImageView btnAppStar;
+        protected ImageView ivDrag;
 
     }
 
     protected void findViews(final AppViewHolder appViewHolder, final View _convertView) {
         appViewHolder.ivAppIcon = (ImageView) _convertView.findViewById(R.id.ivAppIcon_LIA);
         appViewHolder.btnAppStar = (ImageView) _convertView.findViewById(R.id.btnAppStar_LIA);
+        appViewHolder.ivDrag = (ImageView) _convertView.findViewById(R.id.ivDrag_LIA);
         appViewHolder.tvAppName = (TextView) _convertView.findViewById(R.id.tvAppName_LIA);
         appViewHolder.tvAppInfo = (TextView) _convertView.findViewById(R.id.tvAppInfo_LIA);
         appViewHolder.tvAppInfoSizeMinutes = (TextView) _convertView.findViewById(R.id.tvAppInfoSizeMinutes_LIA);
@@ -90,7 +97,6 @@ public class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> impl
 
     private void updateView(final AppViewHolder appViewHolder, final int _position) {
         final AppModel appModel = getItem(_position);
-//        dbManager.updateAppPosition(appModel.getAppPackageName(), _position);
         appViewHolder.tvAppName.setText(appModel.getAppName());
         appViewHolder.tvAppInfo.setText(getAppInfo(appModel));
         setStarColor(appViewHolder, appModel);
@@ -102,6 +108,11 @@ public class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> impl
                 showDialog(appViewHolder.btnAppStar, appModel.getAppPackageName());
             }
         });
+        if (isDragIconVisible) {
+            appViewHolder.ivDrag.setVisibility(View.VISIBLE);
+        } else {
+            appViewHolder.ivDrag.setVisibility(View.GONE);
+        }
     }
 
     protected String getAppInfo(final AppModel _appModel) {

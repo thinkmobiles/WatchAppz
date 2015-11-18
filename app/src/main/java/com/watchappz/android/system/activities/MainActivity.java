@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.watchappz.android.R;
 import com.watchappz.android.database.DBManager;
 import com.watchappz.android.global.Constants;
+import com.watchappz.android.interfaces.IReloadFavoriteDragList;
 import com.watchappz.android.interfaces.IReloadList;
 import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.interfaces.ISendSortTypeListener;
@@ -48,6 +49,7 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener,
     private FacebookShareManager facebookShareManager;
     protected FloatingActionButton facebook;
     private List<IReloadList> reloadLists;
+    private IReloadFavoriteDragList reloadFavoriteList;
 //    private SharedPrefManager sharedPrefManager;
 
     public final void setINewTextListener(final INewTextListener _iNewTextListener) {
@@ -60,6 +62,10 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener,
 
     public final void setINewTextRecentlyListener(final INewTextListener _iNewTextListener) {
         iNewTextRecentlyListener = _iNewTextListener;
+    }
+
+    public void setReloadFavoriteList(IReloadFavoriteDragList reloadFavoriteList) {
+        this.reloadFavoriteList = reloadFavoriteList;
     }
 
     public void addiReloadList(final IReloadList _iReloadList) {
@@ -259,6 +265,11 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener,
     @Override
     public void sortDefault() {
         reloadLists();
+    }
+
+    @Override
+    public void sortDrag() {
+        reloadFavoriteList.reloadFavoriteToDragList();
     }
 
     @Override

@@ -93,6 +93,10 @@
             </meta-data>
         </receiver>
 
+        <service
+            android:name=".utils.SetPositionService"
+            android:exported="false" />
+
     </application>
 
 </manifest>

@@ -26,6 +26,7 @@ public abstract class Constants {
     public static final int SORT_TYPE_MOST              = 1;
     public static final int SORT_TYPE_DATA              = 2;
     public static final int SORT_TYPE_LOWEST            = 3;
+    public static final int SORT_TYPE_DRAG_AND_DROP     = 1;
     public static final int SORT_TYPE_DATA_MENU         = 4;
     public static final int SORT_TYPE_MOST_MENU         = 5;
     public static final int SORT_TYPE_DEFAULT           = 6;
@@ -33,5 +34,4 @@ public abstract class Constants {
     public static final int SORT_TYPE_DEFAULT_DESC      = 8;
     public static final int SORT_TYPE_DATA_MENU_ASC     = 9;
     public static final int SORT_TYPE_TIME_USED_ASC     = 10;
-    public static final int SORT_TYPE_DRAG_AND_DROP     = 6;
 }

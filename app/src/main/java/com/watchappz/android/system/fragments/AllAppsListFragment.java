@@ -42,6 +42,7 @@ public final class AllAppsListFragment extends BaseAppsFragment implements Loade
         mainActivity.getSupportLoaderManager().initLoader(3, null, this);
         llSortTabLayout.setVisibility(View.VISIBLE);
         llDefault.setVisibility(View.VISIBLE);
+        llDrag.setVisibility(View.GONE);
         llData.setVisibility(View.VISIBLE);
         llTimeUsed.setVisibility(View.VISIBLE);
     }

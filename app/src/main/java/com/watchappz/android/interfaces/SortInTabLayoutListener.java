@@ -9,6 +9,7 @@ package com.watchappz.android.interfaces;
 public interface SortInTabLayoutListener {
 
     void sortDefault();
+    void sortDrag();
     void sortData();
     void sortTimeUsed();
 }
