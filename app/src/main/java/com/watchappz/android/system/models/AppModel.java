@@ -1,11 +1,13 @@
 package com.watchappz.android.system.models;
 
+import java.io.Serializable;
+
 /**
  * Created by
  * mRogach on 15.09.2015.
  */
 
-public final class AppModel {
+public final class AppModel implements Serializable {
 
     private long id;
     private String mAppName;

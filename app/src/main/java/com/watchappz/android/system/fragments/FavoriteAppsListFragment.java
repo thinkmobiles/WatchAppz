@@ -80,22 +80,12 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     }
 
     private void writeAppsPositionsToDB() {
-        List<AppModel> models = new ArrayList<>();
-        if (mainActivity.getSortType() == Constants.SORT_TYPE_DRAG_AND_DROP) {
-            for (int i = 0; i < dragDropFavoriteAppsListAdapter.getCount(); i++) {
-                final int finalI = i;
-                models.add(dragDropFavoriteAppsListAdapter.getItem(finalI));
-//                Thread t = new Thread(new Runnable() {
-//                    public void run() {
-//                        mainActivity.getDbManager().updateAppPosition(dragDropFavoriteAppsListAdapter.getItem(finalI).getAppPackageName(), finalI);
-//                    }
-//                });
-//                t.start();
-            }
+        List<AppModel> appModels = new ArrayList<>();
+        for (int i = 0; i < dragDropFavoriteAppsListAdapter.getCount(); i++) {
+            appModels.add(dragDropFavoriteAppsListAdapter.getItem(i));
         }
-
         Intent intent = new Intent(Intent.ACTION_SYNC, null, mainActivity, SetPositionService.class);
-        intent.putExtra("AppsPosition", (Serializable) models);
+        intent.putExtra("AppsPosition", (Serializable) appModels);
         mainActivity.startService(intent);
     }
 
@@ -105,6 +95,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         llDrag.setVisibility(View.VISIBLE);
         llData.setVisibility(View.GONE);
         llTimeUsed.setVisibility(View.GONE);
+        setPressedViews();
     }
 
     @Override
@@ -229,8 +220,8 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
             case R.id.llDrag_FVP:
                 if (mainActivity.getSortType() != Constants.SORT_TYPE_DRAG_AND_DROP) {
                     mainActivity.setSortType(Constants.SORT_TYPE_DRAG_AND_DROP);
+                    sortInTabLayoutListener.sortDrag();
                 }
-                sortInTabLayoutListener.sortDrag();
                 break;
         }
         setPressedViews();

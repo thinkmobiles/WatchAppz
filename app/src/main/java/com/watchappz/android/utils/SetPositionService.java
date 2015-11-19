@@ -3,6 +3,7 @@ package com.watchappz.android.utils;
 import android.app.IntentService;
 import android.content.Intent;
 
+import com.watchappz.android.WatchAppzApplication;
 import com.watchappz.android.system.models.AppModel;
 
 import java.util.List;
@@ -24,12 +25,16 @@ public final class SetPositionService extends IntentService {
 
 
 
-    public SetPositionService(String name) {
-        super(name);
+    public SetPositionService() {
+        super("SetPositionService");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void onHandleIntent(Intent intent) {
         appModels = (List<AppModel>) intent.getSerializableExtra("AppsPosition");
+        for (AppModel appModel : appModels) {
+            WatchAppzApplication.getDbManager().updateAppPosition(appModel.getAppPackageName(), appModels.indexOf(appModel));
+        }
     }
 }

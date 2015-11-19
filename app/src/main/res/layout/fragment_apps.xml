@@ -132,7 +132,7 @@
         <!--android:animationCache="false"-->
         <!--android:layout_below="@id/llSortTabLayout_FVP"/>-->
 
-    <com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
+    <com.watchappz.android.utils.custom_views.CustomDynamicListView
         android:id="@+id/lvFavoriteApps_FA"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

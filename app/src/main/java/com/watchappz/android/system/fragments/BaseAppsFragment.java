@@ -24,10 +24,12 @@ import com.nhaarman.listviewanimations.itemmanipulation.dragdrop.OnItemMovedList
 import com.nhaarman.listviewanimations.itemmanipulation.dragdrop.TouchViewDraggableManager;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.SimpleSwipeUndoAdapter;
 import com.watchappz.android.R;
+import com.watchappz.android.WatchAppzApplication;
 import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.SortInTabLayoutListener;
 import com.watchappz.android.system.adapters.DragDropFavoriteAppsListAdapter;
 import com.watchappz.android.system.models.AppModel;
+import com.watchappz.android.utils.custom_views.CustomDynamicListView;
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ import de.greenrobot.event.EventBus;
  */
 public class BaseAppsFragment extends BaseFragment {
 
-    protected DynamicListView listView;
+    protected CustomDynamicListView listView;
     protected TextView tvEmptyView;
     protected RelativeLayout rlAppsContainer;
     protected DragDropFavoriteAppsListAdapter dragDropFavoriteAppsListAdapter;
@@ -75,7 +77,7 @@ public class BaseAppsFragment extends BaseFragment {
     }
 
     private void findViews() {
-        listView = (DynamicListView) mInflatedView.findViewById(R.id.lvFavoriteApps_FA);
+        listView = (CustomDynamicListView) mInflatedView.findViewById(R.id.lvFavoriteApps_FA);
         tvEmptyView = (TextView) mInflatedView.findViewById(R.id.tvEmptyAppsList_EV);
         rlAppsContainer = (RelativeLayout) mInflatedView.findViewById(R.id.rlAppsContainer_FA);
         llSortTabLayout = (LinearLayout) mInflatedView.findViewById(R.id.llSortTabLayout_FVP);
