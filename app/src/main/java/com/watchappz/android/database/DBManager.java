@@ -606,9 +606,9 @@ public final class DBManager implements Serializable {
             case 7:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_TIME_SPENT + " DESC");
                 break;
-            case 8:
-                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_NAME + " DESC");
-                break;
+//            case 8:
+//                cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_NAME + " DESC");
+//                break;
             case 9:
                 cursor = mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_APP_SIZE + " ASC");
                 break;
