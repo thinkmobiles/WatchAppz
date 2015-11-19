@@ -81,8 +81,10 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     private void writeAppsPositionsToDB() {
         List<AppModel> appModels = new ArrayList<>();
-        for (int i = 0; i < dragDropFavoriteAppsListAdapter.getCount(); i++) {
-            appModels.add(dragDropFavoriteAppsListAdapter.getItem(i));
+        if (dragDropFavoriteAppsListAdapter != null) {
+            for (int i = 0; i < dragDropFavoriteAppsListAdapter.getCount(); i++) {
+                appModels.add(dragDropFavoriteAppsListAdapter.getItem(i));
+            }
         }
         Intent intent = new Intent(Intent.ACTION_SYNC, null, mainActivity, SetPositionService.class);
         intent.putExtra("AppsPosition", (Serializable) appModels);

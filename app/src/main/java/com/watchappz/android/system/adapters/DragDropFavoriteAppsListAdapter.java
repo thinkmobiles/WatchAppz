@@ -105,7 +105,7 @@ public class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> impl
         appViewHolder.btnAppStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(appViewHolder.btnAppStar, appModel.getAppPackageName());
+                showDialog(appViewHolder.btnAppStar, appModel);
             }
         });
         if (isDragIconVisible) {
@@ -161,8 +161,7 @@ public class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> impl
         imageLoader.displayImage(_appModel.getAppPackageName(), appViewHolder.ivAppIcon);
     }
 
-    protected void showDialog(final ImageView v, final String _packageName) {
-        final AppModel appModel = dbManager.getApp(_packageName);
+    protected void showDialog(final ImageView v, final AppModel _appModel) {
         new MaterialDialog.Builder(mContext)
                 .backgroundColorRes(android.R.color.white)
                 .title(mContext.getResources().getString(R.string.tab_favorieten))
@@ -176,8 +175,8 @@ public class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> impl
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         super.onPositive(dialog);
-                        if (appModel != null && appModel.isFavourite() == 0) {
-                            dbManager.addToFavoriteByTap(_packageName);
+                        if (_appModel != null && _appModel.isFavourite() == 0) {
+                            dbManager.addToFavoriteByTap(_appModel.getAppPackageName());
                             setDrawable(v, R.drawable.ic_star_gold);
                             sendSearchBroadcastFavorute();
                         }
@@ -186,8 +185,8 @@ public class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> impl
                     @Override
                     public void onNegative(MaterialDialog dialog) {
                         super.onNegative(dialog);
-                        if (appModel != null && appModel.isFavourite() == 1) {
-                            dbManager.removeFromFavorite(_packageName);
+                        if (_appModel != null && _appModel.isFavourite() == 1) {
+                            dbManager.removeFromFavorite(_appModel.getAppPackageName());
                             setDrawable(v, R.drawable.ic_star_grey);
                             sendSearchBroadcastFavorute();
                         }

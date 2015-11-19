@@ -1,55 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rlItem_LIA"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/ivDrag_LIA"
-        style="@style/AppDragIconLIA"
-        android:src="@drawable/ic_drag_item"
-        android:layout_alignParentLeft="true"
-        android:visibility="gone"/>
+        android:id="@+id/btnAppStar_LIA"
+        style="@style/AppStarIconLIA"
+        android:background="@drawable/settings_textview_slector"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:paddingTop="20dp"
+        tools:src="@drawable/ic_star_gold" />
 
-    <ImageView
-        android:id="@+id/ivAppIcon_LIA"
-        style="@style/AppIconLIA"
-        android:src="@mipmap/ic_launcher"
-        android:layout_toRightOf="@id/ivDrag_LIA"/>
+    <RelativeLayout
+        android:id="@+id/rlItem_LIA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/btnAppStar_LIA">
 
         <ImageView
-            android:id="@+id/btnAppStar_LIA"
-            style="@style/AppStarIconLIA"
-            tools:src="@drawable/ic_star_gold"
-            android:paddingLeft="20dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:background="@drawable/settings_textview_slector"
-            />
+            android:id="@+id/ivDrag_LIA"
+            style="@style/AppDragIconLIA"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_drag_item"
+            android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/tvAppName_LIA"
-        android:layout_toRightOf="@id/ivAppIcon_LIA"
-        android:layout_toLeftOf="@id/btnAppStar_LIA"
-        tools:text="title"
-        style="@style/AppNameTextViewLIA"/>
-    <TextView
-        android:id="@+id/tvAppInfo_LIA"
-        android:layout_below="@id/tvAppName_LIA"
-        android:layout_toRightOf="@id/ivAppIcon_LIA"
-        tools:text="Description"
-        style="@style/AppInfoTextViewLIA"/>
+        <ImageView
+            android:id="@+id/ivAppIcon_LIA"
+            style="@style/AppIconLIA"
+            android:layout_toRightOf="@id/ivDrag_LIA"
+            android:src="@mipmap/ic_launcher" />
 
-    <TextView
-        android:id="@+id/tvAppInfoSizeMinutes_LIA"
-        android:layout_below="@id/tvAppInfo_LIA"
-        android:layout_toRightOf="@id/ivAppIcon_LIA"
-        tools:text="Description"
-        style="@style/AppInfoTextViewLIA"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:layout_marginBottom="10dp"/>
+        <TextView
+            android:id="@+id/tvAppName_LIA"
+            style="@style/AppNameTextViewLIA"
+            android:layout_toRightOf="@id/ivAppIcon_LIA"
+            tools:text="title" />
 
+        <TextView
+            android:id="@+id/tvAppInfo_LIA"
+            style="@style/AppInfoTextViewLIA"
+            android:layout_below="@id/tvAppName_LIA"
+            android:layout_toRightOf="@id/ivAppIcon_LIA"
+            tools:text="Description" />
+
+        <TextView
+            android:id="@+id/tvAppInfoSizeMinutes_LIA"
+            style="@style/AppInfoTextViewLIA"
+            android:layout_below="@id/tvAppInfo_LIA"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/ivAppIcon_LIA"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            tools:text="Description" />
+
+    </RelativeLayout>
 </RelativeLayout>

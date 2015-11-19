@@ -1,7 +1,5 @@
 package com.watchappz.android.system.widgets;
 
-import android.app.LauncherActivity;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -67,7 +65,6 @@ public final class ListProvider implements RemoteViewsFactory {
     @Override
     public int getCount() {
         return listItemList.size();
-//        return data.size();
     }
 
     @Override
@@ -83,16 +80,9 @@ public final class ListProvider implements RemoteViewsFactory {
         Intent clickIntent = new Intent();
         clickIntent.putExtra(Constants.ITEM_POSITION, position);
         remoteView.setOnClickFillInIntent(R.id.rlItem_LIA, clickIntent);
-//        PendingIntent pendingClickIntent = PendingIntent.getBroadcast(mContext, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        Intent clickStarIntent = new Intent();
-//        clickStarIntent.putExtra(Constants.STAR_LICK, position);
-//        clickStarIntent.setAction(Constants.STAR_LICK);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 0, clickStarIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        clickStarIntent.putExtra(Constants.STAR_LICK, position);
-//        remoteView.setOnClickPendingIntent(R.id.rlItem_LIA, pendingIntent);
-//        clickIntent.putExtra(Constants.STAR_LICK, position);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        remoteView.setOnClickPendingIntent(R.id.btnAppStar_LIA, pendingIntent);
+        Intent clickStarIntent = new Intent();
+        clickStarIntent.putExtra(Constants.STAR_LICK, position);
+        remoteView.setOnClickFillInIntent(R.id.btnAppStar_LIA, clickStarIntent);
         return remoteView;
     }
 
