@@ -9,7 +9,8 @@
         android:id="@+id/ivDrag_LIA"
         style="@style/AppDragIconLIA"
         android:src="@drawable/ic_drag_item"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/ivAppIcon_LIA"
