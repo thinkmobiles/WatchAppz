@@ -212,7 +212,9 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.llDefault_FVP:
-                writeAppsPositionsToDB();
+                if (mainActivity.getSortType() == Constants.SORT_TYPE_DRAG_AND_DROP) {
+                    writeAppsPositionsToDB();
+                }
                 if (mainActivity.getSortType() != Constants.SORT_TYPE_DEFAULT) {
                     mainActivity.setSortType(Constants.SORT_TYPE_DEFAULT);
                 } else {
