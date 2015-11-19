@@ -215,6 +215,8 @@ public class BaseAppsFragment extends BaseFragment {
                 setCheckedColors(llData, tvData, ivArrowData);
                 setDefaultColors(llDefault, tvDefault, ivArrowDefault);
                 setDefaultColors(llTimeUsed, tvTimeUsed, ivArrowTimeUsed);
+                llDrag.setBackgroundColor(getColor(R.color.sort_tab_layout_background));
+                tvDrag.setTextColor(getColor(R.color.sort_tab_title_text_color));
                 break;
             case Constants.SORT_TYPE_DATA_MENU_ASC:
                 llData.setBackgroundColor(getColor(R.color.sort_tab_layout_background_pressed));
@@ -222,11 +224,15 @@ public class BaseAppsFragment extends BaseFragment {
                 ivArrowData.setImageResource(R.drawable.ic_arrow_black_up);
                 setDefaultColors(llDefault, tvDefault, ivArrowDefault);
                 setDefaultColors(llTimeUsed, tvTimeUsed, ivArrowTimeUsed);
+                llDrag.setBackgroundColor(getColor(R.color.sort_tab_layout_background));
+                tvDrag.setTextColor(getColor(R.color.sort_tab_title_text_color));
                 break;
             case Constants.SORT_TYPE_TIME_USED:
                 setCheckedColors(llTimeUsed, tvTimeUsed, ivArrowTimeUsed);
                 setDefaultColors(llDefault, tvDefault, ivArrowDefault);
                 setDefaultColors(llData, tvData, ivArrowData);
+                llDrag.setBackgroundColor(getColor(R.color.sort_tab_layout_background));
+                tvDrag.setTextColor(getColor(R.color.sort_tab_title_text_color));
                 break;
             case Constants.SORT_TYPE_TIME_USED_ASC:
                 llTimeUsed.setBackgroundColor(getColor(R.color.sort_tab_layout_background_pressed));
@@ -234,11 +240,15 @@ public class BaseAppsFragment extends BaseFragment {
                 ivArrowTimeUsed.setImageResource(R.drawable.ic_arrow_black_up);
                 setDefaultColors(llDefault, tvDefault, ivArrowDefault);
                 setDefaultColors(llData, tvData, ivArrowData);
+                llDrag.setBackgroundColor(getColor(R.color.sort_tab_layout_background));
+                tvDrag.setTextColor(getColor(R.color.sort_tab_title_text_color));
                 break;
             default:
                 setCheckedColors(llDefault, tvDefault, ivArrowDefault);
                 setDefaultColors(llData, tvData, ivArrowData);
                 setDefaultColors(llTimeUsed, tvTimeUsed, ivArrowTimeUsed);
+                llDrag.setBackgroundColor(getColor(R.color.sort_tab_layout_background));
+                tvDrag.setTextColor(getColor(R.color.sort_tab_title_text_color));
         }
     }
 }

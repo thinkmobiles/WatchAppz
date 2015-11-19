@@ -24,6 +24,7 @@ import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.IReloadFavoriteDragList;
 import com.watchappz.android.interfaces.IReloadList;
 import com.watchappz.android.interfaces.INewTextListener;
+import com.watchappz.android.interfaces.ISaveDragToDBListener;
 import com.watchappz.android.interfaces.ISendSortTypeListener;
 import com.watchappz.android.interfaces.SortInTabLayoutListener;
 import com.watchappz.android.system.fragments.AppViewPagerFragment;
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener,
     protected FloatingActionButton facebook;
     private List<IReloadList> reloadLists;
     private IReloadFavoriteDragList reloadFavoriteList;
+    private ISaveDragToDBListener iSaveDragToDBListener;
 //    private SharedPrefManager sharedPrefManager;
 
     public final void setINewTextListener(final INewTextListener _iNewTextListener) {
@@ -66,6 +68,14 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener,
 
     public void setReloadFavoriteList(IReloadFavoriteDragList reloadFavoriteList) {
         this.reloadFavoriteList = reloadFavoriteList;
+    }
+
+    public void setSaveDragToDBListener(ISaveDragToDBListener iSaveDragToDBListener) {
+        this.iSaveDragToDBListener = iSaveDragToDBListener;
+    }
+
+    public ISaveDragToDBListener getiSaveDragToDBListener() {
+        return iSaveDragToDBListener;
     }
 
     public void addiReloadList(final IReloadList _iReloadList) {

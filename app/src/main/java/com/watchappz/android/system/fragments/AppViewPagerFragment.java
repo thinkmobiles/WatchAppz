@@ -48,12 +48,20 @@ public class AppViewPagerFragment extends BaseFragment {
                 switch (position) {
                     case 0:
                         mainActivity.setFloatingMenuVisibility(true);
+                        mainActivity.getiSaveDragToDBListener().updateSortingLayout();
                         break;
                     case 1:
                         mainActivity.setFloatingMenuVisibility(false);
+                        if (mainActivity.getSortType() == Constants.SORT_TYPE_DRAG_AND_DROP) {
+                            mainActivity.getiSaveDragToDBListener().savePositions();
+                        }
                         break;
                     case 2:
                         mainActivity.setFloatingMenuVisibility(false);
+                        if (mainActivity.getSortType() == Constants.SORT_TYPE_DRAG_AND_DROP) {
+                            mainActivity.getiSaveDragToDBListener().savePositions();
+                        }
+                        mainActivity.getiSaveDragToDBListener().updateSortingLayout();
                         break;
                 }
             }

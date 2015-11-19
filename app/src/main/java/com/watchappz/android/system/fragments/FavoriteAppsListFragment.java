@@ -21,6 +21,7 @@ import com.watchappz.android.global.Constants;
 import com.watchappz.android.interfaces.INewTextListener;
 import com.watchappz.android.interfaces.IReloadFavoriteDragList;
 import com.watchappz.android.interfaces.IReloadList;
+import com.watchappz.android.interfaces.ISaveDragToDBListener;
 import com.watchappz.android.loaders.FavoriteAppsLoader;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.system.models.CursorLoaderRestartEvent;
@@ -37,7 +38,7 @@ import java.util.List;
  */
 
 public final class FavoriteAppsListFragment extends BaseAppsFragment implements AdapterView.OnItemClickListener,
-        INewTextListener, IReloadList, IReloadFavoriteDragList, View.OnClickListener, LoaderManager.LoaderCallbacks<List<AppModel>> {
+        INewTextListener, IReloadList, ISaveDragToDBListener, IReloadFavoriteDragList, View.OnClickListener, LoaderManager.LoaderCallbacks<List<AppModel>> {
 
     private List<AppModel> favoriteApps;
 
@@ -63,6 +64,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         mainActivity.addiReloadList(this);
         mainActivity.setReloadFavoriteList(this);
         mainActivity.setINewTextFavoriteListener(this);
+        mainActivity.setSaveDragToDBListener(this);
     }
 
     @Override
@@ -232,5 +234,15 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     @Override
     public void reloadFavoriteToDragList() {
         mainActivity.getSupportLoaderManager().restartLoader(1, null, this);
+    }
+
+    @Override
+    public void savePositions() {
+        writeAppsPositionsToDB();
+    }
+
+    @Override
+    public void updateSortingLayout() {
+        setPressedViews();
     }
 }

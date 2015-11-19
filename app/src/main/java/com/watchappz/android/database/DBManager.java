@@ -157,9 +157,13 @@ public final class DBManager implements Serializable {
             return;
         }
         Cursor cursor = getAllData();
+        Cursor cursorFavorites = getFavoriteData(1);
         ContentValues values = new ContentValues();
         values.put(KEY_IS_FAVOURITE, 1);
         values.put(KEY_IS_ABLE_TO_FAVORITE, 1);
+        if (cursorFavorites != null) {
+            values.put(KEY_APP_POSITION, cursorFavorites.getCount());
+        }
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 if (cursor.getString(5).equals(_packageName)) {
