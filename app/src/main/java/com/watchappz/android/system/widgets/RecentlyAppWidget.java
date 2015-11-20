@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -31,6 +32,12 @@ public final class RecentlyAppWidget extends AppWidgetProvider {
     private DBManager mDbManager;
     private AppWidgetManager mAppWidgetManager;
     private int[] mAppWidgetIds;
+
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+
+    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -77,7 +84,6 @@ public final class RecentlyAppWidget extends AppWidgetProvider {
         if (appModels == null) return;
         RemoteViews remoteViews = updateWidgetListView(context, widgetID);
         setListClick(remoteViews, context);
-        appWidgetManager.updateAppWidget(widgetID, remoteViews);
         appWidgetManager.updateAppWidget(widgetID, remoteViews);
         appWidgetManager.notifyAppWidgetViewDataChanged(widgetID,
                 R.id.lvFavoriteApps_W);

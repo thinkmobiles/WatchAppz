@@ -9,6 +9,8 @@
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeStyle">@style/LStyled.ActionMode</item>
     </style>
 
     <style name="TabLayout" parent="Widget.Design.TabLayout">
@@ -38,7 +40,6 @@
     <style name="AppDragIconLIA">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">@dimen/app_drag_icon_left</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
 
@@ -71,6 +72,11 @@
     <style name="ColorRadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="colorControlActivated">@color/fab_color</item>
         <item name="colorControlNormal">@android:color/darker_gray</item>
+    </style>
+
+    <style name="LStyled.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="background">@color/colorPrimary</item>
+        <item name="height">?attr/actionBarSize</item>
     </style>
 
 </resources>

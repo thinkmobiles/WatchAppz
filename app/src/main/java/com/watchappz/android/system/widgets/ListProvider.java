@@ -70,19 +70,19 @@ public final class ListProvider implements RemoteViewsFactory {
     @Override
     public RemoteViews getViewAt(int position) {
         final RemoteViews remoteView = new RemoteViews(
-                mContext.getPackageName(), R.layout.list_item_apps);
+                mContext.getPackageName(), R.layout.list_item_widget);
         AppModel appModel = listItemList.get(position);
-        remoteView.setTextViewText(R.id.tvAppName_LIA, appModel.getAppName());
-        remoteView.setTextViewText(R.id.tvAppInfo_LIA, getAppInfo(appModel));
-        remoteView.setTextViewText(R.id.tvAppInfoSizeMinutes_LIA, getAppInfoSizeTime(appModel));
-        remoteView.setImageViewBitmap(R.id.ivAppIcon_LIA, drawableToBitmap(icons.get(position)));
-        remoteView.setImageViewBitmap(R.id.btnAppStar_LIA, getBitmapFromDrawableRes(setStarColor(appModel)));
+//        remoteView.setTextViewText(R.id.tvAppName_LIA, appModel.getAppName());
+//        remoteView.setTextViewText(R.id.tvAppInfo_LIA, getAppInfo(appModel));
+//        remoteView.setTextViewText(R.id.tvAppInfoSizeMinutes_LIA, getAppInfoSizeTime(appModel));
+        remoteView.setImageViewBitmap(R.id.ivAppIcon_LIW, drawableToBitmap(icons.get(position)));
+//        remoteView.setImageViewBitmap(R.id.btnAppStar_LIA, getBitmapFromDrawableRes(setStarColor(appModel)));
         Intent clickIntent = new Intent();
         clickIntent.putExtra(Constants.ITEM_POSITION, position);
-        remoteView.setOnClickFillInIntent(R.id.rlItem_LIA, clickIntent);
-        Intent clickStarIntent = new Intent();
-        clickStarIntent.putExtra(Constants.STAR_LICK, position);
-        remoteView.setOnClickFillInIntent(R.id.btnAppStar_LIA, clickStarIntent);
+        remoteView.setOnClickFillInIntent(R.id.rlItem_LIW, clickIntent);
+//        Intent clickStarIntent = new Intent();
+//        clickStarIntent.putExtra(Constants.STAR_LICK, position);
+//        remoteView.setOnClickFillInIntent(R.id.btnAppStar_LIA, clickStarIntent);
         return remoteView;
     }
 
@@ -140,67 +140,67 @@ public final class ListProvider implements RemoteViewsFactory {
         return bitmap;
     }
 
-    protected String getAppInfo(final AppModel _appModel) {
-        return String.format(mContext.getResources().getString(R.string.app_used) +
-                        ": %s " + mContext.getResources().getString(R.string.app_use_today) +
-                        " | %d x " + mContext.getResources().getString(R.string.app_use_total),
-                getDate(_appModel.getDateUsege(), "hh:mm"), _appModel.getAppUseTotalCount());
-    }
+//    protected String getAppInfo(final AppModel _appModel) {
+//        return String.format(mContext.getResources().getString(R.string.app_used) +
+//                        ": %s " + mContext.getResources().getString(R.string.app_use_today) +
+//                        " | %d x " + mContext.getResources().getString(R.string.app_use_total),
+//                getDate(_appModel.getDateUsege(), "hh:mm"), _appModel.getAppUseTotalCount());
+//    }
 
-    protected String getDate(long milliSeconds, String dateFormat) {
-        if (milliSeconds > 0) {
-            SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.getDefault());
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(milliSeconds);
-            return formatter.format(calendar.getTime());
-        }
-        return mContext.getResources().getString(R.string.app_time_last_used_not);
-    }
+//    protected String getDate(long milliSeconds, String dateFormat) {
+//        if (milliSeconds > 0) {
+//            SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.getDefault());
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTimeInMillis(milliSeconds);
+//            return formatter.format(calendar.getTime());
+//        }
+//        return mContext.getResources().getString(R.string.app_time_last_used_not);
+//    }
+//
+//    protected String getAppInfoSizeTime(final AppModel _appModel) {
+//        long mills;
+//        mills = _appModel.getAppTimeSpent();
+//        return getAppSize(_appModel.getAppSize(), true) + " | " + getTimeLastUsage(mills);
+//    }
 
-    protected String getAppInfoSizeTime(final AppModel _appModel) {
-        long mills;
-        mills = _appModel.getAppTimeSpent();
-        return getAppSize(_appModel.getAppSize(), true) + " | " + getTimeLastUsage(mills);
-    }
-
-    protected String getTimeLastUsage(final long mills) {
-        String time = "";
-        double minutes = (double) mills / 60000;
-        if (minutes < 1) {
-            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_seconds), (double) mills / 1000);
-        }
-        double hours = minutes / 60;
-        if (hours < 1 && minutes > 1) {
-            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_minutes), (double) minutes);
-        } else if (hours > 1 && hours < 24) {
-            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_hours), hours);
-        }
-        double days = hours / 24;
-        if (days > 1 && days < 365) {
-            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_days), days);
-        } else if (days > 365) {
-            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_years), days);
-        }
-        return time;
-    }
-    protected String getAppSize(long bytes, boolean si) {
-        int unit = si ? 1000 : 1024;
-        if (bytes < unit) return bytes + " B";
-        int exp = (int) (Math.log(bytes) / Math.log(unit));
-        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
-        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
-    }
-
-    protected int setStarColor(final AppModel _appModel) {
-        if (_appModel.isFavourite() == 1) {
-            return R.drawable.ic_star_gold;
-        } else {
-            return R.drawable.ic_star_grey;
-        }
-    }
-
-    private Bitmap getBitmapFromDrawableRes(final int _res) {
-        return BitmapFactory.decodeResource(mContext.getResources(), _res);
-    }
+//    protected String getTimeLastUsage(final long mills) {
+//        String time = "";
+//        double minutes = (double) mills / 60000;
+//        if (minutes < 1) {
+//            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_seconds), (double) mills / 1000);
+//        }
+//        double hours = minutes / 60;
+//        if (hours < 1 && minutes > 1) {
+//            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_minutes), (double) minutes);
+//        } else if (hours > 1 && hours < 24) {
+//            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_hours), hours);
+//        }
+//        double days = hours / 24;
+//        if (days > 1 && days < 365) {
+//            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_days), days);
+//        } else if (days > 365) {
+//            time = String.format("%.0f " + mContext.getResources().getString(R.string.app_time_used_years), days);
+//        }
+//        return time;
+//    }
+//    protected String getAppSize(long bytes, boolean si) {
+//        int unit = si ? 1000 : 1024;
+//        if (bytes < unit) return bytes + " B";
+//        int exp = (int) (Math.log(bytes) / Math.log(unit));
+//        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
+//        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+//    }
+//
+//    protected int setStarColor(final AppModel _appModel) {
+//        if (_appModel.isFavourite() == 1) {
+//            return R.drawable.ic_star_gold;
+//        } else {
+//            return R.drawable.ic_star_grey;
+//        }
+//    }
+//
+//    private Bitmap getBitmapFromDrawableRes(final int _res) {
+//        return BitmapFactory.decodeResource(mContext.getResources(), _res);
+//    }
 
 }

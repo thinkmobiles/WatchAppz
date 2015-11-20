@@ -49,5 +49,7 @@
 
     <string name="facebook_app_id">1537942619829861</string>
     <string name="facebook_empty_favorite_apps">Not enough favorite apps to share</string>
+    <string name="delete_apps">Delete Apps</string>
+    <string name="selected_apps">selected apps</string>
 
 </resources>

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -111,6 +112,7 @@ public class BaseAppsFragment extends BaseFragment {
         listView.setTextFilterEnabled(true);
         listView.setOnItemLongClickListener(new MyOnItemLongClickListener(listView));
         listView.setOnItemMovedListener(new MyOnItemMovedListener(dragDropFavoriteAppsListAdapter));
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
     }
 
     protected void initRecentlyAdapter(final List<AppModel> _appModels) {
@@ -151,10 +153,10 @@ public class BaseAppsFragment extends BaseFragment {
 
         @Override
         public boolean onItemLongClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-            if (favoriteListView != null) {
-                favoriteListView.startDragging(position - favoriteListView.getHeaderViewsCount());
-            }
-            return true;
+//            if (favoriteListView != null) {
+//                favoriteListView.startDragging(position - favoriteListView.getHeaderViewsCount());
+//            }
+            return false;
         }
     }
 

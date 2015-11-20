@@ -138,7 +138,8 @@
         android:layout_height="match_parent"
         android:scrollingCache="false"
         android:animationCache="false"
-        android:layout_below="@id/llSortTabLayout_FVP"/>
+        android:layout_below="@id/llSortTabLayout_FVP"
+        android:choiceMode="multipleChoice"/>
 
     <TextView
         android:id="@+id/tvEmptyAppsList_EV"

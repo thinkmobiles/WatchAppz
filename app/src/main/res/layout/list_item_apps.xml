@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_row_white_selector">
 
     <ImageView
         android:id="@+id/btnAppStar_LIA"
@@ -25,6 +26,7 @@
             style="@style/AppDragIconLIA"
             android:layout_alignParentLeft="true"
             android:src="@drawable/ic_drag_item"
+            android:padding="10dp"
             android:visibility="gone" />
 
         <ImageView
@@ -32,6 +34,12 @@
             style="@style/AppIconLIA"
             android:layout_toRightOf="@id/ivDrag_LIA"
             android:src="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/ivAppIconSelected_LIA"
+            style="@style/AppIconLIA"
+            android:layout_toRightOf="@id/ivDrag_LIA"
+            android:src="@drawable/app_item_selector" />
 
         <TextView
             android:id="@+id/tvAppName_LIA"
