@@ -11,7 +11,11 @@
         android:layout_height="match_parent"
         android:animationCache="false"
         android:scrollingCache="false"
-        android:numColumns="3"
+        android:numColumns="auto_fit"
+        android:clipChildren="true"
+        android:smoothScrollbar="true"
+        android:columnWidth="65dp"
+        android:stretchMode="columnWidth"
         />
 
     <TextView
