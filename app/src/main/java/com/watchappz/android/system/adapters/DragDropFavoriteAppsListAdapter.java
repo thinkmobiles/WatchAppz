@@ -2,9 +2,11 @@ package com.watchappz.android.system.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -39,9 +41,14 @@ public class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> impl
     protected List<AppModel> appModels;
     protected AppFilter mFilter;
     private boolean isDragIconVisible;
+    private boolean isHideAppsAdapter;
 
     public void setIsDragIconVisible(boolean isDragIconVisible) {
         this.isDragIconVisible = isDragIconVisible;
+    }
+
+    public void setIsHideAppsAdapter(boolean isHideAppsAdapter) {
+        this.isHideAppsAdapter = isHideAppsAdapter;
     }
 
     public DragDropFavoriteAppsListAdapter(Context mContext, final List<AppModel> _appModels, final DBManager _dbManager) {
@@ -83,12 +90,14 @@ public class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> impl
         protected ImageView ivAppIcon;
         protected ImageView btnAppStar;
         protected ImageView ivDrag;
+        protected CheckBox chAppUnhide;
 
     }
 
     protected void findViews(final AppViewHolder appViewHolder, final View _convertView) {
         appViewHolder.ivAppIcon = (ImageView) _convertView.findViewById(R.id.ivAppIcon_LIA);
         appViewHolder.btnAppStar = (ImageView) _convertView.findViewById(R.id.btnAppStar_LIA);
+        appViewHolder.chAppUnhide = (CheckBox) _convertView.findViewById(R.id.chAppUnhide_LIA);
         appViewHolder.ivDrag = (ImageView) _convertView.findViewById(R.id.ivDrag_LIA);
         appViewHolder.tvAppName = (TextView) _convertView.findViewById(R.id.tvAppName_LIA);
         appViewHolder.tvAppInfo = (TextView) _convertView.findViewById(R.id.tvAppInfo_LIA);
@@ -102,12 +111,18 @@ public class DragDropFavoriteAppsListAdapter extends ArrayAdapter<AppModel> impl
         setStarColor(appViewHolder, appModel);
         setAppIcon(appViewHolder, appModel);
         appViewHolder.tvAppInfoSizeMinutes.setText(getAppInfoSizeTime(appModel));
-        appViewHolder.btnAppStar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog(appViewHolder.btnAppStar, appModel);
-            }
-        });
+        if (!isHideAppsAdapter) {
+            appViewHolder.btnAppStar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDialog(appViewHolder.btnAppStar, appModel);
+                }
+            });
+        } else {
+            appViewHolder.chAppUnhide.setVisibility(View.VISIBLE);
+            appViewHolder.btnAppStar.setVisibility(View.GONE);
+            appViewHolder.chAppUnhide.setChecked(appModel.isChecked());
+        }
         if (isDragIconVisible) {
             appViewHolder.ivDrag.setVisibility(View.VISIBLE);
         } else {

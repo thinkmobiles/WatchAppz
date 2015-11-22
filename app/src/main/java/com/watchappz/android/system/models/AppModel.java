@@ -23,6 +23,8 @@ public final class AppModel implements Serializable {
     private int mAppDeleted;
     private long mAppTimeSpent;
     private int mAppPosition;
+    private int mAppIsHide;
+    private boolean isChecked;
 
     public long getId() {
         return id;
@@ -134,5 +136,21 @@ public final class AppModel implements Serializable {
 
     public void setAppPosition(int mAppPosition) {
         this.mAppPosition = mAppPosition;
+    }
+
+    public int isAppIsHide() {
+        return mAppIsHide;
+    }
+
+    public void setAppIsHide(int mAppIsHide) {
+        this.mAppIsHide = mAppIsHide;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setIsChecked(boolean isChecked) {
+        this.isChecked = isChecked;
     }
 }

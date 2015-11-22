@@ -15,6 +15,20 @@
         android:paddingTop="20dp"
         tools:src="@drawable/ic_star_gold" />
 
+    <CheckBox
+        android:id="@+id/chAppUnhide_LIA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:button="@drawable/apps_check_selector"
+        android:focusable="false"
+        android:clickable="false"
+        android:visibility="gone"
+        android:padding="10dp"
+        android:background="@android:color/white"/>
+
     <RelativeLayout
         android:id="@+id/rlItem_LIA"
         android:layout_width="match_parent"

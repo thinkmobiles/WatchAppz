@@ -62,6 +62,7 @@ public final class DBManager implements Serializable {
         values.put(KEY_TIME_SPENT, _app.getAppTimeSpent());
         values.put(KEY_TIME_SPENT, _app.getAppTimeSpent());
         values.put(KEY_APP_POSITION, _app.getAppPosition());
+        values.put(KEY_APP_IS_HIDE, _app.isAppIsHide());
 
         AppModel existApp = getAppModelIfExistsInDB(_app.getAppPackageName());
         if (existApp != null) {
@@ -210,6 +211,28 @@ public final class DBManager implements Serializable {
 //        mDB.close();
     }
 
+    public void hideOrShowApp(final String _packageName, final boolean _isHide) {
+        mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return;
+        }
+        Cursor cursor = getAllData();
+        ContentValues values = new ContentValues();
+        if (_isHide) {
+            values.put(KEY_APP_IS_HIDE, 1);
+        } else {
+            values.put(KEY_APP_IS_HIDE, 0);
+        }
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                if (cursor.getString(5).equals(_packageName)) {
+                    mDB.update(TABLE_APPS, values, KEY_PACKAGE_NAME + " = ?", new String[]{_packageName});
+                }
+            }
+        }
+//        mDB.close();
+    }
+
     public void removeFromFavorite(final String _packageName) {
         mDB = mDBHelper.getWritableDatabase();
         if (mDB == null) {
@@ -274,6 +297,7 @@ public final class DBManager implements Serializable {
             app.setAppLastUsege(cursor.getLong(10));
             app.setAppTimeSpent(cursor.getLong(11));
             app.setAppPosition(cursor.getInt(12));
+            app.setAppIsHide(cursor.getInt(13));
         }
         return app;
     }
@@ -314,8 +338,17 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = getQueryForAllAppsIfPackageRemoved(getPackageRemoved());
+        String selectQuery = getQueryForAllAppsIfPackageRemoved(getPackageRemoved()) + " AND " + KEY_APP_IS_HIDE + " != " + 1;
         return getCursorBySortType(selectQuery, _sortType);
+    }
+
+    public Cursor getAllHiddenData() {
+        mDB = mDBHelper.getWritableDatabase();
+        if (mDB == null) {
+            return null;
+        }
+        String selectQuery = getQueryForAllAppsIfPackageRemoved(getPackageRemoved()) + " AND " + KEY_APP_IS_HIDE + " == " + 1;
+        return mDB.query(TABLE_APPS, null, selectQuery, null, null, null, KEY_NAME + " ASC");
     }
 
 //    public Cursor getFavoriteData(final int _sortType) {
@@ -333,8 +366,8 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_IS_FAVOURITE + " == " + 1
-                + " OR " + KEY_IS_ABLE_TO_FAVORITE + " == " + 1;
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + " ( " + KEY_IS_FAVOURITE + " == " + 1
+                + " OR " + KEY_IS_ABLE_TO_FAVORITE + " == " + 1 + " ) AND "  + KEY_APP_IS_HIDE + " != " + 1;
         return getCursorFavorite(selectQuery, _sortType);
     }
 
@@ -398,7 +431,7 @@ public final class DBManager implements Serializable {
             return null;
         }
         String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_DATE_USEGE + " BETWEEN " + DateManager.startOfDay()
-                + " AND " + DateManager.currentTime();
+                + " AND " + DateManager.currentTime() + " AND " + KEY_APP_IS_HIDE + " != " + 1;
         return getRecentlyCursorBySortType(selectQuery, _sortType);
     }
 
@@ -440,6 +473,7 @@ public final class DBManager implements Serializable {
         app.setAppLastUsege(_cursor.getLong(10));
         app.setAppTimeSpent(_cursor.getLong(11));
         app.setAppPosition(_cursor.getInt(12));
+        app.setAppIsHide(_cursor.getInt(13));
         return app;
     }
 
@@ -448,7 +482,8 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_NAME + " LIKE ?" + " AND " + KEY_IS_FAVOURITE + " == " + 1;
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_NAME + " LIKE ?" + " AND " +
+                KEY_IS_FAVOURITE + " == " + 1 + " AND " + KEY_APP_IS_HIDE + " != " + 1;
         return getCursorBySortType(selectQuery, inputText, _sortType);
     }
 
@@ -457,7 +492,8 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_NAME + " LIKE ?" + " AND " + KEY_TODAY_COUNT + " > " + 0;
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_NAME + " LIKE ?" + " AND " +
+                KEY_TODAY_COUNT + " > " + 0 + " AND " + KEY_APP_IS_HIDE + " != " + 1;
         return getRecentlyCursorBySortType(selectQuery, inputText, _sortType);
     }
 
@@ -466,7 +502,7 @@ public final class DBManager implements Serializable {
         if (mDB == null) {
             return null;
         }
-        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_NAME + " LIKE ?";
+        String selectQuery = getQueryIfPackageRemoved(getPackageRemoved()) + KEY_NAME + " LIKE ?" + " AND " + KEY_APP_IS_HIDE + " != " + 1;
         return getCursorBySortType(selectQuery, inputText, _sortType);
     }
 

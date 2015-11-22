@@ -16,6 +16,7 @@ import com.watchappz.android.interfaces.IReloadList;
 import com.watchappz.android.loaders.RecentlyAppsLoader;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.system.models.CursorLoaderRestartEvent;
+import com.watchappz.android.utils.AppContextualActionModeListener;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.List;
 
 public final class RecentlyUsedAppsListFragment extends BaseAppsFragment implements LoaderManager.LoaderCallbacks<List<AppModel>>, AdapterView.OnItemClickListener, INewTextListener, IReloadList {
 
+    private AppContextualActionModeListener actionModeListener;
 
     public static RecentlyUsedAppsListFragment newInstance() {
         return new RecentlyUsedAppsListFragment();
@@ -70,6 +72,8 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
     @Override
     public void onLoadFinished(Loader<List<AppModel>> loader, List<AppModel> _list) {
         mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.RECENTLY_RECEIVER);
+        actionModeListener = new AppContextualActionModeListener(mainActivity, _list);
+        listView.setMultiChoiceModeListener(actionModeListener);
         initRecentlyAdapter(_list);
         setEmptyView(R.string.app_resently_used_empty_view);
     }
@@ -127,5 +131,9 @@ public final class RecentlyUsedAppsListFragment extends BaseAppsFragment impleme
 
     public void onEvent(CursorLoaderRestartEvent event) {
         isNewAccessibilityEvent = true;
+    }
+
+    public void hideActionMode() {
+        actionModeListener.hideActionMode();
     }
 }

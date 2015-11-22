@@ -47,6 +47,22 @@
             android:layout_height="0.6dp"
             android:background="@android:color/black" />
 
+        <TextView
+            android:id="@+id/tvUnhideApps_FS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/settings_textview_slector"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp"
+            android:paddingLeft="40dp"
+            android:text="@string/action_unhide_apps"
+            android:textColor="@android:color/black" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:background="@android:color/black" />
+
 
     </LinearLayout>
 </LinearLayout>

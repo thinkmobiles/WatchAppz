@@ -23,4 +23,5 @@ public abstract class DBConstants {
     public static final String KEY_APP_LAST_USAGE              = "appLastUsage";
     public static final String KEY_TIME_SPENT                  = "appTimeSpent";
     public static final String KEY_APP_POSITION                = "appPosition";
+    public static final String KEY_APP_IS_HIDE                 = "appIsHide";
 }

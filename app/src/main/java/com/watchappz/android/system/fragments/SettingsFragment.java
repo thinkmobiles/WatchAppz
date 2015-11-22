@@ -24,7 +24,7 @@ import de.greenrobot.event.EventBus;
  */
 public final class SettingsFragment extends BaseFragment implements View.OnClickListener {
 
-    private TextView tvHelp, tvAbout;
+    private TextView tvHelp, tvAbout, tvUnhideApps;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -55,11 +55,13 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
     private void findViews() {
         tvHelp                  = (TextView) mInflatedView.findViewById(R.id.tvHelp_FS);
         tvAbout                 = (TextView) mInflatedView.findViewById(R.id.tvOverWatchAppz_FS);
+        tvUnhideApps            = (TextView) mInflatedView.findViewById(R.id.tvUnhideApps_FS);
     }
 
     private void setListeners() {
         tvHelp.setOnClickListener(this);
         tvAbout.setOnClickListener(this);
+        tvUnhideApps.setOnClickListener(this);
     }
 
     @Override
@@ -89,6 +91,9 @@ public final class SettingsFragment extends BaseFragment implements View.OnClick
                 break;
             case R.id.tvOverWatchAppz_FS:
                 mainActivity.startAboutActivity();
+                break;
+            case R.id.tvUnhideApps_FS:
+                mainActivity.getFragmentNavigator().clearBackStackToFragmentOrShow(HiddenAppsFragment.newInstance());
                 break;
 
         }

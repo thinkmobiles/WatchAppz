@@ -30,6 +30,7 @@ import com.watchappz.android.interfaces.ISaveDragToDBListener;
 import com.watchappz.android.loaders.FavoriteAppsLoader;
 import com.watchappz.android.system.models.AppModel;
 import com.watchappz.android.system.models.CursorLoaderRestartEvent;
+import com.watchappz.android.utils.AppContextualActionModeListener;
 import com.watchappz.android.utils.SetPositionService;
 
 import java.io.Serializable;
@@ -44,10 +45,9 @@ import java.util.List;
 
 public final class FavoriteAppsListFragment extends BaseAppsFragment implements AdapterView.OnItemClickListener,
         INewTextListener, IReloadList, ISaveDragToDBListener,
-        IReloadFavoriteDragList, View.OnClickListener, LoaderManager.LoaderCallbacks<List<AppModel>>, ListView.MultiChoiceModeListener {
+        IReloadFavoriteDragList, View.OnClickListener, LoaderManager.LoaderCallbacks<List<AppModel>> {
 
-    private List<AppModel> favoriteApps;
-    private List<AppModel> selectedApps;
+    private AppContextualActionModeListener actionModeListener;
 
     public static FavoriteAppsListFragment newInstance() {
         return new FavoriteAppsListFragment();
@@ -57,7 +57,6 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setListeners();
-        selectedApps = new ArrayList<>();
         mainActivity.registerReceiver(mSearchBroadcastReceiver, mSearchFilter);
         mainActivity.registerReceiver(clickFavoriteReceiver, mFavoriteFilter);
         mainActivity.setFloatingMenuVisibility(true);
@@ -67,7 +66,6 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     private void setListeners() {
         listView.setOnItemClickListener(this);
-        listView.setMultiChoiceModeListener(this);
         llDefault.setOnClickListener(this);
         llDrag.setOnClickListener(this);
         mainActivity.addiReloadList(this);
@@ -128,8 +126,9 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     @Override
     public void onLoadFinished(Loader<List<AppModel>> loader, final List<AppModel> _list) {
-        favoriteApps = _list;
         mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.FAVORITE_RECEIVER);
+        actionModeListener = new AppContextualActionModeListener(mainActivity, _list);
+        listView.setMultiChoiceModeListener(actionModeListener);
         initFavoriteAdapter(_list);
         setEmptyView(R.string.app_favorites_empty_view);
         shareToFacebook(_list.size());
@@ -177,7 +176,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     @Override
     public void onNewText(String _newText) {
-            dragDropFavoriteAppsListAdapter.getFilter().filter(_newText);
+        dragDropFavoriteAppsListAdapter.getFilter().filter(_newText);
     }
 
     public void onEvent(CursorLoaderRestartEvent event) {
@@ -257,39 +256,7 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
         setPressedViews();
     }
 
-    @Override
-    public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-        if(position < favoriteApps.size()){
-            if (checked) selectedApps.add(favoriteApps.get(position));
-            else selectedApps.remove(favoriteApps.get(position));
-//            actionMode = mode;
-            mode.setTitle(selectedApps.size() + " " + mainActivity.getString(R.string.selected_apps));}
-    }
-
-    @Override
-    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-        MenuInflater inflater = mode.getMenuInflater();
-        inflater.inflate(R.menu.action_mode_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-        return false;
-    }
-
-    @Override
-    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_delete:
-                Toast.makeText(mainActivity, "Do you want to delete ??", Toast.LENGTH_LONG).show();
-                break;
-        }
-        return false;
-    }
-
-    @Override
-    public void onDestroyActionMode(ActionMode mode) {
-        selectedApps.clear();
+    public void hideActionMode() {
+        actionModeListener.hideActionMode();
     }
 }

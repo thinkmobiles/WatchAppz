@@ -259,7 +259,7 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener,
         return facebookShareManager;
     }
 
-    private void reloadLists() {
+    public void reloadLists() {
         for (IReloadList iReloadList : reloadLists) {
             iReloadList.reloadList();
         }
@@ -291,4 +291,6 @@ public class MainActivity extends BaseActivity implements ISendSortTypeListener,
     public void sortTimeUsed() {
         reloadLists();
     }
+
+
 }

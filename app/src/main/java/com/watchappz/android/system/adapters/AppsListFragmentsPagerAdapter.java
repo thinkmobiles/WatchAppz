@@ -21,6 +21,9 @@ public final class AppsListFragmentsPagerAdapter extends FragmentStatePagerAdapt
 
     private Context mContext;
     private String tabTitles[];
+    private AllAppsListFragment allAppsListFragment;
+    private FavoriteAppsListFragment favoriteAppsListFragment;
+    private RecentlyUsedAppsListFragment recentlyUsedAppsListFragment;
 
     public AppsListFragmentsPagerAdapter(final FragmentManager _fm, final Context _context) {
         super(_fm);
@@ -34,11 +37,14 @@ public final class AppsListFragmentsPagerAdapter extends FragmentStatePagerAdapt
     public Fragment getItem(final int _position) {
         switch (_position) {
             case 0:
-                return FavoriteAppsListFragment.newInstance();
+                favoriteAppsListFragment = FavoriteAppsListFragment.newInstance();
+                return favoriteAppsListFragment;
             case 1:
-                return RecentlyUsedAppsListFragment.newInstance();
+                recentlyUsedAppsListFragment = RecentlyUsedAppsListFragment.newInstance();
+                return recentlyUsedAppsListFragment;
             case 2:
-                return AllAppsListFragment.newInstance();
+                allAppsListFragment = AllAppsListFragment.newInstance();
+                return allAppsListFragment;
             default:
                 return null;
         }
@@ -54,4 +60,15 @@ public final class AppsListFragmentsPagerAdapter extends FragmentStatePagerAdapt
         return tabTitles[_position];
     }
 
+    public RecentlyUsedAppsListFragment getRecentlyUsedAppsListFragment() {
+        return recentlyUsedAppsListFragment;
+    }
+
+    public FavoriteAppsListFragment getFavoriteAppsListFragment() {
+        return favoriteAppsListFragment;
+    }
+
+    public AllAppsListFragment getAllAppsListFragment() {
+        return allAppsListFragment;
+    }
 }

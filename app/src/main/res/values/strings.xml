@@ -4,6 +4,8 @@
     <string name="action_settings">Settings</string>
     <string name="action_help">Help</string>
     <string name="action_over_watchappz">About WatchAppz</string>
+    <string name="action_unhide_apps">Unhide hidden apps</string>
+    <string name="hidden_apps">Hidden apps</string>
 
 
     <string name="tab_favorieten">Favorite</string>
@@ -21,6 +23,7 @@
     <string name="app_sorts_minste_gebruikt">Sort apps on lowest use</string>
     <string name="app_favorites_empty_view">No Favorite Apps</string>
     <string name="app_resently_used_empty_view">No Resently used Apps</string>
+    <string name="app_hidden_empty_view">No hidden apps</string>
     <string name="app_all_empty_view">No Apps</string>
     <string name="app_version">Version</string>
     <string name="app_favorite_remove">Remove</string>
@@ -51,5 +54,10 @@
     <string name="facebook_empty_favorite_apps">Not enough favorite apps to share</string>
     <string name="delete_apps">Delete Apps</string>
     <string name="selected_apps">selected apps</string>
+    <string name="unhide_apps">Unhide</string>
+    <string name="hide_apps">Hide apps</string>
+    <string name="hide_apps_yes">Yes</string>
+    <string name="hide_apps_no">No</string>
+    <string name="hide_apps_dialog_content">Do you want to hide selected apps?</string>
 
 </resources>

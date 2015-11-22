@@ -25,6 +25,7 @@ public class AppViewPagerFragment extends BaseFragment {
 
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private AppsListFragmentsPagerAdapter mAppsListFragmentsPagerAdapter;
 
     public static AppViewPagerFragment newInstance() {
         return new AppViewPagerFragment();
@@ -49,12 +50,14 @@ public class AppViewPagerFragment extends BaseFragment {
                     case 0:
                         mainActivity.setFloatingMenuVisibility(true);
                         mainActivity.getiSaveDragToDBListener().updateSortingLayout();
+                        hideActionModeFavoriteSelected();
                         break;
                     case 1:
                         mainActivity.setFloatingMenuVisibility(false);
                         if (mainActivity.getSortType() == Constants.SORT_TYPE_DRAG_AND_DROP) {
                             mainActivity.getiSaveDragToDBListener().savePositions();
                         }
+                        hideActionModeRecentlySelected();
                         break;
                     case 2:
                         mainActivity.setFloatingMenuVisibility(false);
@@ -62,6 +65,7 @@ public class AppViewPagerFragment extends BaseFragment {
                             mainActivity.getiSaveDragToDBListener().savePositions();
                         }
                         mainActivity.getiSaveDragToDBListener().updateSortingLayout();
+                        hideActionModeAllSelected();
                         break;
                 }
             }
@@ -88,7 +92,7 @@ public class AppViewPagerFragment extends BaseFragment {
     }
 
     private void initViewPager() {
-        AppsListFragmentsPagerAdapter mAppsListFragmentsPagerAdapter = new AppsListFragmentsPagerAdapter(
+        mAppsListFragmentsPagerAdapter = new AppsListFragmentsPagerAdapter(
                 getChildFragmentManager(), getActivity());
         mViewPager.setAdapter(mAppsListFragmentsPagerAdapter);
         mViewPager.setCurrentItem(0, true);
@@ -107,5 +111,32 @@ public class AppViewPagerFragment extends BaseFragment {
         }
         mainActivity.getToolbarManager().hideBackButton();
         mainActivity.setTitle(getResources().getString(R.string.app_name));
+    }
+
+    private void hideActionModeFavoriteSelected() {
+        if (mAppsListFragmentsPagerAdapter.getRecentlyUsedAppsListFragment() != null) {
+            mAppsListFragmentsPagerAdapter.getRecentlyUsedAppsListFragment().hideActionMode();
+        }
+        if (mAppsListFragmentsPagerAdapter.getAllAppsListFragment() != null) {
+            mAppsListFragmentsPagerAdapter.getAllAppsListFragment().hideActionMode();
+        }
+    }
+
+    private void hideActionModeRecentlySelected() {
+        if (mAppsListFragmentsPagerAdapter.getAllAppsListFragment() != null) {
+            mAppsListFragmentsPagerAdapter.getAllAppsListFragment().hideActionMode();
+        }
+        if (mAppsListFragmentsPagerAdapter.getFavoriteAppsListFragment() != null) {
+            mAppsListFragmentsPagerAdapter.getFavoriteAppsListFragment().hideActionMode();
+        }
+    }
+
+    private void hideActionModeAllSelected() {
+        if (mAppsListFragmentsPagerAdapter.getFavoriteAppsListFragment() != null) {
+            mAppsListFragmentsPagerAdapter.getFavoriteAppsListFragment().hideActionMode();
+        }
+        if (mAppsListFragmentsPagerAdapter.getRecentlyUsedAppsListFragment() != null) {
+            mAppsListFragmentsPagerAdapter.getRecentlyUsedAppsListFragment().hideActionMode();
+        }
     }
 }

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rlSelectAll_FHA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="20dp"
+        android:visibility="visible"
+        android:background="@color/unhide_apps_disable">
+
+        <CheckBox
+            android:id="@+id/chUnhideApps_FHA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:button="@drawable/apps_check_selector"
+            android:focusable="false" />
+
+        <TextView
+            android:id="@+id/tvSelectAll_FHA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/chUnhideApps_FHA"
+            android:text="select all apps"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvEmptyAppsList_FHA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/tvUnhide_FHA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/unhide_rounded_selector"
+        android:enabled="false"
+        android:paddingBottom="10dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:paddingTop="10dp"
+        android:text="@string/unhide_apps"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"/>
+
+    <ListView
+        android:id="@+id/lvHideApps_FHA"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/tvUnhide_FHA"
+        android:layout_below="@id/rlSelectAll_FHA"
+        android:animationCache="false"
+        android:scrollingCache="false" />
+
+</RelativeLayout>
