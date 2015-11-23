@@ -85,7 +85,9 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
     @Override
     public void onPause() {
         super.onPause();
-        writeAppsPositionsToDB();
+        if (mainActivity.getSortType() == Constants.SORT_TYPE_DRAG_AND_DROP) {
+            writeAppsPositionsToDB();
+        }
     }
 
     private void writeAppsPositionsToDB() {
@@ -120,13 +122,13 @@ public final class FavoriteAppsListFragment extends BaseAppsFragment implements 
 
     @Override
     public Loader<List<AppModel>> onCreateLoader(int id, Bundle args) {
-        mainActivity.getLoadingDialogController().showLoadingDialog(Constants.FAVORITE_RECEIVER);
+//        mainActivity.getLoadingDialogController().showLoadingDialog(Constants.FAVORITE_RECEIVER);
         return new FavoriteAppsLoader(mainActivity, mainActivity.getDbManager(), mainActivity.getSortType());
     }
 
     @Override
     public void onLoadFinished(Loader<List<AppModel>> loader, final List<AppModel> _list) {
-        mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.FAVORITE_RECEIVER);
+//        mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.FAVORITE_RECEIVER);
         actionModeListener = new AppContextualActionModeListener(mainActivity, _list);
         listView.setMultiChoiceModeListener(actionModeListener);
         initFavoriteAdapter(_list);

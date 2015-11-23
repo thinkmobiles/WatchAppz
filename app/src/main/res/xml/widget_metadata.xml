@@ -3,6 +3,7 @@
     android:initialLayout="@layout/widget"
     android:minHeight="60dp"
     android:minWidth="250dp"
+    android:minResizeWidth="60dp"
     android:resizeMode="horizontal|vertical"
     android:previewImage="@mipmap/ic_launcher"
     android:updatePeriodMillis="2400000">

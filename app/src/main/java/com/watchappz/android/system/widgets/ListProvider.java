@@ -31,6 +31,7 @@ import java.util.Locale;
 public final class ListProvider implements RemoteViewsFactory {
 
     private List<AppModel> listItemList;
+    private List<AppModel> subList;
     private Context mContext = null;
     private int appWidgetId;
     private List<Drawable> icons;
@@ -51,9 +52,10 @@ public final class ListProvider implements RemoteViewsFactory {
     public void onDataSetChanged() {
         listItemList.clear();
         mDbManager.open();
-        listItemList = mDbManager.getAppsList(mDbManager.getResentlyData(0));
+        listItemList = mDbManager.getAppsList(mDbManager.getAllData(5));
         if (listItemList != null) {
-            icons = getIcons(listItemList);
+            subList = listItemList.subList(0,10);
+            icons = getIcons(subList);
         }
     }
 
@@ -64,14 +66,14 @@ public final class ListProvider implements RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        return listItemList.size();
+        return subList.size();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
         final RemoteViews remoteView = new RemoteViews(
                 mContext.getPackageName(), R.layout.list_item_widget);
-        AppModel appModel = listItemList.get(position);
+//        AppModel appModel = subList.get(position);
 //        remoteView.setTextViewText(R.id.tvAppName_LIA, appModel.getAppName());
 //        remoteView.setTextViewText(R.id.tvAppInfo_LIA, getAppInfo(appModel));
 //        remoteView.setTextViewText(R.id.tvAppInfoSizeMinutes_LIA, getAppInfoSizeTime(appModel));

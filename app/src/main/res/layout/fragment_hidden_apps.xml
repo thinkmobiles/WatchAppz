@@ -23,7 +23,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:button="@drawable/apps_check_selector"
-            android:focusable="false" />
+            android:focusable="false"
+            android:clickable="false"/>
 
         <TextView
             android:id="@+id/tvSelectAll_FHA"

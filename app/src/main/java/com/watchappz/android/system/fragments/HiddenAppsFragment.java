@@ -157,6 +157,7 @@ public final class HiddenAppsFragment extends BaseFragment implements LoaderMana
     private void checkValidateUnhideButton() {
         if (!appsToUnhide.isEmpty()) {
             tvUnhide.setEnabled(true);
+            chUnhideApps.setClickable(true);
         } else
             tvUnhide.setEnabled(false);
     }

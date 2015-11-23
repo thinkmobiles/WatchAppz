@@ -29,6 +29,7 @@ public final class RecentlyAppWidget extends AppWidgetProvider {
 
     private final String ACTION_ON_CLICK = "com.watchappz.android.system.widgets.itemonclick";
     private List<AppModel> appModels;
+    private List<AppModel> subappModels;
     private DBManager mDbManager;
     private AppWidgetManager mAppWidgetManager;
     private int[] mAppWidgetIds;
@@ -46,9 +47,10 @@ public final class RecentlyAppWidget extends AppWidgetProvider {
         mAppWidgetIds = appWidgetIds;
         mDbManager = new DBManager(context);
         mDbManager.open();
-        appModels = mDbManager.getAppsList(mDbManager.getResentlyData(0));
+        appModels = mDbManager.getAppsList(mDbManager.getAllData(5));
+        subappModels = appModels.subList(0, 10);
         for (int id : appWidgetIds) {
-            updateWidget(context, appWidgetManager, appModels, id);
+            updateWidget(context, appWidgetManager, subappModels, id);
         }
     }
 
@@ -63,17 +65,18 @@ public final class RecentlyAppWidget extends AppWidgetProvider {
                 mDbManager.open();
             }
             if (appModels == null) {
-                appModels = mDbManager.getAppsList(mDbManager.getResentlyData(0));
+                appModels = mDbManager.getAppsList(mDbManager.getAllData(5));
+                subappModels = appModels.subList(0, 10);
             }
             if (itemPos != -1) {
-                AppModel appModel = appModels.get(itemPos);
+                AppModel appModel = subappModels.get(itemPos);
                 Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(appModel.getAppPackageName());
                 if (launchIntent != null) {
                     context.startActivity(launchIntent);
                 }
             }
             if (itemStarClickPos != -1) {
-                AppModel appModel = appModels.get(itemStarClickPos);
+                AppModel appModel = subappModels.get(itemStarClickPos);
                 addOrDeleteFromFavorite(context, appModel);
             }
         }

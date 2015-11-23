@@ -4,10 +4,16 @@
     android:layout_height="wrap_content"
     android:id="@+id/rlItem_LIW">
 
-    <ImageView
-        android:id="@+id/ivAppIcon_LIW"
-        style="@style/AppIconLIA"
-        android:src="@mipmap/ic_launcher"
-        android:layout_centerInParent="true"
-        android:layout_margin="10dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary_transparent_dark"
+        android:layout_margin="1dp">
+        <ImageView
+            android:id="@+id/ivAppIcon_LIW"
+            style="@style/AppIconLIA"
+            android:src="@mipmap/ic_launcher"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
 </RelativeLayout>
