@@ -2,19 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorPrimary_transparent">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvWidgetTitle_W"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="@string/app_name"
-        android:gravity="center"/>
+    <!--<TextView-->
+        <!--android:id="@+id/tvWidgetTitle_W"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:paddingTop="5dp"-->
+        <!--android:paddingBottom="5dp"-->
+        <!--android:background="@color/colorPrimaryDark"-->
+        <!--android:text="@string/app_name"-->
+        <!--android:gravity="center"/>-->
 
     <GridView
         android:id="@+id/lvFavoriteApps_W"
@@ -34,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="@string/app_resently_used_empty_view"
+        android:text="@string/app_all_empty_view"
         android:textColor="#ffffff"
         android:textSize="20sp"
         android:visibility="gone" />
