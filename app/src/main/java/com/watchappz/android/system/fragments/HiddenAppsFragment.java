@@ -110,6 +110,9 @@ public final class HiddenAppsFragment extends BaseFragment implements LoaderMana
     public void onLoadFinished(Loader<List<AppModel>> loader, List<AppModel> data) {
         mainActivity.getLoadingDialogController().hideLoadingDialog(Constants.FAVORITE_RECEIVER);
         hiddenApps = data;
+        if (!data.isEmpty()) {
+            chUnhideApps.setClickable(true);
+        }
         initList();
         chUnhideApps.setChecked(false);
         checkValidateUnhideButton();
@@ -157,7 +160,6 @@ public final class HiddenAppsFragment extends BaseFragment implements LoaderMana
     private void checkValidateUnhideButton() {
         if (!appsToUnhide.isEmpty()) {
             tvUnhide.setEnabled(true);
-            chUnhideApps.setClickable(true);
         } else
             tvUnhide.setEnabled(false);
     }
